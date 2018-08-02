@@ -50,7 +50,7 @@ ynh_app_setting_set $app is_public $is_public
 
 # Install dependency to convert tracks to a readable format for the browser
 ynh_package_update
-ynh_package_install postgresql postgresql-server-dev-9.4 postgis python-pip git python-virtualenv virtualenvwrapper python3-dev python3-setuptools libtiff5-dev libjpeg62-turbo-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk python3.4-dev python-dev python-imaging
+ynh_package_install postgresql postgresql-server-dev-9.6 postgis python-pip git python-virtualenv virtualenvwrapper python3-dev python3-setuptools libtiff5-dev libjpeg62-turbo-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk python3.4-dev python-dev python-imaging
 
 # Prepare Umap to be installed
 sudo mkdir -p /opt/$app
