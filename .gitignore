@@ -1,0 +1,11 @@
+.*
+!.github
+!.editorconfig
+!.flake8
+!.gitignore
+__pycache__
+secret.txt
+/local_test/
+/dist/
+/poetry.lock
+*.log
