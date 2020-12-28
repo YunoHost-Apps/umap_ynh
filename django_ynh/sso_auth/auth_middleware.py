@@ -5,8 +5,7 @@ from axes.exceptions import AxesBackendPermissionDenied
 from django.conf import settings
 from django.contrib.auth.middleware import RemoteUserMiddleware
 
-from django_ynh.sso_auth.signals import setup_user
-from django_ynh.sso_auth.user_profile import update_user_profile
+from django_ynh.sso_auth.user_profile import call_setup_user, update_user_profile
 
 
 logger = logging.getLogger(__name__)
@@ -28,8 +27,10 @@ class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
 
         super().process_request(request)  # login remote user
 
-        if not request.user.is_authenticated:
-            # Not logged in -> nothing to verify here
+        user = request.user
+
+        if not user.is_authenticated:
+            logger.debug('Not logged in -> nothing to verify here')
             return
 
         # Check SSOwat cookie informations:
@@ -47,7 +48,7 @@ class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
                 raise AxesBackendPermissionDenied('Cookie missing')
         else:
             logger.info('SSOwat username from cookies: %r', username)
-            if username != request.user.username:
+            if username != user.username:
                 raise AxesBackendPermissionDenied('Wrong username')
 
         # Compare with HTTP_AUTH_USER
@@ -57,7 +58,7 @@ class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
             logger.error('HTTP_AUTH_USER missing!')
             raise AxesBackendPermissionDenied('No HTTP_AUTH_USER')
 
-        if username != request.user.username:
+        if username != user.username:
             raise AxesBackendPermissionDenied('Wrong HTTP_AUTH_USER username')
 
         # Also check 'HTTP_AUTHORIZATION', but only the username ;)
@@ -74,11 +75,12 @@ class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
 
         creds = str(base64.b64decode(creds), encoding='utf-8')
         username = creds.split(':', 1)[0]
-        if username != request.user.username:
+        if username != user.username:
             raise AxesBackendPermissionDenied('Wrong HTTP_AUTHORIZATION username')
 
         if not was_authenticated:
             # First request, after login -> update user informations
-            logger.info('Remote used was logged in')
-            user = update_user_profile(request)
-            setup_user.send(sender=self.__class__, user=user)
+            logger.info('Remote user "%s" was logged in', user)
+            user = update_user_profile(request, user)
+
+            user = call_setup_user(user=user)

@@ -13,12 +13,14 @@ packages = [
 [tool.poetry.dependencies]
 python = ">=3.7,<4.0.0"
 django = "*"
+gunicorn = "*"
 django-axes = "*"  # https://github.com/jazzband/django-axes
 psycopg2-binary = "*"
 django-redis = "*"
 
 [tool.poetry.dev-dependencies]
 poetry-publish = "*"  # https://github.com/jedie/poetry-publish
+bx_py_utils = "*"
 tox = "*"
 pytest = "*"
 pytest-randomly = "*"
@@ -57,8 +59,7 @@ lines_after_imports=2
 [tool.pytest.ini_options]
 # https://docs.pytest.org/en/latest/customize.html#pyproject-toml
 minversion = "6.0"
-DJANGO_SETTINGS_MODULE="django_ynh_project.settings.tests"
-norecursedirs = ".* .git __pycache__ coverage* dist htmlcov volumes"
+norecursedirs = ".* .git __pycache__ conf coverage* dist htmlcov volumes"
 # sometimes helpfull "addopts" arguments:
 #    -vv
 #    --verbose
@@ -80,7 +81,6 @@ addopts = """
     --failed-first
     --last-failed-no-failures all
     --new-first
-    -p no:randomly
 """
 
 

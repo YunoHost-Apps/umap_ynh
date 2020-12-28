@@ -27,8 +27,7 @@ import logging
 
 from django.contrib.auth.backends import RemoteUserBackend
 
-from django_ynh.sso_auth.signals import setup_user
-from django_ynh.sso_auth.user_profile import update_user_profile
+from django_ynh.sso_auth.user_profile import call_setup_user, update_user_profile
 
 
 logger = logging.getLogger(__name__)
@@ -51,12 +50,12 @@ class SSOwatUserBackend(RemoteUserBackend):
         """
         logger.warning('Configure user %s', user)
 
-        user = update_user_profile(request)
-
-        setup_user.send(sender=self.__class__, user=user)
+        user = update_user_profile(request, user)
+        user = call_setup_user(user=user)
 
         return user
 
     def user_can_authenticate(self, user):
         logger.warning('Remote user login: %s', user)
+        assert not user.is_anonymous
         return True

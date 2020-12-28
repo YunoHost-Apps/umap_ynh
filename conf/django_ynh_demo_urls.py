@@ -10,10 +10,8 @@ from django_ynh.views import request_media_debug_view
 # Prefix all urls with "PATH_URL":
 urlpatterns = [
     path(f'{settings.PATH_URL}/', admin.site.urls),
+    path(f'{settings.PATH_URL}/debug/', request_media_debug_view),
 ]
 
 if settings.SERVE_FILES:
     urlpatterns += static.static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-if settings.DEBUG:
-    urlpatterns.append(path(f'{settings.PATH_URL}/debug/', request_media_debug_view))
