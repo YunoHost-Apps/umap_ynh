@@ -27,6 +27,7 @@ import logging
 
 from django.contrib.auth.backends import RemoteUserBackend
 
+from django_ynh.sso_auth.signals import setup_user
 from django_ynh.sso_auth.user_profile import update_user_profile
 
 
@@ -46,21 +47,13 @@ class SSOwatUserBackend(RemoteUserBackend):
 
     def configure_user(self, request, user):
         """
-        Configure a user after creation and return the updated user.
-        Setup a normal, non-superuser
+        Configure a new user after creation and return the updated user.
         """
         logger.warning('Configure user %s', user)
 
-        user.set_unusable_password()  # Always login via SSO
-        user.is_staff = True
-        user.is_superuser = False
-        user.save()
+        user = update_user_profile(request)
 
-        # TODO: Add user in "normal" user group:
-        # django_ynh_user_group = get_or_create_normal_user_group()[0]
-        # user.groups.set([django_ynh_user_group])
-
-        update_user_profile(request)
+        setup_user.send(sender=self.__class__, user=user)
 
         return user
 

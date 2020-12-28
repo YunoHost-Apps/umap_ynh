@@ -1,11 +1,6 @@
-import base64
 import logging
 
-from axes.exceptions import AxesBackendPermissionDenied
-from django.contrib.auth.backends import RemoteUserBackend as OriginRemoteUserBackend
-from django.contrib.auth.middleware import RemoteUserMiddleware as OriginRemoteUserMiddleware
 from django.core.exceptions import ValidationError
-from inventory.permissions import get_or_create_normal_user_group
 
 
 logger = logging.getLogger(__name__)
@@ -16,13 +11,17 @@ def update_user_profile(request):
     Update existing user information:
      * Email
      * First / Last name
+
+    Called via:
+     * SSOwatUserBackend after a new user was created
+     * SSOwatRemoteUserMiddleware on login request
     """
     user = request.user
     assert user.is_authenticated
 
     update_fields = []
 
-    if not user.password:
+    if not user.has_usable_password():
         # Empty password is not valid, so we can't save the model, because of full_clean() call
         logger.info('Set unusable password for user: %s', user)
         user.set_unusable_password()
@@ -59,3 +58,5 @@ def update_user_profile(request):
             logger.exception('Can not update user: %s', user)
         else:
             user.save(update_fields=update_fields)
+
+    return user

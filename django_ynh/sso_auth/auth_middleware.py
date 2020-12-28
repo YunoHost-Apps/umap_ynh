@@ -2,7 +2,11 @@ import base64
 import logging
 
 from axes.exceptions import AxesBackendPermissionDenied
+from django.conf import settings
 from django.contrib.auth.middleware import RemoteUserMiddleware
+
+from django_ynh.sso_auth.signals import setup_user
+from django_ynh.sso_auth.user_profile import update_user_profile
 
 
 logger = logging.getLogger(__name__)
@@ -10,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
     """
-    Middleware to login a user HTTP_REMOTE_USER header.
+    Middleware to login a user via HTTP_REMOTE_USER header.
     Use Django Axes if something is wrong.
     Update exising user informations.
     """
@@ -34,13 +38,17 @@ class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
         except KeyError:
             logger.error('SSOwAuthUser cookie missing!')
 
-            # emits a signal indicating user login failed, which is processed by
-            # axes.signals.log_user_login_failed which logs and flags the failed request.
-            raise AxesBackendPermissionDenied('Cookie missing')
-
-        logger.info('SSOwat username from cookies: %r', username)
-        if username != request.user.username:
-            raise AxesBackendPermissionDenied('Wrong username')
+            if settings.DEBUG:
+                # e.g.: local test can't set a Cookie easily
+                logger.warning('Ignore error, because settings.DEBUG is on!')
+            else:
+                # emits a signal indicating user login failed, which is processed by
+                # axes.signals.log_user_login_failed which logs and flags the failed request.
+                raise AxesBackendPermissionDenied('Cookie missing')
+        else:
+            logger.info('SSOwat username from cookies: %r', username)
+            if username != request.user.username:
+                raise AxesBackendPermissionDenied('Wrong username')
 
         # Compare with HTTP_AUTH_USER
         try:
@@ -72,4 +80,5 @@ class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
         if not was_authenticated:
             # First request, after login -> update user informations
             logger.info('Remote used was logged in')
-            update_user_profile(request)
+            user = update_user_profile(request)
+            setup_user.send(sender=self.__class__, user=user)

@@ -1,12 +1,21 @@
+import logging
 import pprint
 
-from django.http import HttpResponse
+from django.contrib.auth import get_user_model
+from django.http.response import HttpResponse
 from django.shortcuts import redirect
+
+
+logger = logging.getLogger(__name__)
 
 
 def request_media_debug_view(request):
     """ debug request.META """
+
     if not request.user.is_authenticated:
+        logger.info('Deny debug view: User not logged in!')
+        UserModel = get_user_model()
+        logger.info('Existing users are: %s', ', '.join(f'"{user}"' for user in UserModel.objects.all()))
         return redirect('admin:index')
 
     meta = pprint.pformat(request.META)

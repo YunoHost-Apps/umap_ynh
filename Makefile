@@ -48,6 +48,7 @@ publish: ## Release new version to PyPi
 	poetry run publish
 
 local-test: check-poetry  ## Run local_test.py to run the project locally
+	poetry install
 	poetry run ./local_test.py
 
 local-diff-settings:  ## Run "manage.py diffsettings" with local test

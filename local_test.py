@@ -2,11 +2,13 @@
 
 """
     Start django_ynh in YunoHost setup locally.
-    Note:
-        You can only run this script, if you are in a activated django_ynh venv!
+
+    Run via:
+        make local-test
+
     see README for details ;)
 """
-
+import base64
 import os
 import shlex
 import subprocess
@@ -14,15 +16,12 @@ import sys
 from pathlib import Path
 
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'django_ynh.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'django_ynh_demo_settings'
 
 try:
-    import inventory_project  # noqa
+    import django_ynh  # noqa
 except ImportError as err:
-    raise ImportError(
-        'Couldn\'t import django_ynh. Did you '
-        'forget to activate a virtual environment?'
-    ) from err
+    raise ImportError('Couldn\'t import django_ynh. Did you ' 'forget to activate a virtual environment?') from err
 
 
 BASE_PATH = Path(__file__).parent.absolute()
@@ -34,24 +33,18 @@ FINAL_WWW_PATH = TEST_PATH / 'var_www'
 LOG_FILE = TEST_PATH / 'var_log_django_ynh.log'
 
 MANAGE_PY_FILE = CONF_PATH / 'manage.py'
-CREATE_SUPERUSER_FILE = CONF_PATH / 'create_superuser.py'
-SETTINGS_FILE = CONF_PATH / 'django_ynh.settings.py'
-URLS_FILE = CONF_PATH / 'ynh_urls.py'
+SETTINGS_FILE = CONF_PATH / 'django_ynh_demo_settings.py'
+URLS_FILE = CONF_PATH / 'django_ynh_demo_urls.py'
 
 REPLACES = {
     '__FINAL_HOME_PATH__': str(FINAL_HOME_PATH),
     '__FINAL_WWW_PATH__': str(FINAL_WWW_PATH),
     '__LOG_FILE__': str(TEST_PATH / 'var_log_django_ynh.log'),
-
     '__PATH_URL__': 'app_path',
     '__DOMAIN__': '127.0.0.1',
-
     'django.db.backends.postgresql': 'django.db.backends.sqlite3',
     "'NAME': '__APP__',": f"'NAME': '{TEST_PATH / 'test_db.sqlite'}',",
-
     'django_redis.cache.RedisCache': 'django.core.cache.backends.dummy.DummyCache',
-
-    'DEBUG = False': 'DEBUG = True',
 
     # Just use the default logging setup from django_ynh project:
     'LOGGING = {': 'HACKED_DEACTIVATED_LOGGING = {',
@@ -72,12 +65,7 @@ def verbose_check_call(command, verbose=True, **kwargs):
     env['PYTHONUNBUFFERED'] = '1'
 
     popenargs = shlex.split(command)
-    subprocess.check_call(
-        popenargs,
-        universal_newlines=True,
-        env=env,
-        **kwargs
-    )
+    subprocess.check_call(popenargs, universal_newlines=True, env=env, **kwargs)
 
 
 def call_manage_py(args):
@@ -102,13 +90,21 @@ def copy_patch(src_file, replaces=None):
         f.write(content)
 
 
+def assert_is_dir(dir_path):
+    assert dir_path.is_dir, f'Directory does not exists: {dir_path}'
+
+
+def assert_is_file(file_path):
+    assert file_path.is_file, f'File not found: {file_path}'
+
+
 def main():
     print('-' * 100)
 
-    assert BASE_PATH.is_dir()
-    assert CONF_PATH.is_dir()
-    assert SETTINGS_FILE.is_file()
-    assert URLS_FILE.is_file()
+    assert_is_dir(BASE_PATH)
+    assert_is_dir(CONF_PATH)
+    assert_is_file(SETTINGS_FILE)
+    assert_is_file(URLS_FILE)
 
     for p in (TEST_PATH, FINAL_HOME_PATH, FINAL_WWW_PATH):
         if p.is_dir():
@@ -122,10 +118,7 @@ def main():
     # conf/manage.py -> local_test/manage.py
     copy_patch(src_file=MANAGE_PY_FILE)
 
-    # conf/create_superuser.py -> local_test/opt_yunohost/create_superuser.py
-    copy_patch(src_file=CREATE_SUPERUSER_FILE)
-
-    # conf/django_ynh.settings.py -> local_test/django_ynh.settings.py
+    # conf/django_ynh_demo_settings.py -> local_test/django_ynh_demo_settings.py
     copy_patch(src_file=SETTINGS_FILE, replaces=REPLACES)
 
     # conf/ynh_urls.py -> local_test/ynh_urls.py
@@ -133,7 +126,8 @@ def main():
 
     with Path(FINAL_HOME_PATH / 'local_settings.py').open('w') as f:
         f.write('# Only for local test run\n')
-        f.write('SERVE_FILES=True # used in src/inventory_project/urls.py\n')
+        f.write('SERVE_FILES = True  # used in src/inventory_project/urls.py\n')
+        f.write('AUTH_PASSWORD_VALIDATORS = []  # accept all passwords\n')
 
     # call "local_test/manage.py" via subprocess:
     call_manage_py('check --deploy')
@@ -141,9 +135,23 @@ def main():
     call_manage_py('collectstatic --no-input')
 
     verbose_check_call(
-        command=f'{sys.executable} create_superuser.py --username="test" --password="test"',
+        command=(
+            f'{sys.executable} -m django_ynh.create_superuser'
+            ' --ds="django_ynh_demo_settings" --username="test" --password="test"'
+        ),
         cwd=FINAL_HOME_PATH,
     )
+
+    # All environment variables are passed to Django's "runnserver" ;)
+    # "Simulate" SSOwat authentication, by set "http headers"
+    # Still missing is the 'SSOwAuthUser' cookie,
+    # but this is ignored, if settings.DEBUG=True ;)
+    os.environ['HTTP_AUTH_USER'] = 'test'
+    os.environ['HTTP_REMOTE_USER'] = 'test'
+
+    creds = str(base64.b64encode(b'test:test'), encoding='utf-8')
+    basic_auth = f'basic {creds}'
+    os.environ['HTTP_AUTHORIZATION'] = basic_auth
 
     try:
         call_manage_py('runserver --nostatic')

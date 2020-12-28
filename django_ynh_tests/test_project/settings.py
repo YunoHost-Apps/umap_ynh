@@ -22,34 +22,11 @@ INSTALLED_APPS = [
     'django_ynh',  # <<<<
 ]
 
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django_ynh.sso_auth.auth_middleware.SSOwatRemoteUserMiddleware',  # <<<<
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+
 
 ROOT_URLCONF = 'django_ynh_tests.test_project.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
+
 
 WSGI_APPLICATION = 'django_ynh_tests.test_project.wsgi.application'
 
@@ -84,21 +61,4 @@ INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{asctime} {levelname} {name} {module}.{funcName} {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {'console': {'class': 'logging.StreamHandler', 'formatter': 'verbose'}},
-    'loggers': {
-        'django': {'handlers': ['console'], 'level': 'INFO', 'propagate': False},
-        'django.auth': {'handlers': ['console'], 'level': 'DEBUG', 'propagate': False},
-        'django.security': {'handlers': ['console'], 'level': 'DEBUG', 'propagate': False},
-        'django.request': {'handlers': ['console'], 'level': 'DEBUG', 'propagate': False},
-        'django_ynh': {'handlers': ['console'], 'level': 'DEBUG', 'propagate': False},
-    },
-}
+
