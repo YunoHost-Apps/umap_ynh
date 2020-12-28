@@ -59,7 +59,6 @@ def create_local_test(django_settings_path, destination, runserver=False):
     django_settings_name = django_settings_path.stem
 
     conf_path = django_settings_path.parent
-    base_path = conf_path.parent
 
     assert isinstance(destination, Path)
     destination = destination.resolve()
@@ -68,13 +67,13 @@ def create_local_test(django_settings_path, destination, runserver=False):
 
     assert_is_dir(destination)
 
-    FINAL_HOME_PATH = destination / 'opt_yunohost'
-    FINAL_WWW_PATH = destination / 'var_www'
-    LOG_FILE = destination / 'var_log_django_ynh.log'
+    final_home_path = destination / 'opt_yunohost'
+    final_www_path = destination / 'var_www'
+    log_file = destination / 'var_log_django_ynh.log'
 
     REPLACES = {
-        '__FINAL_HOME_PATH__': str(FINAL_HOME_PATH),
-        '__FINAL_WWW_PATH__': str(FINAL_WWW_PATH),
+        '__FINAL_HOME_PATH__': str(final_home_path),
+        '__FINAL_WWW_PATH__': str(final_www_path),
         '__LOG_FILE__': str(destination / 'var_log_django_ynh.log'),
         '__PATH_URL__': 'app_path',
         '__DOMAIN__': '127.0.0.1',
@@ -85,34 +84,34 @@ def create_local_test(django_settings_path, destination, runserver=False):
         'LOGGING = {': 'HACKED_DEACTIVATED_LOGGING = {',
     }
 
-    for p in (FINAL_HOME_PATH, FINAL_WWW_PATH):
+    for p in (final_home_path, final_www_path):
         if p.is_dir():
             print(f'Already exists: "{p}", ok.')
         else:
             p.mkdir(parents=True, exist_ok=True)
 
-    LOG_FILE.touch(exist_ok=True)
+    log_file.touch(exist_ok=True)
 
     for src_file in conf_path.glob('*.py'):
-        copy_patch(src_file=src_file, replaces=REPLACES, final_home_path=FINAL_HOME_PATH)
+        copy_patch(src_file=src_file, replaces=REPLACES, final_home_path=final_home_path)
 
-    with Path(FINAL_HOME_PATH / 'local_settings.py').open('w') as f:
+    with Path(final_home_path / 'local_settings.py').open('w') as f:
         f.write('# Only for local test run\n')
         f.write('SERVE_FILES = True  # used in src/inventory_project/urls.py\n')
         f.write('AUTH_PASSWORD_VALIDATORS = []  # accept all passwords\n')
 
     # call "local_test/manage.py" via subprocess:
-    call_manage_py(FINAL_HOME_PATH, 'check --deploy')
+    call_manage_py(final_home_path, 'check --deploy')
     if runserver:
-        call_manage_py(FINAL_HOME_PATH, 'migrate --no-input')
-        call_manage_py(FINAL_HOME_PATH, 'collectstatic --no-input')
+        call_manage_py(final_home_path, 'migrate --no-input')
+        call_manage_py(final_home_path, 'collectstatic --no-input')
 
         verbose_check_call(
             command=(
                 f'{sys.executable} -m django_ynh.create_superuser'
                 f' --ds="{django_settings_name}" --username="test" --password="test123"'
             ),
-            cwd=FINAL_HOME_PATH,
+            cwd=final_home_path,
         )
 
         os.environ['DJANGO_SETTINGS_MODULE'] = django_settings_name
@@ -127,11 +126,11 @@ def create_local_test(django_settings_path, destination, runserver=False):
         os.environ['HTTP_AUTHORIZATION'] = generate_basic_auth(username='test', password='test123')
 
         try:
-            call_manage_py(FINAL_HOME_PATH, 'runserver --nostatic')
+            call_manage_py(final_home_path, 'runserver --nostatic')
         except KeyboardInterrupt:
             print('\nBye ;)')
 
-    return FINAL_HOME_PATH
+    return final_home_path
 
 
 def cli():
