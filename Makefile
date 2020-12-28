@@ -45,7 +45,7 @@ pytest: install  ## Run pytest
 	poetry run python3 ./run_pytest.py
 
 publish: ## Release new version to PyPi
-	poetry run publish
+	poetry run python3 ./publish.py
 
 local-test: install  ## Run local_test.py to run the project locally
 	poetry run python3 ./local_test.py

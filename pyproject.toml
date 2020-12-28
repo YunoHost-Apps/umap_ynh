@@ -39,7 +39,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 create_superuser = "django_ynh.create_superuser:main"
-publish = "django_ynh_tests.test_project.publish:publish"
 
 [tool.isort]
 # https://pycqa.github.io/isort/docs/configuration/config_files/#pyprojecttoml-preferred-format
