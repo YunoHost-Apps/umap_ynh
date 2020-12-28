@@ -41,14 +41,14 @@ tox-listenvs: check-poetry ## List all tox test environments
 tox: check-poetry ## Run pytest via tox with all environments
 	poetry run tox
 
-pytest: check-poetry ## Run pytest
-	poetry run pytest
+pytest: install  ## Run pytest
+	poetry run python3 ./run_pytest.py
 
 publish: ## Release new version to PyPi
 	poetry run publish
 
-local-test: check-poetry  ## Run local_test.py to run the project locally
-	poetry run ./local_test.py
+local-test: install  ## Run local_test.py to run the project locally
+	poetry run python3 ./local_test.py
 
 local-diff-settings:  ## Run "manage.py diffsettings" with local test
 	poetry run python3 local_test/opt_yunohost/manage.py diffsettings

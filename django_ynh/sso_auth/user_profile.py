@@ -1,28 +1,60 @@
-import base64
 import logging
+from functools import lru_cache
 
-from axes.exceptions import AxesBackendPermissionDenied
-from django.contrib.auth.backends import RemoteUserBackend as OriginRemoteUserBackend
-from django.contrib.auth.middleware import RemoteUserMiddleware as OriginRemoteUserMiddleware
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from inventory.permissions import get_or_create_normal_user_group
+from django.utils.module_loading import import_string
 
 
 logger = logging.getLogger(__name__)
 
 
-def update_user_profile(request):
+UserModel = get_user_model()
+
+
+@lru_cache(maxsize=None)
+def get_setup_user_func():
+    setup_user_func = import_string(settings.YNH_SETUP_USER)
+    assert callable(setup_user_func)
+    return setup_user_func
+
+
+def call_setup_user(user):
+    """
+    Hook for the YunoHost package application to setup a Django user.
+    Call function defined in settings.YNH_SETUP_USER
+
+    called via:
+        * SSOwatUserBackend after a new user was created
+        * SSOwatRemoteUserMiddleware on login request
+    """
+    old_pk = user.pk
+
+    setup_user_func = get_setup_user_func()
+    logger.debug('Call "%s" for user "%s"', settings.YNH_SETUP_USER, user)
+
+    user = setup_user_func(user=user)
+
+    assert isinstance(user, UserModel)
+    assert user.pk == old_pk
+
+    return user
+
+
+def update_user_profile(request, user):
     """
     Update existing user information:
      * Email
      * First / Last name
-    """
-    user = request.user
-    assert user.is_authenticated
 
+    Called via:
+     * SSOwatUserBackend after a new user was created
+     * SSOwatRemoteUserMiddleware on login request
+    """
     update_fields = []
 
-    if not user.password:
+    if user.is_authenticated and not user.has_usable_password():
         # Empty password is not valid, so we can't save the model, because of full_clean() call
         logger.info('Set unusable password for user: %s', user)
         user.set_unusable_password()
@@ -59,3 +91,5 @@ def update_user_profile(request):
             logger.exception('Can not update user: %s', user)
         else:
             user.save(update_fields=update_fields)
+
+    return user

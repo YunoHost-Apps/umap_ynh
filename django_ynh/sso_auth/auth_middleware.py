@@ -2,7 +2,10 @@ import base64
 import logging
 
 from axes.exceptions import AxesBackendPermissionDenied
+from django.conf import settings
 from django.contrib.auth.middleware import RemoteUserMiddleware
+
+from django_ynh.sso_auth.user_profile import call_setup_user, update_user_profile
 
 
 logger = logging.getLogger(__name__)
@@ -10,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
     """
-    Middleware to login a user HTTP_REMOTE_USER header.
+    Middleware to login a user via HTTP_REMOTE_USER header.
     Use Django Axes if something is wrong.
     Update exising user informations.
     """
@@ -24,8 +27,10 @@ class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
 
         super().process_request(request)  # login remote user
 
-        if not request.user.is_authenticated:
-            # Not logged in -> nothing to verify here
+        user = request.user
+
+        if not user.is_authenticated:
+            logger.debug('Not logged in -> nothing to verify here')
             return
 
         # Check SSOwat cookie informations:
@@ -34,13 +39,17 @@ class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
         except KeyError:
             logger.error('SSOwAuthUser cookie missing!')
 
-            # emits a signal indicating user login failed, which is processed by
-            # axes.signals.log_user_login_failed which logs and flags the failed request.
-            raise AxesBackendPermissionDenied('Cookie missing')
-
-        logger.info('SSOwat username from cookies: %r', username)
-        if username != request.user.username:
-            raise AxesBackendPermissionDenied('Wrong username')
+            if settings.DEBUG:
+                # e.g.: local test can't set a Cookie easily
+                logger.warning('Ignore error, because settings.DEBUG is on!')
+            else:
+                # emits a signal indicating user login failed, which is processed by
+                # axes.signals.log_user_login_failed which logs and flags the failed request.
+                raise AxesBackendPermissionDenied('Cookie missing')
+        else:
+            logger.info('SSOwat username from cookies: %r', username)
+            if username != user.username:
+                raise AxesBackendPermissionDenied('Wrong username')
 
         # Compare with HTTP_AUTH_USER
         try:
@@ -49,7 +58,7 @@ class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
             logger.error('HTTP_AUTH_USER missing!')
             raise AxesBackendPermissionDenied('No HTTP_AUTH_USER')
 
-        if username != request.user.username:
+        if username != user.username:
             raise AxesBackendPermissionDenied('Wrong HTTP_AUTH_USER username')
 
         # Also check 'HTTP_AUTHORIZATION', but only the username ;)
@@ -66,10 +75,12 @@ class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
 
         creds = str(base64.b64decode(creds), encoding='utf-8')
         username = creds.split(':', 1)[0]
-        if username != request.user.username:
+        if username != user.username:
             raise AxesBackendPermissionDenied('Wrong HTTP_AUTHORIZATION username')
 
         if not was_authenticated:
             # First request, after login -> update user informations
-            logger.info('Remote used was logged in')
-            update_user_profile(request)
+            logger.info('Remote user "%s" was logged in', user)
+            user = update_user_profile(request, user)
+
+            user = call_setup_user(user=user)

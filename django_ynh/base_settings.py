@@ -1,16 +1,16 @@
-from pathlib import Path
+"""
+    Base settings for a Django project installed in Yunohost.
+    All values should not depent on YunoHost app settings.
+"""
 
 
-BASE_DIR = Path(__file__).parent.parent
+# -----------------------------------------------------------------------------
+# settings that should be set in project settings:
 
+ROOT_URLCONF = None
+SECRET_KEY = None
 
-SECRET_KEY = 'Only a test project!'
-
-
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+# -----------------------------------------------------------------------------
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,8 +19,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_ynh',  # <<<<
+    'axes',  # https://github.com/jazzband/django-axes
 ]
+
+# -----------------------------------------------------------------------------
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -28,12 +30,18 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django_ynh.sso_auth.auth_middleware.SSOwatRemoteUserMiddleware',  # <<<<
+    #
+    # login a user via HTTP_REMOTE_USER header from SSOwat:
+    'django_ynh.sso_auth.auth_middleware.SSOwatRemoteUserMiddleware',
+    #
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #
+    # AxesMiddleware should be the last middleware:
+    'axes.middleware.AxesMiddleware',
 ]
 
-ROOT_URLCONF = 'django_ynh_tests.test_project.urls'
+# -----------------------------------------------------------------------------
 
 TEMPLATES = [
     {
@@ -51,38 +59,26 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'django_ynh_tests.test_project.wsgi.application'
+# -----------------------------------------------------------------------------
 
+# Keep ModelBackend around for per-user permissions and superuser
+AUTHENTICATION_BACKENDS = (
+    'axes.backends.AxesBackend',  # AxesBackend should be the first backend!
+    #
+    # Authenticate via SSO and nginx 'HTTP_REMOTE_USER' header:
+    'django_ynh.sso_auth.auth_backend.SSOwatUserBackend',
+    #
+    # Fallback to normal Django model backend:
+    'django.contrib.auth.backends.ModelBackend',
+)
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+LOGIN_REDIRECT_URL = None
+LOGIN_URL = '/yunohost/sso/'
+LOGOUT_REDIRECT_URL = '/yunohost/sso/'
+# /yunohost/sso/?action=logout
 
-
-AUTH_PASSWORD_VALIDATORS = []  # Just a test project, so no restrictions
-
-
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
-LOCALE_PATHS = (BASE_DIR.parent / 'django_ynh' / 'locale',)
-
-
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
+# _____________________________________________________________________________
+# Setting below, should be overwritten!
 
 LOGGING = {
     'version': 1,

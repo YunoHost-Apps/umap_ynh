@@ -137,8 +137,8 @@ chmod +x "$final_path/manage.py"
 
 cp ../conf/wsgi.py "$final_path/wsgi.py"
 
-settings="$final_path/django_ynh.settings.py"
-cp "../conf/django_ynh.settings.py" "$settings"
+settings="$final_path/settings.py"
+cp "../conf/settings.py" "$settings"
 
 ynh_replace_string --match_string="__APP__" --replace_string="$app" --target_file="$settings"
 ynh_replace_string --match_string="__DB_PWD__" --replace_string="$db_pwd" --target_file="$settings"

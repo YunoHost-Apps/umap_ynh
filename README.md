@@ -24,6 +24,16 @@ Glue code to package django projects as yunohost apps.
 * User Email, First / Last name will be updated from SSO data
 
 
+## history
+
+* [compare v0.1.0...master](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.0...master) **dev**
+  * tbc
+* [v0.1.0 - 28.12.2020](https://github.com/YunoHost-Apps/django_ynh/compare/f578f14...v0.1.0)
+  * first working state
+* [23.12.2020](https://github.com/YunoHost-Apps/django_ynh/commit/f578f144a3a6d11d7044597c37d550d29c247773)
+  * init the project
+
+
 ## Links
 
  * Report a bug about this package: https://github.com/YunoHost-Apps/django_ynh
@@ -86,13 +96,13 @@ drwxr-xr-x 3 root        root           3 Dec  8 08:36 ..
 -rw-r--r-- 1 django_ynh django_ynh  171 Dec  8 08:39 secret.txt
 drwxr-xr-x 6 django_ynh django_ynh    6 Dec  8 08:37 venv
 -rw-r--r-- 1 django_ynh django_ynh  115 Dec  8 08:39 wsgi.py
--rw-r--r-- 1 django_ynh django_ynh 4737 Dec  8 08:39 django_ynh.settings.py
+-rw-r--r-- 1 django_ynh django_ynh 4737 Dec  8 08:39 django_ynh_demo_settings.py
 
 root@yunohost:~# cd /opt/yunohost/django_ynh/
 root@yunohost:/opt/yunohost/django_ynh# source venv/bin/activate
 (venv) root@yunohost:/opt/yunohost/django_ynh# ./manage.py check
 django_ynh v0.8.2 (Django v2.2.17)
-DJANGO_SETTINGS_MODULE='django_ynh.settings'
+DJANGO_SETTINGS_MODULE='django_ynh_demo_settings'
 PROJECT_PATH:/opt/yunohost/django_ynh/venv/lib/python3.7/site-packages
 BASE_PATH:/opt/yunohost/django_ynh
 System check identified no issues (0 silenced).
