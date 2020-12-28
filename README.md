@@ -24,6 +24,16 @@ Glue code to package django projects as yunohost apps.
 * User Email, First / Last name will be updated from SSO data
 
 
+## history
+
+* [compare v0.1.0...master](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.0...master) **dev**
+  * tbc
+* [v0.1.0 - 28.12.2020](https://github.com/YunoHost-Apps/django_ynh/compare/f578f14...v0.1.0)
+  * first working state
+* [23.12.2020](https://github.com/YunoHost-Apps/django_ynh/commit/f578f144a3a6d11d7044597c37d550d29c247773)
+  * init the project
+
+
 ## Links
 
  * Report a bug about this package: https://github.com/YunoHost-Apps/django_ynh
