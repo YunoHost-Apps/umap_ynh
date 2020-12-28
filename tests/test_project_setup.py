@@ -30,11 +30,7 @@ def test_version(package_root=None, version=None):
         assert_file_contains_string(file_path=Path(package_root, 'README.md'), string=version_string)
 
     assert_file_contains_string(file_path=Path(package_root, 'pyproject.toml'), string=f'version = "{version}"')
-    assert_file_contains_string(file_path=Path(package_root, 'manifest.json'), string=f'"version": "{version}~ynh",')
-
-    assert_file_contains_string(
-        file_path=Path(package_root, 'deployment', 'project.env'), string=f'PROJECT_VERSION={version}'
-    )
+    assert_file_contains_string(file_path=Path(package_root, 'manifest.json'), string=f'"version": "{version}~ynh')
 
 
 def test_poetry_check(package_root=None):
