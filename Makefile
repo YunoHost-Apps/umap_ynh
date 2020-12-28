@@ -26,13 +26,13 @@ update: install-poetry  ## update the sources and installation
 	poetry update
 
 lint: ## Run code formatters and linter
-	poetry run flynt --fail-on-change --line_length=${MAX_LINE_LENGTH} django_ynh
+	poetry run flynt --fail-on-change --line_length=${MAX_LINE_LENGTH} .
 	poetry run isort --check-only .
 	poetry run flake8 django_ynh
 
 fix-code-style: ## Fix code formatting
-	poetry run flynt --line_length=${MAX_LINE_LENGTH} django_ynh
-	poetry run black --verbose --safe --line-length=${MAX_LINE_LENGTH} --skip-string-normalization django_ynh django_ynh_tests
+	poetry run flynt --line_length=${MAX_LINE_LENGTH} .
+	poetry run black --verbose --safe --line-length=${MAX_LINE_LENGTH} --skip-string-normalization .
 	poetry run isort .
 
 tox-listenvs: check-poetry ## List all tox test environments

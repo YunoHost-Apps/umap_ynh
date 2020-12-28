@@ -27,5 +27,6 @@ def publish():
         creole_readme=True,  # don't publish if README.rst is not up-to-date
     )
 
+
 if __name__ == '__main__':
     publish()
