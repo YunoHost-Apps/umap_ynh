@@ -7,6 +7,10 @@ from django_ynh.path_utils import assert_is_dir, assert_is_file
 
 
 def run_pytest(django_settings_path, destination):
+    """
+    1. Generate "local test installation"
+    2. Run pytest against generated sources
+    """
     assert_is_file(django_settings_path)
 
     conf_path = django_settings_path.parent
