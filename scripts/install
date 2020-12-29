@@ -159,9 +159,9 @@ touch "$final_path/local_settings.py"
 cp "../conf/urls.py" "$final_path/urls.py"
 
 #=================================================
-# MIGRATE / COLLECTSTATIC / CREATEADMIN
+# MIGRATE / COLLECTSTATIC / CREATE SUPERUSER
 #=================================================
-ynh_script_progression --message="migrate/collectstatic/createadmin..." --weight=10
+ynh_script_progression --message="migrate/collectstatic/create superuser..." --weight=10
 
 (
     set +o nounset
@@ -175,7 +175,8 @@ ynh_script_progression --message="migrate/collectstatic/createadmin..." --weight
     ./manage.py migrate --no-input
     ./manage.py collectstatic --no-input
 
-    python -m django_ynh.create_superuser --ds="django_ynh_demo_settings" --username="$admin" --email="$admin_mail" --password="$app"
+    # Create/update Django superuser (set unusable password, because auth done via SSOwat):
+    ./manage.py create_superuser --username="$admin" --email="$admin_mail"
 
     # Check the configuration
     # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.

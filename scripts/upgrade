@@ -147,9 +147,9 @@ touch "$final_path/local_settings.py"
 cp "../conf/urls.py" "$final_path/urls.py"
 
 #=================================================
-# MIGRATE django_ynh
+# MIGRATE / COLLECTSTATIC / CREATE SUPERUSER
 #=================================================
-ynh_script_progression --message="migrate/collectstatic/createadmin..." --weight=10
+ynh_script_progression --message="migrate/collectstatic/create superuser..." --weight=10
 
 (
     set +o nounset
