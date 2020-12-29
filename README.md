@@ -15,25 +15,21 @@ Pull requests welcome ;)
 
 Glue code to package django projects as yunohost apps.
 
-This project is:
+This repository is:
 
 * The Python package [django-ynh](https://pypi.org/project/django-ynh/) with helpers for integrate a Django project as YunoHost package
-* A example YunoHost Application that can be installed
+* A example [YunoHost Application](https://install-app.yunohost.org/?app=django_ynh) that can be installed
+
+
+### Features
+
+* SSOwat integration (see below)
+* Helper to create first super user for `scripts/install`
 * Run Django development server with a local generated YunoHost package installation (called `local_test`)
+* Run `pytest` against `local_test` "installation"
 
 
-### usage
-
-To create/update a the first user in `install`/`upgrade`, e.g.:
-
-```bash
-./manage.py create_superuser --username="$admin" --email="$admin_mail"
-```
-This Create/update Django superuser and set a unusable password.
-A password is not needed, because auth done via SSOwat ;)
-
-
-## SSO authentication
+#### SSO authentication
 
 [SSOwat](https://github.com/YunoHost/SSOwat) is fully supported:
 
@@ -42,12 +38,61 @@ A password is not needed, because auth done via SSOwat ;)
 * Login via SSO is fully supported
 * User Email, First / Last name will be updated from SSO data
 
+### usage
+
+To create/update the first user in `install`/`upgrade`, e.g.:
+
+```bash
+./manage.py create_superuser --username="$admin" --email="$admin_mail"
+```
+This Create/update Django superuser and set a unusable password.
+A password is not needed, because auth done via SSOwat ;)
+
+Main parts in `settings.py`:
+```python
+from django_ynh.secret_key import get_or_create_secret as __get_or_create_secret
+
+# Function that will be called to finalize a user profile:
+YNH_SETUP_USER = 'setup_user.setup_project_user'
+
+SECRET_KEY = __get_or_create_secret(FINAL_HOME_PATH / 'secret.txt')  # /opt/yunohost/$app/secret.txt
+
+INSTALLED_APPS = [
+    #...
+    'django_ynh',
+    #...
+]
+
+MIDDLEWARE = [
+    #... after AuthenticationMiddleware ...
+    #
+    # login a user via HTTP_REMOTE_USER header from SSOwat:
+    'django_ynh.sso_auth.auth_middleware.SSOwatRemoteUserMiddleware',
+    #...
+]
+
+# Keep ModelBackend around for per-user permissions and superuser
+AUTHENTICATION_BACKENDS = (
+    'axes.backends.AxesBackend',  # AxesBackend should be the first backend!
+    #
+    # Authenticate via SSO and nginx 'HTTP_REMOTE_USER' header:
+    'django_ynh.sso_auth.auth_backend.SSOwatUserBackend',
+    #
+    # Fallback to normal Django model backend:
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+LOGIN_REDIRECT_URL = None
+LOGIN_URL = '/yunohost/sso/'
+LOGOUT_REDIRECT_URL = '/yunohost/sso/'
+```
+
 
 ## history
 
 * [compare v0.1.2...master](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.2...master) **dev**
   * tbc
-* [v0.1.2 - 29.12.2020](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.1...v0.1.2) **unreleased, yet**
+* [v0.1.2 - 29.12.2020](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.1...v0.1.2)
   * Bugfixes
 * [v0.1.1 - 29.12.2020](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.0...v0.1.1)
   * Refactor "create_superuser" to a manage command, useable via "django_ynh" in `INSTALLED_APPS`
@@ -61,8 +106,14 @@ A password is not needed, because auth done via SSOwat ;)
 
 ## Links
 
- * Report a bug about this package: https://github.com/YunoHost-Apps/django_ynh
- * YunoHost website: https://yunohost.org/
+* Report a bug about this package: https://github.com/YunoHost-Apps/django_ynh
+* YunoHost website: https://yunohost.org/
+* PyPi package: https://pypi.org/project/django-ynh/
+
+These projects used `django_ynh`:
+
+* https://github.com/YunoHost-Apps/pyinventory_ynh
+* https://github.com/YunoHost-Apps/django-for-runners_ynh
 
 ---
 

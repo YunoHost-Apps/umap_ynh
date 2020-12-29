@@ -34,9 +34,9 @@ assert LOG_FILE.is_file(), f'File not exists: {LOG_FILE}'
 PATH_URL = '__PATH_URL__'  # $YNH_APP_ARG_PATH
 PATH_URL = PATH_URL.strip('/')
 
-
 # -----------------------------------------------------------------------------
 
+# Function that will be called to finalize a user profile:
 YNH_SETUP_USER = 'setup_user.setup_demo_user'
 
 SECRET_KEY = __get_or_create_secret(FINAL_HOME_PATH / 'secret.txt')  # /opt/yunohost/$app/secret.txt

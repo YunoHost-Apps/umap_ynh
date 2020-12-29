@@ -97,6 +97,7 @@ def create_local_test(django_settings_path, destination, runserver=False):
 
     with Path(final_home_path / 'local_settings.py').open('w') as f:
         f.write('# Only for local test run\n')
+        f.write('DEBUG = True\n')
         f.write('SERVE_FILES = True  # used in src/inventory_project/urls.py\n')
         f.write('AUTH_PASSWORD_VALIDATORS = []  # accept all passwords\n')
 

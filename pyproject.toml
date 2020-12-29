@@ -23,7 +23,6 @@ poetry-publish = "*"  # https://github.com/jedie/poetry-publish
 bx_py_utils = "*"
 tox = "*"
 pytest = "*"
-pytest-randomly = "*"
 pytest-cov = "*"
 pytest-django = "*"
 coveralls = "*"
