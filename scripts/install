@@ -132,8 +132,6 @@ ynh_store_file_checksum --file="$gunicorn_conf"
 cp ../conf/manage.py "$final_path/manage.py"
 chmod +x "$final_path/manage.py"
 
-cp ../conf/wsgi.py "$final_path/wsgi.py"
-
 settings="$final_path/settings.py"
 cp "../conf/settings.py" "$settings"
 
@@ -154,9 +152,12 @@ ynh_store_file_checksum --file="$settings"
 
 ynh_app_setting_set --app="$app" --key=redis_db --value="$redis_db"
 
+cp ../conf/setup_user.py "$final_path/setup_user.py"
+cp ../conf/urls.py "$final_path/urls.py"
+cp ../conf/wsgi.py "$final_path/wsgi.py"
+
 touch "$final_path/local_settings.py"
 
-cp "../conf/urls.py" "$final_path/urls.py"
 
 #=================================================
 # MIGRATE / COLLECTSTATIC / CREATE SUPERUSER
