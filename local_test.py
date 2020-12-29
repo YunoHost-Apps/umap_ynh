@@ -1,7 +1,5 @@
-#!/usr/bin/env python3
-
 """
-    Start django_ynh in YunoHost setup locally.
+    Build a "local_test" YunoHost installation and start the Django dev. server against it.
 
     Run via:
         make local-test
