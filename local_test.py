@@ -21,7 +21,7 @@ BASE_PATH = Path(__file__).parent
 
 def main():
     create_local_test(
-        django_settings_path=BASE_PATH / 'conf' / 'django_ynh_demo_settings.py',
+        django_settings_path=BASE_PATH / 'conf' / 'settings.py',
         destination=BASE_PATH / 'local_test',
         runserver=True,
     )

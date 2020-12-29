@@ -25,7 +25,7 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         assert str(settings.FINAL_WWW_PATH).endswith('/local_test/var_www')
         assert str(settings.LOG_FILE).endswith('/local_test/var_log_django_ynh.log')
 
-        assert settings.ROOT_URLCONF == 'django_ynh_demo_urls'
+        assert settings.ROOT_URLCONF == 'urls'
 
     def test_urls(self):
         assert reverse('admin:index') == '/app_path/'
