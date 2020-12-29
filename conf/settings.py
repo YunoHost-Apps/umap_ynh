@@ -37,9 +37,6 @@ PATH_URL = PATH_URL.strip('/')
 
 # -----------------------------------------------------------------------------
 
-
-ROOT_URLCONF = 'django_ynh_demo_urls'
-
 YNH_SETUP_USER = 'setup_user.setup_demo_user'
 
 SECRET_KEY = __get_or_create_secret(FINAL_HOME_PATH / 'secret.txt')  # /opt/yunohost/$app/secret.txt

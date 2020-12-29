@@ -83,33 +83,28 @@ ynh_script_progression --message="Configuring a systemd service..."
 ynh_add_systemd_config --service="$app" --template="django_ynh.service"
 
 #=================================================
-# UPGRADE django_ynh
+# UPGRADE VENV
 #=================================================
-
-ynh_script_progression --message="Install django_ynh using PIP..." --weight=15
+ynh_script_progression --message="Upgrade project via pip..." --weight=80
 
 python3 -m venv "${final_path}/venv"
+cp ../conf/requirements.txt "$final_path/requirements.txt"
 chown -R "$app" "$final_path"
 
 #run source in a 'sub shell'
 (
-  set +o nounset
-  source "${final_path}/venv/bin/activate"
-  set -o nounset
-  ynh_exec_as $app $final_path/venv/bin/pip install --upgrade pip
-  ynh_exec_as $app $final_path/venv/bin/pip install --upgrade setuptools wheel psycopg2-binary
-  ynh_exec_as $app $final_path/venv/bin/pip install --upgrade django_ynh=="$django_ynh_version"
-	ynh_exec_as $app $final_path/venv/bin/pip install --upgrade ${pypi_extras}
+	set +o nounset
+	source "${final_path}/venv/bin/activate"
+	set -o nounset
+	ynh_exec_as $app $final_path/venv/bin/pip install --upgrade pip
+	ynh_exec_as $app $final_path/venv/bin/pip install -r "$final_path/requirements.txt"
+	ynh_exec_as $app $final_path/venv/bin/pip install --upgrade "$pip_install_string"
 )
 
 #=================================================
 # copy config files
 # ================================================
-ynh_script_progression --message="Create django_ynh configuration file..."
-
-ynh_backup_if_checksum_is_different --file="$final_path/create_superuser.py"
-cp ../conf/create_superuser.py "$final_path/create_superuser.py"
-chmod +x "$final_path/create_superuser.py"
+ynh_script_progression --message="Create project configuration files..."
 
 gunicorn_conf="$final_path/gunicorn.conf.py"
 ynh_backup_if_checksum_is_different --file="$gunicorn_conf"
@@ -149,8 +144,7 @@ ynh_store_file_checksum --file="$settings"
 
 touch "$final_path/local_settings.py"
 
-cp "../conf/ynh_authenticate.py" "$final_path/ynh_authenticate.py"
-cp "../conf/ynh_urls.py" "$final_path/ynh_urls.py"
+cp "../conf/urls.py" "$final_path/urls.py"
 
 #=================================================
 # MIGRATE django_ynh
@@ -158,21 +152,23 @@ cp "../conf/ynh_urls.py" "$final_path/ynh_urls.py"
 ynh_script_progression --message="migrate/collectstatic/createadmin..." --weight=10
 
 (
-	set +o nounset
-	source "${final_path}/venv/bin/activate"
-	set -o nounset
-	cd "${final_path}"
+    set +o nounset
+    source "${final_path}/venv/bin/activate"
+    set -o nounset
+    cd "${final_path}"
 
-  # Just for debugging:
-  ./manage.py diffsettings
+    # Just for debugging:
+    ./manage.py diffsettings
 
-	./manage.py migrate --no-input
-	./manage.py collectstatic --no-input
-	./create_superuser.py --username="$admin" --email="$admin_mail" --password="django_ynh"
+    ./manage.py migrate --no-input
+    ./manage.py collectstatic --no-input
 
-	# Check the configuration
-	# This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
-	./manage.py check --deploy || true
+    # Create/update Django superuser (set unusable password, because auth done via SSOwat):
+    ./manage.py create_superuser --username="$admin" --email="$admin_mail"
+
+    # Check the configuration
+    # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
+    ./manage.py check --deploy || true
 )
 
 #=================================================

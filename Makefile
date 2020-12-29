@@ -17,13 +17,16 @@ check-poetry:
 	fi
 
 install-poetry:  ## install or update poetry
+	pip3 install -U pip
 	pip3 install -U poetry
 
 install: check-poetry  ## install project via poetry
 	poetry install
 
-update: install-poetry  ## update the sources and installation
+update: install-poetry  ## update the sources and installation and generate "conf/requirements.txt"
+	poetry run pip install -U pip
 	poetry update
+	poetry export -f requirements.txt --output conf/requirements.txt
 
 lint: ## Run code formatters and linter
 	poetry run flynt --fail-on-change --line_length=${MAX_LINE_LENGTH} .

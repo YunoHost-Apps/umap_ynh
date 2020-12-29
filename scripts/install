@@ -101,9 +101,10 @@ ynh_system_user_create --username="$app" --home_dir="$final_path" --use_shell
 #=================================================
 # PIP INSTALLATION
 #=================================================
-ynh_script_progression --message="Install django_ynh using PIP..." --weight=80
+ynh_script_progression --message="Install project via pip..." --weight=80
 
 python3 -m venv "${final_path}/venv"
+cp ../conf/requirements.txt "$final_path/requirements.txt"
 chown -R "$app" "$final_path"
 
 #run source in a 'sub shell'
@@ -112,18 +113,14 @@ chown -R "$app" "$final_path"
 	source "${final_path}/venv/bin/activate"
 	set -o nounset
 	ynh_exec_as $app $final_path/venv/bin/pip install --upgrade pip
-	ynh_exec_as $app $final_path/venv/bin/pip install --upgrade setuptools wheel psycopg2-binary
-	ynh_exec_as $app $final_path/venv/bin/pip install --upgrade django_ynh=="$django_ynh_version"
-	ynh_exec_as $app $final_path/venv/bin/pip install --upgrade ${pypi_extras}
+	ynh_exec_as $app $final_path/venv/bin/pip install -r "$final_path/requirements.txt"
+	ynh_exec_as $app $final_path/venv/bin/pip install --upgrade "$pip_install_string"
 )
 
 #=================================================
 # copy config files
 # ================================================
 ynh_script_progression --message="Create django_ynh configuration file..."
-
-cp ../conf/create_superuser.py "$final_path/create_superuser.py"
-chmod +x "$final_path/create_superuser.py"
 
 gunicorn_conf="$final_path/gunicorn.conf.py"
 cp "../conf/gunicorn.conf.py" "$gunicorn_conf"
@@ -159,8 +156,7 @@ ynh_app_setting_set --app="$app" --key=redis_db --value="$redis_db"
 
 touch "$final_path/local_settings.py"
 
-cp "../conf/ynh_authenticate.py" "$final_path/ynh_authenticate.py"
-cp "../conf/ynh_urls.py" "$final_path/ynh_urls.py"
+cp "../conf/urls.py" "$final_path/urls.py"
 
 #=================================================
 # MIGRATE / COLLECTSTATIC / CREATEADMIN
@@ -178,7 +174,8 @@ ynh_script_progression --message="migrate/collectstatic/createadmin..." --weight
 
     ./manage.py migrate --no-input
     ./manage.py collectstatic --no-input
-    ./create_superuser.py --username="$admin" --email="$admin_mail" --password="django_ynh"
+
+    python -m django_ynh.create_superuser --ds="django_ynh_demo_settings" --username="$admin" --email="$admin_mail" --password="$app"
 
     # Check the configuration
     # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.

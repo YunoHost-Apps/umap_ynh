@@ -7,10 +7,11 @@
 # -----------------------------------------------------------------------------
 # settings that should be set in project settings:
 
-ROOT_URLCONF = None
 SECRET_KEY = None
 
 # -----------------------------------------------------------------------------
+
+ROOT_URLCONF = 'urls'  # .../conf/urls.py
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -20,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'axes',  # https://github.com/jazzband/django-axes
+    'django_ynh',
 ]
 
 # -----------------------------------------------------------------------------

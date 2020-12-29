@@ -4,7 +4,7 @@
 import os
 
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'django_ynh_demo_settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
 from django.core.wsgi import get_wsgi_application
 

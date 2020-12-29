@@ -32,7 +32,7 @@ def run_pytest(django_settings_path, destination):
 
     import pytest
 
-    # collect only project tests:
-    sys.argv = [__file__, str(test_path)]
+    # collect only project tests and pass existing pytest arguments:
+    sys.argv = [__file__, str(test_path)] + sys.argv[1:]
 
     raise SystemExit(pytest.console_main())

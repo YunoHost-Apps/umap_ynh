@@ -31,6 +31,9 @@ def test_version(package_root=None, version=None):
 
     assert_file_contains_string(file_path=Path(package_root, 'pyproject.toml'), string=f'version = "{version}"')
     assert_file_contains_string(file_path=Path(package_root, 'manifest.json'), string=f'"version": "{version}~ynh')
+    assert_file_contains_string(
+        file_path=Path(package_root, 'scripts', '_common.sh'), string=f'"django_ynh=={version}"'
+    )
 
 
 def test_poetry_check(package_root=None):

@@ -10,9 +10,28 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 Pull requests welcome ;)
 
+
 ## Overview
 
 Glue code to package django projects as yunohost apps.
+
+This project is:
+
+* The Python package [django-ynh](https://pypi.org/project/django-ynh/) with helpers for integrate a Django project as YunoHost package
+* A example YunoHost Application that can be installed
+* Run Django development server with a local generated YunoHost package installation (called `local_test`)
+
+
+### usage
+
+To create/update a the first user in `install`/`upgrade`, e.g.:
+
+```bash
+./manage.py create_superuser --username="$admin" --email="$admin_mail"
+```
+This Create/update Django superuser and set a unusable password.
+A password is not needed, because auth done via SSOwat ;)
+
 
 ## SSO authentication
 
@@ -28,6 +47,10 @@ Glue code to package django projects as yunohost apps.
 
 * [compare v0.1.0...master](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.0...master) **dev**
   * tbc
+* [v0.1.1 - 28.12.2020](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.0...v0.1.1)
+  * Refactor "create_superuser" to a manage command, useable via "django_ynh" in `INSTALLED_APPS`
+  * Generate "conf/requirements.txt" and use this file for install
+  * rename own settings and urls (in `/conf/`)
 * [v0.1.0 - 28.12.2020](https://github.com/YunoHost-Apps/django_ynh/compare/f578f14...v0.1.0)
   * first working state
 * [23.12.2020](https://github.com/YunoHost-Apps/django_ynh/commit/f578f144a3a6d11d7044597c37d550d29c247773)

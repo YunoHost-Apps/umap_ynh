@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django_ynh"
-version = "0.1.0"
+version = "0.1.1"
 description = "Glue code to package django projects as yunohost apps."
 authors = ["JensDiemer <git@jensdiemer.de>"]
 license = "GPL"
@@ -36,9 +36,6 @@ pyupgrade = "*"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-create_superuser = "django_ynh.create_superuser:main"
 
 [tool.isort]
 # https://pycqa.github.io/isort/docs/configuration/config_files/#pyprojecttoml-preferred-format
