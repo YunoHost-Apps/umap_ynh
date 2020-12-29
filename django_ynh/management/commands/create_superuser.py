@@ -26,7 +26,7 @@ class Command(BaseCommand):
         parser.add_argument(
             "--email",
             action="store",
-            required=True,
+            default=None,
         )
 
     def handle(self, *args, **options):
@@ -40,7 +40,8 @@ class Command(BaseCommand):
             user.is_active = True
             user.is_staff = True
             user.is_superuser = True
-            user.email = email
+            if email:
+                user.email = email
         else:
             print(f'Create new super user "{username}"', file=sys.stderr)
             user = User.objects.create_superuser(username=username, email=email, password=None)
