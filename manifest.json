@@ -5,7 +5,7 @@
 	"description": {
 		"en": "Glue code to package django projects as yunohost apps."
 	},
-	"version": "0.1.1~ynh1",
+	"version": "0.1.2~ynh1",
 	"url": "https://github.com/jedie/django_ynh",
 	"license": "GPL-3.0",
 	"maintainer": {

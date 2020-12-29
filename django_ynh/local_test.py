@@ -105,14 +105,7 @@ def create_local_test(django_settings_path, destination, runserver=False):
     if runserver:
         call_manage_py(final_home_path, 'migrate --no-input')
         call_manage_py(final_home_path, 'collectstatic --no-input')
-
-        verbose_check_call(
-            command=(
-                f'{sys.executable} -m django_ynh.create_superuser'
-                f' --ds="{django_settings_name}" --username="test" --password="test123"'
-            ),
-            cwd=final_home_path,
-        )
+        call_manage_py(final_home_path, 'create_superuser --username="test"')
 
         os.environ['DJANGO_SETTINGS_MODULE'] = django_settings_name
 
@@ -126,7 +119,7 @@ def create_local_test(django_settings_path, destination, runserver=False):
         os.environ['HTTP_AUTHORIZATION'] = generate_basic_auth(username='test', password='test123')
 
         try:
-            call_manage_py(final_home_path, 'runserver --nostatic')
+            call_manage_py(final_home_path, 'runserver')
         except KeyboardInterrupt:
             print('\nBye ;)')
 
