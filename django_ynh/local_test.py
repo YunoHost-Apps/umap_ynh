@@ -119,7 +119,7 @@ def create_local_test(django_settings_path, destination, runserver=False):
         os.environ['HTTP_AUTHORIZATION'] = generate_basic_auth(username='test', password='test123')
 
         try:
-            call_manage_py(final_home_path, 'runserver --nostatic')
+            call_manage_py(final_home_path, 'runserver')
         except KeyboardInterrupt:
             print('\nBye ;)')
 
