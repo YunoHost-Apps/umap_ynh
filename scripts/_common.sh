@@ -27,8 +27,8 @@ log_file="${log_path}/django_ynh.log"
 # dependencies used by the app
 pkg_dependencies="build-essential python3-dev python3-pip python3-venv git postgresql postgresql-contrib"
 
-# django_ynh's version for PIP and settings file
-django_ynh_version="0.8.2"
+# To install/upgrade this project via pip:
+pip_install_string="django_ynh==0.1.0"
 
 #=================================================
 # Redis HELPERS
