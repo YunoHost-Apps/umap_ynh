@@ -47,6 +47,10 @@ A password is not needed, because auth done via SSOwat ;)
 
 * [compare v0.1.0...master](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.0...master) **dev**
   * tbc
+* [v0.1.1 - 28.12.2020](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.0...v0.1.1)
+  * Refactor "create_superuser" to a manage command, useable via "django_ynh" in `INSTALLED_APPS`
+  * Generate "conf/requirements.txt" and use this file for install
+  * rename own settings and urls (in `/conf/`)
 * [v0.1.0 - 28.12.2020](https://github.com/YunoHost-Apps/django_ynh/compare/f578f14...v0.1.0)
   * first working state
 * [23.12.2020](https://github.com/YunoHost-Apps/django_ynh/commit/f578f144a3a6d11d7044597c37d550d29c247773)
