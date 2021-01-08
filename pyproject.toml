@@ -5,6 +5,7 @@ description = "Glue code to package django projects as yunohost apps."
 authors = ["JensDiemer <git@jensdiemer.de>"]
 license = "GPL"
 readme = "README.md"
+homepage = "https://github.com/YunoHost-Apps/django_ynh"
 packages = [
     { include = "django_ynh" },
 ]
