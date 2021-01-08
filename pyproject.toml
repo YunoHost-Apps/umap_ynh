@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django_ynh"
-version = "0.1.2"
+version = "0.1.3"
 description = "Glue code to package django projects as yunohost apps."
 authors = ["JensDiemer <git@jensdiemer.de>"]
 license = "GPL"
