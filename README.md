@@ -1,17 +1,5 @@
 # django_ynh
 
-Current state is broken, because we are **planing** ;)
-
-[![Integration level](https://dash.yunohost.org/integration/django_ynh.svg)](https://dash.yunohost.org/appci/app/django_ynh) ![](https://ci-apps.yunohost.org/ci/badges/django_ynh.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/django_ynh.maintain.svg)
-[![Install django_ynh with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_ynh)
-
-> *This package allows you to install django_ynh quickly and simply on a YunoHost server.
-If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/install) to learn how to install it.*
-
-Pull requests welcome ;)
-
-
-## Overview
 
 Glue code to package django projects as yunohost apps.
 
@@ -21,7 +9,14 @@ This repository is:
 * A example [YunoHost Application](https://install-app.yunohost.org/?app=django_ynh) that can be installed
 
 
-### Features
+[![Integration level](https://dash.yunohost.org/integration/django_ynh.svg)](https://dash.yunohost.org/appci/app/django_ynh) ![](https://ci-apps.yunohost.org/ci/badges/django_ynh.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/django_ynh.maintain.svg)
+[![Install django_ynh with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_ynh)
+
+
+Pull requests welcome ;)
+
+
+## Features
 
 * SSOwat integration (see below)
 * Helper to create first super user for `scripts/install`
@@ -29,7 +24,7 @@ This repository is:
 * Run `pytest` against `local_test` "installation"
 
 
-#### SSO authentication
+### SSO authentication
 
 [SSOwat](https://github.com/YunoHost/SSOwat) is fully supported:
 
@@ -37,6 +32,7 @@ This repository is:
 * All new users will be created as normal users
 * Login via SSO is fully supported
 * User Email, First / Last name will be updated from SSO data
+
 
 ### usage
 
@@ -86,6 +82,41 @@ LOGIN_REDIRECT_URL = None
 LOGIN_URL = '/yunohost/sso/'
 LOGOUT_REDIRECT_URL = '/yunohost/sso/'
 ```
+
+
+## local test
+
+For quicker developing of django_ynh in the context of YunoHost app,
+it's possible to run the Django developer server with the settings
+and urls made for YunoHost installation.
+
+e.g.:
+```bash
+~$ git clone https://github.com/YunoHost-Apps/django_ynh.git
+~$ cd django_ynh/
+~/django_ynh$ make
+install-poetry         install or update poetry
+install                install project via poetry
+update                 update the sources and installation and generate "conf/requirements.txt"
+lint                   Run code formatters and linter
+fix-code-style         Fix code formatting
+tox-listenvs           List all tox test environments
+tox                    Run pytest via tox with all environments
+pytest                 Run pytest
+publish                Release new version to PyPi
+local-test             Run local_test.py to run the project locally
+local-diff-settings    Run "manage.py diffsettings" with local test
+
+~/django_ynh$ make install-poetry
+~/django_ynh$ make install
+~/django_ynh$ make local-test
+```
+
+Notes:
+
+* SQlite database will be used
+* A super user with username `test` and password `test` is created
+* The page is available under `http://127.0.0.1:8000/app_path/`
 
 
 ## history
@@ -193,28 +224,4 @@ root@yunohost:~# systemctl reload-or-restart django_ynh
 root@yunohost:~# journalctl --unit=django_ynh --follow
 ```
 
-## local test
 
-For quicker developing of django_ynh in the context of YunoHost app,
-it's possible to run the Django developer server with the settings
-and urls made for YunoHost installation.
-
-e.g.:
-```bash
-~$ git clone https://github.com/YunoHost-Apps/django_ynh.git
-~$ cd django_ynh/
-~/django_ynh$ make
-install-poetry         install or update poetry
-install                install django_ynh via poetry
-update                 update the sources and installation
-local-test             Run local_test.py to run django_ynh locally
-~/django_ynh$ make install-poetry
-~/django_ynh$ make install
-~/django_ynh$ make local-test
-```
-
-Notes:
-
-* SQlite database will be used
-* A super user with username `test` and password `test` is created
-* The page is available under `http://127.0.0.1:8000/app_path/`
