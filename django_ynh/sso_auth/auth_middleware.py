@@ -3,12 +3,17 @@ import logging
 
 from axes.exceptions import AxesBackendPermissionDenied
 from django.conf import settings
+from django.contrib import auth
+from django.contrib.auth import get_user_model
 from django.contrib.auth.middleware import RemoteUserMiddleware
 
 from django_ynh.sso_auth.user_profile import call_setup_user, update_user_profile
 
 
 logger = logging.getLogger(__name__)
+
+
+UserModel = get_user_model()
 
 
 class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
@@ -63,12 +68,12 @@ class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
 
         # Also check 'HTTP_AUTHORIZATION', but only the username ;)
         try:
-            auth = request.META['HTTP_AUTHORIZATION']
+            authorization = request.META['HTTP_AUTHORIZATION']
         except KeyError:
             logger.error('HTTP_AUTHORIZATION missing!')
             raise AxesBackendPermissionDenied('No HTTP_AUTHORIZATION')
 
-        scheme, creds = auth.split(' ', 1)
+        scheme, creds = authorization.split(' ', 1)
         if scheme.lower() != 'basic':
             logger.error('HTTP_AUTHORIZATION with %r not supported', scheme)
             raise AxesBackendPermissionDenied('HTTP_AUTHORIZATION scheme not supported')
@@ -84,3 +89,8 @@ class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
             user = update_user_profile(request, user)
 
             user = call_setup_user(user=user)
+            assert isinstance(user, UserModel)
+
+            # persist user in the session
+            request.user = user
+            auth.login(request, user)
