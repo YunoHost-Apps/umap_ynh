@@ -121,8 +121,11 @@ Notes:
 
 ## history
 
-* [compare v0.1.2...master](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.2...master) **dev**
+* [compare v0.1.3...master](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.3...master) **dev**
   * tbc
+* [v0.1.3 - 08.01.2021](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.2...v0.1.3)
+  * set "DEBUG = True" in local_test (so static files are served and auth works)
+  * Bugfixes and cleanups
 * [v0.1.2 - 29.12.2020](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.1...v0.1.2)
   * Bugfixes
 * [v0.1.1 - 29.12.2020](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.0...v0.1.1)

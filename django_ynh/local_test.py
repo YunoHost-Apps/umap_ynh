@@ -54,11 +54,14 @@ def copy_patch(src_file, replaces, final_home_path):
 
 
 def create_local_test(django_settings_path, destination, runserver=False):
+    django_settings_path = django_settings_path.resolve()
     assert_is_file(django_settings_path)
 
     django_settings_name = django_settings_path.stem
 
     conf_path = django_settings_path.parent
+
+    project_name = conf_path.parent.name
 
     assert isinstance(destination, Path)
     destination = destination.resolve()
@@ -69,12 +72,12 @@ def create_local_test(django_settings_path, destination, runserver=False):
 
     final_home_path = destination / 'opt_yunohost'
     final_www_path = destination / 'var_www'
-    log_file = destination / 'var_log_django_ynh.log'
+    log_file = destination / f'var_log_{project_name}.log'
 
     REPLACES = {
         '__FINAL_HOME_PATH__': str(final_home_path),
         '__FINAL_WWW_PATH__': str(final_www_path),
-        '__LOG_FILE__': str(destination / 'var_log_django_ynh.log'),
+        '__LOG_FILE__': str(log_file),
         '__PATH_URL__': 'app_path',
         '__DOMAIN__': '127.0.0.1',
         'django.db.backends.postgresql': 'django.db.backends.sqlite3',
@@ -98,7 +101,7 @@ def create_local_test(django_settings_path, destination, runserver=False):
     with Path(final_home_path / 'local_settings.py').open('w') as f:
         f.write('# Only for local test run\n')
         f.write('DEBUG = True\n')
-        f.write('SERVE_FILES = True  # used in src/inventory_project/urls.py\n')
+        f.write('SERVE_FILES = True  # May used in urls.py\n')
         f.write('AUTH_PASSWORD_VALIDATORS = []  # accept all passwords\n')
 
     # call "local_test/manage.py" via subprocess:
