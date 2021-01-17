@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django_ynh"
-version = "0.1.4"
+version = "0.1.5"
 description = "Glue code to package django projects as yunohost apps."
 authors = ["JensDiemer <git@jensdiemer.de>"]
 license = "GPL"
@@ -14,12 +14,14 @@ packages = [
 [tool.poetry.dependencies]
 python = ">=3.7,<4.0.0"
 django = "*"
-gunicorn = "*"
-django-axes = "*"  # https://github.com/jazzband/django-axes
-psycopg2-binary = "*"
-django-redis = "*"
+# The follogin extra packages are used for install "django_ynh" as YunoHost app:
+gunicorn = { version = "*", optional = true }
+psycopg2-binary = { version = "*", optional = true }
+django-redis = { version = "*", optional = true }
+django-axes = { version = "*", optional = true }  # https://github.com/jazzband/django-axes
 
 [tool.poetry.dev-dependencies]
+django-axes = "*"  # https://github.com/jazzband/django-axes
 poetry-publish = "*"  # https://github.com/jedie/poetry-publish
 bx_py_utils = "*"
 tox = "*"
@@ -32,6 +34,10 @@ flake8 = "*"
 flynt = "*"
 black = "*"
 pyupgrade = "*"
+
+[tool.poetry.extras]
+ynh = ["gunicorn", "psycopg2-binary", "django-redis", "django-axes"]  # install as YunoHost app
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

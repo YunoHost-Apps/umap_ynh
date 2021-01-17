@@ -1,11 +1,16 @@
 import base64
 import logging
 
-from axes.exceptions import AxesBackendPermissionDenied
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth import get_user_model
 from django.contrib.auth.middleware import RemoteUserMiddleware
+
+
+try:
+    from axes.exceptions import AxesBackendPermissionDenied as SuspiciousOperation  # log to Axes DB models
+except ImportError:
+    from django.core.exceptions import SuspiciousOperation
 
 from django_ynh.sso_auth.user_profile import call_setup_user, update_user_profile
 
@@ -50,38 +55,38 @@ class SSOwatRemoteUserMiddleware(RemoteUserMiddleware):
             else:
                 # emits a signal indicating user login failed, which is processed by
                 # axes.signals.log_user_login_failed which logs and flags the failed request.
-                raise AxesBackendPermissionDenied('Cookie missing')
+                raise SuspiciousOperation('Cookie missing')
         else:
             logger.info('SSOwat username from cookies: %r', username)
             if username != user.username:
-                raise AxesBackendPermissionDenied('Wrong username')
+                raise SuspiciousOperation('Wrong username')
 
         # Compare with HTTP_AUTH_USER
         try:
             username = request.META['HTTP_AUTH_USER']
         except KeyError:
             logger.error('HTTP_AUTH_USER missing!')
-            raise AxesBackendPermissionDenied('No HTTP_AUTH_USER')
+            raise SuspiciousOperation('No HTTP_AUTH_USER')
 
         if username != user.username:
-            raise AxesBackendPermissionDenied('Wrong HTTP_AUTH_USER username')
+            raise SuspiciousOperation('Wrong HTTP_AUTH_USER username')
 
         # Also check 'HTTP_AUTHORIZATION', but only the username ;)
         try:
             authorization = request.META['HTTP_AUTHORIZATION']
         except KeyError:
             logger.error('HTTP_AUTHORIZATION missing!')
-            raise AxesBackendPermissionDenied('No HTTP_AUTHORIZATION')
+            raise SuspiciousOperation('No HTTP_AUTHORIZATION')
 
         scheme, creds = authorization.split(' ', 1)
         if scheme.lower() != 'basic':
             logger.error('HTTP_AUTHORIZATION with %r not supported', scheme)
-            raise AxesBackendPermissionDenied('HTTP_AUTHORIZATION scheme not supported')
+            raise SuspiciousOperation('HTTP_AUTHORIZATION scheme not supported')
 
         creds = str(base64.b64decode(creds), encoding='utf-8')
         username = creds.split(':', 1)[0]
         if username != user.username:
-            raise AxesBackendPermissionDenied('Wrong HTTP_AUTHORIZATION username')
+            raise SuspiciousOperation('Wrong HTTP_AUTHORIZATION username')
 
         if not was_authenticated:
             # First request, after login -> update user informations
