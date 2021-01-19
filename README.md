@@ -123,7 +123,7 @@ Notes:
 
 * [compare v0.1.5...master](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.5...master) **dev**
   * tbc
-* [v0.1.5 - 17.01.2021](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.4...v0.1.5)
+* [v0.1.5 - 19.01.2021](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.4...v0.1.5)
   * Make some deps `gunicorn`, `psycopg2-binary`, `django-redis`, `django-axes` optional
 * [v0.1.4 - 08.01.2021](https://github.com/YunoHost-Apps/django_ynh/compare/v0.1.3...v0.1.4)
   * Bugfix [CSRF verification failed on POST requests #7](https://github.com/YunoHost-Apps/django_ynh/issues/7)
