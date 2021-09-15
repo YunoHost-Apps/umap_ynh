@@ -3,7 +3,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
-import django_exyunohost_integration
+import django_yunohost_integration
 
 
 PACKAGE_ROOT = Path(__file__).parent.parent
@@ -18,10 +18,10 @@ def assert_file_contains_string(file_path, string):
 
 
 def test_version():
-    version = inventory.__version__
+    version = django_yunohost_integration.__version__
 
     assert_file_contains_string(file_path=Path(PACKAGE_ROOT, 'pyproject.toml'), string=f'version = "{version}~ynh')
-    assert_file_contains_string(file_path=Path(PACKAGE_ROOT, 'pyproject.toml'), string=f'django_example_ynh = "=={version}"')
+    assert_file_contains_string(file_path=Path(PACKAGE_ROOT, 'pyproject.toml'), string=f'django_yunohost_integration = "=={version}"')
     assert_file_contains_string(file_path=Path(PACKAGE_ROOT, 'manifest.json'), string=f'"version": "{version}~ynh')
 
 

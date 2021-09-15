@@ -1,15 +1,13 @@
 from axes.models import AccessLog
-from bx_py_utils.test_utils.html_assertion import HtmlAssertionMixin
+from bx_django_utils.test_utils.html_assertion import HtmlAssertionMixin
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import override_settings
 from django.test.testcases import TestCase
 from django.urls import NoReverseMatch
 from django.urls.base import reverse
-from django_ynh.test_utils import generate_basic_auth
-from django_ynh.views import request_media_debug_view
-
-import inventory
+from django_yunohost_integration.test_utils import generate_basic_auth
+from django_yunohost_integration.views import request_media_debug_view
 
 
 @override_settings(DEBUG=False)
@@ -32,7 +30,7 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
     def test_urls(self):
         assert reverse('admin:index') == '/app_path/'
 
-        # The django_ynh debug view should not be avaiable:
+        # The django_yunohost_integration debug view should not be avaiable:
         with self.assertRaises(NoReverseMatch):
             reverse(request_media_debug_view)
 
@@ -62,13 +60,13 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         user = User.objects.first()
         assert user.username == 'test'
         assert user.is_active is True
-        assert user.is_staff is True  # Set by: conf.django_ynh_demo_urls.setup_user_handler
+        assert user.is_staff is True  # Set by: conf.setup_user.setup_project_user
         assert user.is_superuser is False
 
         self.assert_html_parts(
             response,
             parts=(
-                f'<title>Site administration | PyInventory v{inventory.__version__}</title>',
+                f'<title>Site administration</title>',
                 '<strong>test</strong>',
             ),
         )
@@ -90,7 +88,7 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         user = User.objects.first()
         assert user.username == 'test'
         assert user.is_active is True
-        assert user.is_staff is True  # Set by: conf.django_ynh_demo_urls.setup_user_handler
+        assert user.is_staff is True  # Set by: conf.setup_user.setup_project_user
         assert user.is_superuser is False
 
         assert AccessLog.objects.count() == 1
@@ -114,7 +112,7 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         user = User.objects.first()
         assert user.username == 'test'
         assert user.is_active is True
-        assert user.is_staff is True  # Set by: conf.django_ynh_demo_urls.setup_user_handler
+        assert user.is_staff is True  # Set by: conf.setup_user.setup_project_user
         assert user.is_superuser is False
 
         assert AccessLog.objects.count() == 1
@@ -137,7 +135,7 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         user = User.objects.first()
         assert user.username == 'test'
         assert user.is_active is True
-        assert user.is_staff is True  # Set by: conf.django_ynh_demo_urls.setup_user_handler
+        assert user.is_staff is True  # Set by: conf.setup_user.setup_project_user
         assert user.is_superuser is False
 
         assert AccessLog.objects.count() == 1

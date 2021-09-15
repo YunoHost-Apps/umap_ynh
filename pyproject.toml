@@ -1,16 +1,18 @@
 [tool.poetry]
 name = "django_example_ynh"
-version = "v0.2.0.alpha0"
+version = "v0.2.0"
 description = "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost."
 authors = ["JensDiemer <git@jensdiemer.de>"]
 license = "GPL"
+homepage = "https://github.com/YunoHost-Apps/django_example_ynh"
 
 [tool.poetry.dependencies]
 python = ">=3.7,<4.0.0"
 django_yunohost_integration = {version = "*", extras = ["ynh"]}
 
 [tool.poetry.dev-dependencies]
-bx_py_utils = "*"
+bx_py_utils = "*"  # https://github.com/boxine/bx_py_utils
+bx_django_utils = "*"  # https://github.com/boxine/bx_django_utils
 tox = "*"
 pytest = "*"
 pytest-cov = "*"
