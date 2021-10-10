@@ -1,24 +1,21 @@
-"""
-    **************************************************************************
-    Please do not modify this file, it will be reset at the next update.
-    You can edit the file __FINAL_HOME_PATH__/local_settings.py and add/modify
-    the settings you need.
+################################################################################
+################################################################################
 
-    The parameters you add in local_settings.py will overwrite these,
-    but you can use the options and documentation in this file to find out
-    what can be done.
-    **************************************************************************
+# Please do not modify this file, it will be reset at the next update.
+# You can edit the file __FINAL_HOME_PATH__/local_settings.py and add/modify the settings you need.
+# The parameters you add in local_settings.py will overwrite these,
+# but you can use the options and documentation in this file to find out what can be done.
 
-    Django Settings here depends on YunoHost app settings.
-"""
+################################################################################
+################################################################################
+
 from pathlib import Path as __Path
 
-from django_ynh.base_settings import *  # noqa
-from django_ynh.secret_key import get_or_create_secret as __get_or_create_secret
+from django_yunohost_integration.secret_key import get_or_create_secret as __get_or_create_secret
+from django_yunohost_integration.base_settings import *  # noqa
 
 
-DEBUG = True  # This is only the DEMO app ;) But should never be on in production!
-
+DEBUG = False  # Don't turn DEBUG on in production!
 
 # -----------------------------------------------------------------------------
 
@@ -28,7 +25,7 @@ assert FINAL_HOME_PATH.is_dir(), f'Directory not exists: {FINAL_HOME_PATH}'
 FINAL_WWW_PATH = __Path('__FINAL_WWW_PATH__')  # /var/www/$app
 assert FINAL_WWW_PATH.is_dir(), f'Directory not exists: {FINAL_WWW_PATH}'
 
-LOG_FILE = __Path('__LOG_FILE__')  # /var/log/$app/django_ynh.log
+LOG_FILE = __Path('__LOG_FILE__')  # /var/log/$app/django_example_ynh.log
 assert LOG_FILE.is_file(), f'File not exists: {LOG_FILE}'
 
 PATH_URL = '__PATH_URL__'  # $YNH_APP_ARG_PATH
@@ -37,9 +34,14 @@ PATH_URL = PATH_URL.strip('/')
 # -----------------------------------------------------------------------------
 
 # Function that will be called to finalize a user profile:
-YNH_SETUP_USER = 'setup_user.setup_demo_user'
+YNH_SETUP_USER = 'setup_user.setup_project_user'
 
 SECRET_KEY = __get_or_create_secret(FINAL_HOME_PATH / 'secret.txt')  # /opt/yunohost/$app/secret.txt
+
+# INSTALLED_APPS.append('<insert-your-app-here>')
+
+# -----------------------------------------------------------------------------
+
 
 ADMINS = (('__ADMIN__', '__ADMINMAIL__'),)
 
@@ -77,14 +79,13 @@ DEFAULT_FROM_EMAIL = '__ADMINMAIL__'
 # List of URLs your site is supposed to serve
 ALLOWED_HOSTS = ['__DOMAIN__']
 
-
 # _____________________________________________________________________________
 # Configuration for caching
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': 'redis://127.0.0.1:6379/__REDIS_DB__',
-        # If redis is running on same host as django_ynh, you might
+        # If redis is running on same host as PyInventory, you might
         # want to use unix sockets instead:
         # 'LOCATION': 'unix:///var/run/redis/redis.sock?db=1',
         'OPTIONS': {
@@ -93,7 +94,6 @@ CACHES = {
         'KEY_PREFIX': '__APP__',
     },
 }
-
 
 # _____________________________________________________________________________
 # Static files (CSS, JavaScript, Images)
@@ -111,7 +111,6 @@ MEDIA_ROOT = str(FINAL_WWW_PATH / 'media')
 
 
 # -----------------------------------------------------------------------------
-
 
 LOGGING = {
     'version': 1,
@@ -141,7 +140,7 @@ LOGGING = {
         'django': {'handlers': ['log_file', 'mail_admins'], 'level': 'INFO', 'propagate': False},
         'axes': {'handlers': ['log_file', 'mail_admins'], 'level': 'WARNING', 'propagate': False},
         'django_tools': {'handlers': ['log_file', 'mail_admins'], 'level': 'INFO', 'propagate': False},
-        'django_ynh': {'handlers': ['log_file', 'mail_admins'], 'level': 'INFO', 'propagate': False},
+        'django_yunohost_integration': {'handlers': ['log_file', 'mail_admins'], 'level': 'INFO', 'propagate': False},
     },
 }
 

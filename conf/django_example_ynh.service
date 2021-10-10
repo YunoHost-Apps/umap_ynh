@@ -1,5 +1,5 @@
 [Unit]
-Description=django_ynh DEMO application server
+Description=__APP__ server
 After=redis.service postgresql.service
 
 [Service]
