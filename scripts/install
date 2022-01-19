@@ -63,7 +63,7 @@ redis_db=$(ynh_redis_get_free_db)
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Installing dependencies..." --weight=40
+ynh_script_progression --message="Installing dependencies..." --weight=20
 
 ynh_exec_warn_less ynh_install_app_dependencies "$pkg_dependencies"
 
@@ -101,7 +101,7 @@ ynh_system_user_create --username="$app" --home_dir="$final_path" --use_shell
 #=================================================
 # PIP INSTALLATION
 #=================================================
-ynh_script_progression --message="Install project via pip..." --weight=80
+ynh_script_progression --message="Install project via pip..." --weight=50
 
 # Always recreate everything fresh with current python version
 ynh_secure_remove "${final_path}/venv"

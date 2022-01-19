@@ -63,7 +63,7 @@ ynh_add_nginx_config "public_path" "port"
 #=================================================
 # Update dependencies
 #=================================================
-ynh_script_progression --message="Upgrading dependencies..."
+ynh_script_progression --message="Upgrading dependencies..." --weight=20
 
 ynh_exec_warn_less ynh_install_app_dependencies "$pkg_dependencies"
 
@@ -85,7 +85,7 @@ ynh_add_systemd_config --service="$app" --template="django_example_ynh.service"
 #=================================================
 # UPGRADE VENV
 #=================================================
-ynh_script_progression --message="Upgrade project via pip..." --weight=80
+ynh_script_progression --message="Upgrade project via pip..." --weight=50
 
 # Always recreate everything fresh with current python version
 ynh_secure_remove "${final_path}/venv"
