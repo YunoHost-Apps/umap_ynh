@@ -7,6 +7,13 @@
 	},
 	"version": "v0.3.0~ynh1",
 	"url": "https://github.com/YunoHost-Apps/django_example_ynh",
+    "upstream": {
+        "license": "GPL-3.0",
+        "website": "https://github.com/YunoHost-Apps/django_yunohost_integration",
+        "admindoc": "https://github.com/YunoHost-Apps/django_yunohost_integration",
+        "userdoc": "https://github.com/YunoHost-Apps/django_yunohost_integration",
+        "code": "https://github.com/YunoHost-Apps/django_yunohost_integration"
+    },
 	"license": "GPL-3.0",
 	"maintainer": {
 		"name": "Jens Diemer",
