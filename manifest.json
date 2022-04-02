@@ -5,7 +5,7 @@
 	"description": {
 		"en": "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost."
 	},
-	"version": "v0.2.0.alpha0~ynh1",
+	"version": "v0.3.0~ynh1",
 	"url": "https://github.com/YunoHost-Apps/django_example_ynh",
 	"license": "GPL-3.0",
 	"maintainer": {
