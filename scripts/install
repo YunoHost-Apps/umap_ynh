@@ -135,6 +135,8 @@ ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_f
 ynh_store_file_checksum --file="$gunicorn_conf"
 
 cp ../conf/manage.py "$final_path/manage.py"
+ynh_replace_string --match_string="__FINAL_HOME_PATH__" --replace_string="$final_path" --target_file="$final_path/manage.py"
+ynh_store_file_checksum --file="$final_path/manage.py"
 chmod +x "$final_path/manage.py"
 
 settings="$final_path/settings.py"
