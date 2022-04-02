@@ -172,25 +172,21 @@ touch "$final_path/local_settings.py"
 #=================================================
 ynh_script_progression --message="migrate/collectstatic/createadmin..." --weight=10
 
-(
-    set +o nounset
-    source "${final_path}/venv/bin/activate"
-    set -o nounset
-    cd "${final_path}"
+cd "$final_path" || exit
 
-    # Just for debugging:
-    ./manage.py diffsettings
+# Just for debugging:
+./manage.py diffsettings
 
-    ./manage.py migrate --no-input
-    ./manage.py collectstatic --no-input
+./manage.py migrate --no-input
+./manage.py collectstatic --no-input
 
-	# Create/update Django superuser (set unusable password, because auth done via SSOwat):
-	./manage.py create_superuser --username="$admin" --email="$admin_mail"
+# Create/update Django superuser (set unusable password, because auth done via SSOwat):
+./manage.py create_superuser --username="$admin" --email="$admin_mail"
 
-    # Check the configuration
-    # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
-    ./manage.py check --deploy || true
-)
+# Check the configuration
+# This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
+./manage.py check --deploy || true
+
 
 #=================================================
 # SETUP LOGROTATE
