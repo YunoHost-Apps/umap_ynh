@@ -1,13 +1,16 @@
 [tool.poetry]
 name = "django_example_ynh"
-version = "v0.2.0"
+version = "v0.3.0"
 description = "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost."
 authors = ["JensDiemer <git@jensdiemer.de>"]
 license = "GPL"
 homepage = "https://github.com/YunoHost-Apps/django_example_ynh"
 
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/YunoHost-Apps/django_example_ynh/issues"
+
 [tool.poetry.dependencies]
-python = ">=3.7,<4.0.0"
+python = ">=3.7,<4.0.0"  # TODO: Update to >=3.8 after YunoHost updates to Bullseye
 django_yunohost_integration = {version = "*", extras = ["ynh"]}
 
 [tool.poetry.dev-dependencies]
@@ -21,26 +24,38 @@ coveralls = "*"
 isort = "*"
 flake8 = "*"
 flynt = "*"
-black = "*"
+blue = "*"  # https://github.com/grantjenks/blue
 pyupgrade = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.darker]
+src = ['.']
+revision = "origin/master..."
+line_length = 120
+verbose = true
+skip_string_normalization = true
+diff = false
+check = false
+stdout = false
+isort = true
+lint = [
+    "flake8",
+]
+log_level = "INFO"
+
+[tool.flynt]
+line_length = 120
 
 [tool.isort]
 # https://pycqa.github.io/isort/docs/configuration/config_files/#pyprojecttoml-preferred-format
 atomic=true
+profile='black'
 line_length=120
-case_sensitive=false
 skip_glob=["*/htmlcov/*","*/migrations/*"]
-multi_line_output=3
-include_trailing_comma=true
 known_first_party=[]
-no_lines_before="LOCALFOLDER"
-default_section="THIRDPARTY"
-sections=["FUTURE","STDLIB","THIRDPARTY","FIRSTPARTY","LOCALFOLDER"]
 lines_after_imports=2
 
 
@@ -56,7 +71,6 @@ norecursedirs = ".* .git __pycache__ conf coverage* dist htmlcov"
 #    --full-trace
 #    -p no:warnings
 addopts = """
-    --import-mode=importlib
     --reuse-db
     --nomigrations
     --cov=.
@@ -65,6 +79,9 @@ addopts = """
     --cov-report xml
     --no-cov-on-fail
     --showlocals
+    --darker
+    --flake8
+    --isort
     --doctest-modules
     --failed-first
     --last-failed-no-failures all
@@ -77,12 +94,12 @@ addopts = """
 legacy_tox_ini = """
 [tox]
 isolated_build = True
-envlist = py39,py38,py37
+envlist = px310,py39,py38,py37
 skip_missing_interpreters = True
 
 [testenv]
 passenv = *
 whitelist_externals = make
 commands =
-    make pytest
+    pytest
 """
