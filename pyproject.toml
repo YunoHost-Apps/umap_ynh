@@ -34,7 +34,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.darker]
 src = ['.']
 revision = "origin/master..."
-line_length = 120
+line_length = 100
 verbose = true
 skip_string_normalization = true
 diff = false
@@ -46,16 +46,18 @@ lint = [
 ]
 log_level = "INFO"
 
+
 [tool.flynt]
-line_length = 120
+line_length = 100
+
 
 [tool.isort]
 # https://pycqa.github.io/isort/docs/configuration/config_files/#pyprojecttoml-preferred-format
 atomic=true
 profile='black'
-line_length=120
 skip_glob=["*/htmlcov/*","*/migrations/*"]
 known_first_party=[]
+line_length=100
 lines_after_imports=2
 
 
