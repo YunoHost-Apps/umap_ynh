@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path
-
 from django_yunohost_integration.views import request_media_debug_view
 
 

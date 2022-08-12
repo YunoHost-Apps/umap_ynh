@@ -20,16 +20,16 @@ tox = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-django = "*"
+pytest-darker = "*"  # https://github.com/akaihola/pytest-darker
 coveralls = "*"
 isort = "*"
 flake8 = "*"
 flynt = "*"
-blue = "*"  # https://github.com/grantjenks/blue
-pyupgrade = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
 
 [tool.darker]
 src = ['.']
@@ -82,13 +82,14 @@ addopts = """
     --no-cov-on-fail
     --showlocals
     --darker
-    --flake8
-    --isort
     --doctest-modules
     --failed-first
-    --last-failed-no-failures all
     --new-first
 """
+
+
+[tool.coverage.run]
+omit = [".*"]
 
 
 [tool.tox]
@@ -96,12 +97,12 @@ addopts = """
 legacy_tox_ini = """
 [tox]
 isolated_build = True
-envlist = px310,py39,py38,py37
+envlist = py{37,38,39,310}
 skip_missing_interpreters = True
 
 [testenv]
 passenv = *
 whitelist_externals = make
 commands =
-    pytest
+    make pytest
 """
