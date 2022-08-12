@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-MAX_LINE_LENGTH := 119
+MAX_LINE_LENGTH := 100
 
 all: help
 

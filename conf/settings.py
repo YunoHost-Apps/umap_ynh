@@ -11,8 +11,8 @@
 
 from pathlib import Path as __Path
 
-from django_yunohost_integration.secret_key import get_or_create_secret as __get_or_create_secret
 from django_yunohost_integration.base_settings import *  # noqa
+from django_yunohost_integration.secret_key import get_or_create_secret as __get_or_create_secret
 
 
 DEBUG = False  # Don't turn DEBUG on in production!
@@ -139,8 +139,16 @@ LOGGING = {
         '': {'handlers': ['log_file', 'mail_admins'], 'level': 'INFO', 'propagate': False},
         'django': {'handlers': ['log_file', 'mail_admins'], 'level': 'INFO', 'propagate': False},
         'axes': {'handlers': ['log_file', 'mail_admins'], 'level': 'WARNING', 'propagate': False},
-        'django_tools': {'handlers': ['log_file', 'mail_admins'], 'level': 'INFO', 'propagate': False},
-        'django_yunohost_integration': {'handlers': ['log_file', 'mail_admins'], 'level': 'INFO', 'propagate': False},
+        'django_tools': {
+            'handlers': ['log_file', 'mail_admins'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django_yunohost_integration': {
+            'handlers': ['log_file', 'mail_admins'],
+            'level': 'INFO',
+            'propagate': False,
+        },
     },
 }
 
