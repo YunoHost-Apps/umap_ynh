@@ -30,8 +30,27 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
     def test_urls(self):
         assert reverse('admin:index') == '/app_path/'
 
-        # In example app, the debug view is in urls.py:
+    def test_request_media_debug_view(self):
         assert reverse(request_media_debug_view) == '/app_path/debug/'
+
+        self.client.cookies['SSOwAuthUser'] = 'test'
+        kwargs = dict(
+            path='/app_path/debug/',
+            HTTP_REMOTE_USER='test',
+            HTTP_AUTH_USER='test',
+            HTTP_AUTHORIZATION='basic dGVzdDp0ZXN0MTIz',
+            secure=True,
+        )
+        assert settings.DEBUG is False
+        with self.assertRaisesMessage(AssertionError, 'Only in DEBUG mode available!'):
+            self.client.get(**kwargs)
+
+        with override_settings(DEBUG=True):
+            response = self.client.get(**kwargs)
+            self.assert_html_parts(
+                response,
+                parts=('request.META',),
+            )
 
     def test_auth(self):
         # SecurityMiddleware should redirects all non-HTTPS requests to HTTPS:

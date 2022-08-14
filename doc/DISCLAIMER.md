@@ -110,6 +110,9 @@ yunohost backup restore 20201223-163434 --apps django_example_ynh
 
 Debug the installation, e.g.:
 ```bash
+root@yunohost:~# cat /etc/yunohost/apps/django_example_ynh/settings.yml
+...
+
 root@yunohost:~# ls -la /var/www/django_example_ynh/
 total 18
 drwxr-xr-x 4 root root 4 Dec  8 08:36 .
@@ -140,6 +143,7 @@ System check identified no issues (0 silenced).
 
 root@yunohost:~# tail -f /var/log/django_example_ynh/django_example_ynh.log
 root@yunohost:~# cat /etc/systemd/system/systemd.service
+...
 
 root@yunohost:~# systemctl reload-or-restart django_example_ynh
 root@yunohost:~# journalctl --unit=django_example_ynh --follow

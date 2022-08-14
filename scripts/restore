@@ -79,10 +79,10 @@ ynh_script_progression --message="Reinstalling dependencies..." --weight=20
 ynh_exec_warn_less ynh_install_app_dependencies "$pkg_dependencies"
 
 #=================================================
-# REINSTALL PYTHON VIRTUALENV
+# PYTHON VIRTUALENV
 # Maybe the backup contains a other Python version
 #=================================================
-ynh_script_progression --message="Upgrade Python virtualenv..." --weight=50
+ynh_script_progression --message="Recreate Python virtualenv..." --weight=5
 
 # Always recreate everything fresh with current python version
 ynh_secure_remove "${final_path}/venv"
@@ -91,6 +91,10 @@ ynh_secure_remove "${final_path}/venv"
 python3 -m venv --without-pip "${final_path}/venv"
 chown -R "$app:" "$final_path"
 
+#=================================================
+# PIP INSTALLATION
+#=================================================
+ynh_script_progression --message="Install project via pip..." --weight=45
 #run source in a 'sub shell'
 (
 	set +o nounset
