@@ -124,7 +124,7 @@ BASE_PATH:/opt/yunohost/django_example_ynh
 System check identified no issues (0 silenced).
 
 root@yunohost:~# tail -f /var/log/django_example_ynh/django_example_ynh.log
-root@yunohost:~# cat /etc/systemd/system/django_example_ynh.service
+root@yunohost:~# cat /etc/systemd/system/systemd.service
 
 root@yunohost:~# systemctl reload-or-restart django_example_ynh
 root@yunohost:~# journalctl --unit=django_example_ynh --follow

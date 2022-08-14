@@ -199,7 +199,7 @@ chmod o-rwx "$final_path"
 ynh_script_progression --message="Configuring a systemd service..."
 
 # https://github.com/YunoHost/yunohost/blob/dev/data/helpers.d/systemd
-ynh_add_systemd_config --service="$app" --template="django_example_ynh.service"
+ynh_add_systemd_config --service="$app" --template="systemd.service"
 
 #=================================================
 # SETUP SSOWAT
