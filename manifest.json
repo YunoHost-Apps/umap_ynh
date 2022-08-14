@@ -3,16 +3,16 @@
 	"id": "django_example_ynh",
 	"packaging_format": 1,
 	"description": {
-		"en": "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost."
+		"en": "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost via https://github.com/YunoHost-Apps/django_yunohost_integration"
 	},
 	"version": "v0.3.0~ynh1",
 	"url": "https://github.com/YunoHost-Apps/django_example_ynh",
     "upstream": {
         "license": "GPL-3.0",
-        "website": "https://github.com/YunoHost-Apps/django_yunohost_integration",
-        "admindoc": "https://github.com/YunoHost-Apps/django_yunohost_integration",
-        "userdoc": "https://github.com/YunoHost-Apps/django_yunohost_integration",
-        "code": "https://github.com/YunoHost-Apps/django_yunohost_integration"
+        "website": "https://github.com/YunoHost-Apps/django_example_ynh",
+        "admindoc": "https://github.com/YunoHost-Apps/django_example_ynh",
+        "userdoc": "https://github.com/YunoHost-Apps/django_example_ynh",
+        "code": "https://github.com/YunoHost-Apps/django_example_ynh"
     },
 	"license": "GPL-3.0",
 	"maintainer": {
