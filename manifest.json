@@ -3,10 +3,17 @@
 	"id": "django_example_ynh",
 	"packaging_format": 1,
 	"description": {
-		"en": "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost."
+		"en": "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost via https://github.com/YunoHost-Apps/django_yunohost_integration"
 	},
-	"version": "v0.2.0.alpha0~ynh1",
+	"version": "0.3.0~ynh1",
 	"url": "https://github.com/YunoHost-Apps/django_example_ynh",
+    "upstream": {
+        "license": "GPL-3.0",
+        "website": "https://github.com/YunoHost-Apps/django_example_ynh",
+        "admindoc": "https://github.com/YunoHost-Apps/django_example_ynh",
+        "userdoc": "https://github.com/YunoHost-Apps/django_example_ynh",
+        "code": "https://github.com/YunoHost-Apps/django_example_ynh"
+    },
 	"license": "GPL-3.0",
 	"maintainer": {
 		"name": "Jens Diemer",
@@ -14,49 +21,31 @@
 	},
 	"previous_maintainers": [],
 	"requirements": {
-		"yunohost": ">= 4.0"
+		"yunohost": ">= 4.3"
 	},
 	"multi_instance": true,
 	"services": [
-		"nginx"
+		"nginx", "postgresql", "redis"
 	],
 	"arguments": {
 		"install" : [
 			{
 				"name": "domain",
-				"type": "domain",
-				"ask": {
-					"en": "Choose a domain for PyInventory",
-					"fr": "Choisissez un domaine pour PyInventory"
-				},
-				"example": "domain.org"
+				"type": "domain"
 			},
 			{
 				"name": "path",
 				"type": "path",
-				"ask": {
-				    "en": "Choose a path for PyInventory",
-				    "fr": "Choisissez un chemin pour PyInventory"
-				},
 				"example": "/django_example_ynh",
 				"default": "/django_example_ynh"
 			},
 			{
 				"name": "admin",
-				"type": "user",
-				"ask": {
-				    "en": "Choose an admin user for PyInventory",
-				    "fr": "Choisissez l'administrateur pour PyInventory"
-				},
-				"example": "johndoe"
+				"type": "user"
 			},
 			{
 				"name": "is_public",
 				"type": "boolean",
-				"ask": {
-					"en": "Should PyInventory be public accessible?",
-					"fr": "PyInventory doit-il être accessible au public ?"
-				},
 				"help": {
 					"en": "Any YunoHost user and anonymous people from the web will be able to access the application",
 					"fr": "Tout utilisateur YunoHost et les personnes anonymes pourront accéder à l'application"
