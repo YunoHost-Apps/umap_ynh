@@ -67,7 +67,8 @@ ynh_app_setting_set --app=$app --key=django_debug --value="False"
 ynh_script_progression --message="Upgrading nginx web server configuration..."
 
 # Create a dedicated nginx config
-# https://github.com/YunoHost/yunohost/blob/dev/data/helpers.d/nginx
+# https://yunohost.org/en/contribute/packaging_apps/helpers
+# https://github.com/YunoHost/yunohost/blob/dev/helpers/nginx
 ynh_add_nginx_config "public_path" "port"
 
 #=================================================
