@@ -26,7 +26,9 @@ def pytest_configure():
         django_settings_path=BASE_PATH / 'conf' / 'settings.py',
         destination=BASE_PATH / 'local_test',
         runserver=False,
-        extra_replacements={},
+        extra_replacements={
+            '__DEBUG_ENABLED__': '0',
+        },
     )
     print('Local test files created here:')
     print(f'"{final_path}"')

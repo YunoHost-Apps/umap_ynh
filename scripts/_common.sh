@@ -12,6 +12,13 @@ is_public=$YNH_APP_ARG_IS_PUBLIC
 app=$YNH_APP_INSTANCE_NAME
 
 #=================================================
+# ARGUMENTS FROM CONFIG PANEL
+#=================================================
+
+# 'debug_enabled' -> '__DEBUG_ENABLED__' -> settings.DEBUG
+debug_enabled="0"
+
+#=================================================
 # SET CONSTANTS
 #=================================================
 
@@ -21,9 +28,6 @@ log_path=/var/log/$app
 log_file="${log_path}/django_example_ynh.log"
 
 adminmail=$(ynh_user_get_info --username=$admin --key=mail)
-
-# Default: settings.DEBUG=False
-django_debug="False"
 
 #=================================================
 # COMMON VARIABLES

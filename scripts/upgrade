@@ -29,7 +29,11 @@ db_user=$db_name
 admin_mail=$(ynh_user_get_info "$admin" mail)
 redis_db=$(ynh_app_setting_get --app="$app" --key=redis_db)
 
-django_debug=$(ynh_app_setting_get --app="$app" --key=django_debug)
+debug_enabled=$(ynh_app_setting_get --app="$app" --key=debug_enabled)
+if [ -z "$debug_enabled" ]; then
+	debug_enabled="0"
+	ynh_app_setting_set --app="$app" --key=debug_enabled --value="$debug_enabled"
+fi
 
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
@@ -59,7 +63,7 @@ ynh_systemd_action --service_name="$app" --action="stop"
 #=================================================
 
 # Always deactivate settings.DEBUG:
-ynh_app_setting_set --app=$app --key=django_debug --value="False"
+ynh_app_setting_set --app=$app --key=debug_enabled --value="False"
 
 #=================================================
 # NGINX CONFIGURATION
@@ -96,9 +100,9 @@ ynh_script_progression --message="Configuring a systemd service..."
 ynh_add_systemd_config --service="$app" --template="systemd.service"
 
 #=================================================
-# UPGRADE VENV
+# PYTHON VIRTUALENV
 #=================================================
-ynh_script_progression --message="Upgrade project via pip..." --weight=50
+ynh_script_progression --message="Recreate Python virtualenv..." --weight=5
 
 # Always recreate everything fresh with current python version
 ynh_secure_remove "${final_path}/venv"
@@ -109,6 +113,10 @@ python3 -m venv --without-pip "${final_path}/venv"
 cp ../conf/requirements.txt "$final_path/requirements.txt"
 chown -R "$app:" "$final_path"
 
+#=================================================
+# PIP INSTALLATION
+#=================================================
+ynh_script_progression --message="Install project via pip..." --weight=45
 #run source in a 'sub shell'
 (
 	set +o nounset

@@ -25,12 +25,12 @@ if settings.PATH_URL:
     # settings.PATH_URL is the $YNH_APP_ARG_PATH
     # Prefix all urls with "PATH_URL":
     urlpatterns = [
-        path(f'{settings.PATH_URL}/', admin.site.urls),
         path(f'{settings.PATH_URL}/debug/', request_media_debug_view),
+        path(f'{settings.PATH_URL}/', admin.site.urls),
     ]
 else:
     # Installed to domain root, without a path prefix
     urlpatterns = [
-        path('/', admin.site.urls),
         path('/debug/', request_media_debug_view),
+        path('/', admin.site.urls),
     ]

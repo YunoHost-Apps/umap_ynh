@@ -15,7 +15,9 @@ from django_yunohost_integration.base_settings import *  # noqa
 from django_yunohost_integration.secret_key import get_or_create_secret as __get_or_create_secret
 
 
-DEBUG = False  # Don't turn DEBUG on in production!
+# Set via config_panel.toml
+DEBUG_ENABLED = '__DEBUG_ENABLED__'
+DEBUG = bool(int(DEBUG_ENABLED))
 
 # -----------------------------------------------------------------------------
 
