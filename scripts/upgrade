@@ -132,7 +132,6 @@ ynh_add_config --template="settings.py" --destination="$final_path/settings.py"
 ynh_add_config --template="setup_user.py" --destination="$final_path/setup_user.py"
 ynh_add_config --template="urls.py" --destination="$final_path/urls.py"
 ynh_add_config --template="wsgi.py" --destination="$final_path/wsgi.py"
-ynh_add_config --template="local_settings.py" --destination="$final_path/local_settings.py"
 
 #=================================================
 # MIGRATE PYINVENTORY
