@@ -55,7 +55,7 @@ line_length = 100
 atomic=true
 profile='black'
 skip_glob=["*/htmlcov/*","*/migrations/*"]
-known_first_party=[]
+known_first_party=['django_yunohost_integration']
 line_length=100
 lines_after_imports=2
 

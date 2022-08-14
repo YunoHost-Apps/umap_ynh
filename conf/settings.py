@@ -2,7 +2,7 @@
 ################################################################################
 
 # Please do not modify this file, it will be reset at the next update.
-# You can edit the file __FINAL_HOME_PATH__/local_settings.py and add/modify the settings you need.
+# You can edit the file __FINALPATH__/local_settings.py and add/modify the settings you need.
 # The parameters you add in local_settings.py will overwrite these,
 # but you can use the options and documentation in this file to find out what can be done.
 
@@ -19,11 +19,8 @@ DEBUG = False  # Don't turn DEBUG on in production!
 
 # -----------------------------------------------------------------------------
 
-FINAL_HOME_PATH = __Path('__FINAL_HOME_PATH__')  # /opt/yunohost/$app
-assert FINAL_HOME_PATH.is_dir(), f'Directory not exists: {FINAL_HOME_PATH}'
-
-FINAL_WWW_PATH = __Path('__FINAL_WWW_PATH__')  # /var/www/$app
-assert FINAL_WWW_PATH.is_dir(), f'Directory not exists: {FINAL_WWW_PATH}'
+FINALPATH = __Path('__FINALPATH__')  # /var/www/$app
+assert FINALPATH.is_dir(), f'Directory not exists: {FINALPATH}'
 
 LOG_FILE = __Path('__LOG_FILE__')  # /var/log/$app/django_example_ynh.log
 assert LOG_FILE.is_file(), f'File not exists: {LOG_FILE}'
@@ -36,7 +33,7 @@ PATH_URL = PATH_URL.strip('/')
 # Function that will be called to finalize a user profile:
 YNH_SETUP_USER = 'setup_user.setup_project_user'
 
-SECRET_KEY = __get_or_create_secret(FINAL_HOME_PATH / 'secret.txt')  # /opt/yunohost/$app/secret.txt
+SECRET_KEY = __get_or_create_secret(FINALPATH / 'secret.txt')  # /opt/yunohost/$app/secret.txt
 
 # INSTALLED_APPS.append('<insert-your-app-here>')
 
@@ -106,8 +103,8 @@ else:
     STATIC_URL = '/static/'
     MEDIA_URL = '/media/'
 
-STATIC_ROOT = str(FINAL_WWW_PATH / 'static')
-MEDIA_ROOT = str(FINAL_WWW_PATH / 'media')
+STATIC_ROOT = str(FINALPATH / 'static')
+MEDIA_ROOT = str(FINALPATH / 'media')
 
 
 # -----------------------------------------------------------------------------

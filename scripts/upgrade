@@ -13,7 +13,7 @@ source /usr/share/yunohost/helpers
 ynh_script_progression --message="Loading installation settings..."
 
 admin=$(ynh_app_setting_get --app="$app" --key=admin)
-public_path=$(ynh_app_setting_get --app="$app" --key=public_path)
+final_path=$(ynh_app_setting_get --app="$app" --key=final_path)
 final_path=$(ynh_app_setting_get --app="$app" --key=final_path)
 log_path=$(ynh_app_setting_get --app="$app" --key=log_path)
 
@@ -68,7 +68,7 @@ ynh_script_progression --message="Upgrading nginx web server configuration..."
 
 # Create a dedicated nginx config
 # https://github.com/YunoHost/yunohost/blob/dev/data/helpers.d/nginx
-ynh_add_nginx_config "public_path" "port"
+ynh_add_nginx_config "final_path" "port"
 
 #=================================================
 # SPECIFIC UPGRADE
@@ -178,11 +178,11 @@ yunohost service add $app --description="Web based management to catalog things"
 
 # Set permissions to app files
 chown -R "$app:" "$log_path"
-chown -R "$app:www-data" "$public_path"
+chown -R "$app:www-data" "$final_path"
 chown -R "$app:" "$final_path"
 
 chmod o-rwx "$log_path"
-chmod o-rwx "$public_path"
+chmod o-rwx "$final_path"
 chmod o-rwx "$final_path"
 
 #=================================================
