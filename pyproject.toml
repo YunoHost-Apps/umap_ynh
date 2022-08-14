@@ -24,7 +24,6 @@ pytest-darker = "*"  # https://github.com/akaihola/pytest-darker
 coveralls = "*"
 isort = "*"
 flake8 = "*"
-flynt = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
