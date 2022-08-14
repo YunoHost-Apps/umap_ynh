@@ -25,7 +25,7 @@ new_path=$YNH_APP_NEW_PATH
 ynh_script_progression --message="Loading installation settings..."
 
 admin=$(ynh_app_setting_get --app="$app" --key=admin)
-final_path=$(ynh_app_setting_get --app="$app" --key=final_path)
+public_path=$(ynh_app_setting_get --app="$app" --key=public_path)
 final_path=$(ynh_app_setting_get --app="$app" --key=final_path)
 log_path=$(ynh_app_setting_get --app="$app" --key=log_path)
 
@@ -94,7 +94,7 @@ then
 	domain="$old_domain"
 	path_url="$new_path"
 	# Create a dedicated nginx config
-	ynh_add_nginx_config "final_path" "port"
+	ynh_add_nginx_config "public_path" "port"
 fi
 
 # Change the domain for nginx
@@ -112,7 +112,7 @@ fi
 #=================================================
 # MODIFY SETTINGS
 #=================================================
-ynh_script_progression --message="Modify django_example_ynh's config file..."
+ynh_script_progression --message="Modify django-fmd's config file..."
 
 ynh_add_config --template="settings.py" --destination="$final_path/settings.py"
 

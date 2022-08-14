@@ -75,6 +75,9 @@ These projects used `django_example_ynh`:
 
 # Developer info
 
+The App project will be stored under `__FINALPATH__` (e.g.: `/opt/yunohost/$app`) that's Django's `settings.FINALPATH`
+"static" / "media" files to serve via nginx are under `__PUBLIC_PATH__` (e.g.: `/var/www/$app`) that's `settings.PUBLIC_PATH`
+
 ## package installation / debugging
 
 This app is not in YunoHost app catalog. Test install, e.g.:

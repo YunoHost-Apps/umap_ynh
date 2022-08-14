@@ -20,7 +20,7 @@ ynh_abort_if_errors
 ynh_script_progression --message="Validating installation parameters..."
 
 # Path for e.g. "static" files, served by nginx:
-test ! -e "$final_path" || ynh_die --message="This path already contains a folder"
+test ! -e "$public_path" || ynh_die --message="This path already contains a folder"
 
 # Path for own config files, e.g.: Django's settings.py:
 test ! -e "$final_path" || ynh_die --message="This path already contains a folder"
@@ -28,7 +28,7 @@ test ! -e "$final_path" || ynh_die --message="This path already contains a folde
 # Register (book) web path
 ynh_webpath_register --app="$app" --domain="$domain" --path_url="$path_url"
 
-mkdir -p "$final_path/media" "$final_path/static"
+mkdir -p "$public_path/media" "$public_path/static"
 mkdir -p "$final_path"
 
 mkdir -p "$log_path"
@@ -40,7 +40,7 @@ touch "${log_file}"
 ynh_script_progression --message="Storing installation settings..."
 
 ynh_app_setting_set --app="$app" --key=admin --value="$admin"
-ynh_app_setting_set --app="$app" --key=final_path --value="$final_path"
+ynh_app_setting_set --app="$app" --key=public_path --value="$public_path"
 ynh_app_setting_set --app="$app" --key=final_path --value="$final_path"
 ynh_app_setting_set --app="$app" --key=log_path --value="$log_file"
 
@@ -92,7 +92,7 @@ ynh_script_progression --message="Configuring nginx web server..."
 
 # Create a dedicated nginx config
 # https://github.com/YunoHost/yunohost/blob/dev/data/helpers.d/nginx
-ynh_add_nginx_config "final_path" "port"
+ynh_add_nginx_config "public_path" "port"
 
 #=================================================
 # CREATE DEDICATED USER
@@ -186,11 +186,11 @@ yunohost service add $app --description="Web based management to catalog things"
 
 # Set permissions to app files
 chown -R "$app:" "$log_path"
-chown -R "$app:www-data" "$final_path"
+chown -R "$app:www-data" "$public_path"
 chown -R "$app:" "$final_path"
 
 chmod o-rwx "$log_path"
-chmod o-rwx "$final_path"
+chmod o-rwx "$public_path"
 chmod o-rwx "$final_path"
 
 #=================================================

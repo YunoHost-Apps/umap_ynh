@@ -19,8 +19,11 @@ DEBUG = False  # Don't turn DEBUG on in production!
 
 # -----------------------------------------------------------------------------
 
-FINALPATH = __Path('__FINALPATH__')  # /var/www/$app
+FINALPATH = __Path('__FINALPATH__')  # /opt/yunohost/$app
 assert FINALPATH.is_dir(), f'Directory not exists: {FINALPATH}'
+
+PUBLIC_PATH = __Path('__PUBLIC_PATH__')  # /var/www/$app
+assert PUBLIC_PATH.is_dir(), f'Directory not exists: {PUBLIC_PATH}'
 
 LOG_FILE = __Path('__LOG_FILE__')  # /var/log/$app/django_example_ynh.log
 assert LOG_FILE.is_file(), f'File not exists: {LOG_FILE}'
@@ -36,6 +39,26 @@ YNH_SETUP_USER = 'setup_user.setup_project_user'
 SECRET_KEY = __get_or_create_secret(FINALPATH / 'secret.txt')  # /opt/yunohost/$app/secret.txt
 
 # INSTALLED_APPS.append('<insert-your-app-here>')
+
+MIDDLEWARE.insert(
+    MIDDLEWARE.index('django.contrib.auth.middleware.AuthenticationMiddleware') + 1,
+    # login a user via HTTP_REMOTE_USER header from SSOwat:
+    'django_yunohost_integration.sso_auth.auth_middleware.SSOwatRemoteUserMiddleware',
+)
+
+# Keep ModelBackend around for per-user permissions and superuser
+AUTHENTICATION_BACKENDS = (
+    # Authenticate via SSO and nginx 'HTTP_REMOTE_USER' header:
+    'django_yunohost_integration.sso_auth.auth_backend.SSOwatUserBackend',
+    #
+    # Fallback to normal Django model backend:
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+LOGIN_REDIRECT_URL = None
+LOGIN_URL = '/yunohost/sso/'
+LOGOUT_REDIRECT_URL = '/yunohost/sso/'
+# /yunohost/sso/?action=logout
 
 # -----------------------------------------------------------------------------
 
@@ -103,9 +126,8 @@ else:
     STATIC_URL = '/static/'
     MEDIA_URL = '/media/'
 
-STATIC_ROOT = str(FINALPATH / 'static')
-MEDIA_ROOT = str(FINALPATH / 'media')
-
+STATIC_ROOT = str(PUBLIC_PATH / 'static')
+MEDIA_ROOT = str(PUBLIC_PATH / 'media')
 
 # -----------------------------------------------------------------------------
 

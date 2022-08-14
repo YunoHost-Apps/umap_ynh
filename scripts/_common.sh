@@ -15,7 +15,8 @@ app=$YNH_APP_INSTANCE_NAME
 # SET CONSTANTS
 #=================================================
 
-final_path=/var/www/$app
+public_path=/var/www/$app
+final_path=/opt/yunohost/$app
 log_path=/var/log/$app
 log_file="${log_path}/django_example_ynh.log"
 
