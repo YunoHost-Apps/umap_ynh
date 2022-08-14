@@ -21,6 +21,8 @@ def test_version():
     pyproject_toml_path = Path(PACKAGE_ROOT, 'pyproject.toml')
     pyproject_toml = tomli.loads(pyproject_toml_path.read_text(encoding='UTF-8'))
     version = pyproject_toml['tool']['poetry']['version']
+    assert '~ynh' not in version
+    assert version[0].isdigit()
 
     assert_file_contains_string(
         file_path=Path(PACKAGE_ROOT, 'manifest.json'),
