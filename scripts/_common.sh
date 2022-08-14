@@ -20,6 +20,12 @@ final_path=/opt/yunohost/$app
 log_path=/var/log/$app
 log_file="${log_path}/django_example_ynh.log"
 
+# XXX: Is this okay?
+adminmail="${admin}@${domain}"
+
+# Default: settings.DEBUG=False
+django_debug="False"
+
 #=================================================
 # COMMON VARIABLES
 #=================================================

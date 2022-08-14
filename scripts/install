@@ -56,7 +56,12 @@ ynh_app_setting_set --app="$app" --key=port --value="$port"
 
 db_pwd=$(ynh_app_setting_get --app="$app" --key=psqlpwd)
 admin_mail=$(ynh_user_get_info --username="$admin" --key=mail)
+
 redis_db=$(ynh_redis_get_free_db)
+ynh_app_setting_set --app="$app" --key=redis_db --value="$redis_db"
+
+# Always deactivate settings.DEBUG:
+ynh_app_setting_set --app=$app --key=django_debug --value="False"
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -127,45 +132,16 @@ chown -R "$app:" "$final_path"
 # ================================================
 ynh_script_progression --message="Create project configuration files..."
 
-gunicorn_conf="$final_path/gunicorn.conf.py"
-cp "../conf/gunicorn.conf.py" "$gunicorn_conf"
-ynh_replace_string --match_string="__FINAL_HOME_PATH__" --replace_string="$final_path" --target_file="$gunicorn_conf"
-ynh_replace_string --match_string="__LOG_FILE__" --replace_string="$log_file" --target_file="$gunicorn_conf"
-ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_file="$gunicorn_conf"
-ynh_store_file_checksum --file="$gunicorn_conf"
+ynh_add_config --template="gunicorn.conf.py" --destination="$final_path/gunicorn.conf.py"
 
-cp ../conf/manage.py "$final_path/manage.py"
-ynh_replace_string --match_string="__FINAL_HOME_PATH__" --replace_string="$final_path" --target_file="$final_path/manage.py"
-ynh_store_file_checksum --file="$final_path/manage.py"
+ynh_add_config --template="manage.py" --destination="$final_path/manage.py"
 chmod +x "$final_path/manage.py"
 
-settings="$final_path/settings.py"
-cp "../conf/settings.py" "$settings"
-
-ynh_replace_string --match_string="__APP__" --replace_string="$app" --target_file="$settings"
-ynh_replace_string --match_string="__DB_NAME__" --replace_string="$db_name" --target_file="$settings"
-ynh_replace_string --match_string="__DB_USER__" --replace_string="$db_user" --target_file="$settings"
-ynh_replace_string --match_string="__DB_PWD__" --replace_string="$db_pwd" --target_file="$settings"
-ynh_replace_string --match_string="__ADMIN__" --replace_string="$admin" --target_file="$settings"
-ynh_replace_string --match_string="__ADMINMAIL__" --replace_string="$admin_mail" --target_file="$settings"
-ynh_replace_string --match_string="__FINAL_HOME_PATH__" --replace_string="$final_path" --target_file="$settings"
-ynh_replace_string --match_string="__FINAL_WWW_PATH__" --replace_string="$public_path" --target_file="$settings"
-ynh_replace_string --match_string="__LOG_FILE__" --replace_string="$log_file" --target_file="$settings"
-ynh_replace_string --match_string="__REDIS_DB__" --replace_string="$redis_db" --target_file="$settings"
-
-ynh_replace_string --match_string="__DOMAIN__" --replace_string="$domain" --target_file="$settings"
-ynh_replace_string --match_string="__PATH_URL__" --replace_string="$path_url" --target_file="$settings"
-
-# Calculate and store the config file checksum into the app settings
-ynh_store_file_checksum --file="$settings"
-
-ynh_app_setting_set --app="$app" --key=redis_db --value="$redis_db"
-
-cp ../conf/setup_user.py "$final_path/setup_user.py"
-cp ../conf/urls.py "$final_path/urls.py"
-cp ../conf/wsgi.py "$final_path/wsgi.py"
-
-touch "$final_path/local_settings.py"
+ynh_add_config --template="settings.py" --destination="$final_path/settings.py"
+ynh_add_config --template="setup_user.py" --destination="$final_path/setup_user.py"
+ynh_add_config --template="urls.py" --destination="$final_path/urls.py"
+ynh_add_config --template="wsgi.py" --destination="$final_path/wsgi.py"
+ynh_add_config --template="local_settings.py" --destination="$final_path/local_settings.py"
 
 #=================================================
 # MIGRATE / COLLECTSTATIC / CREATEADMIN
@@ -242,7 +218,7 @@ fi
 #=================================================
 # Start django_example_ynh via systemd
 #=================================================
-ynh_script_progression --message="Starting PyInventory's services..." --weight=5
+ynh_script_progression --message="Starting django_example_ynh's services..." --weight=5
 
 ynh_systemd_action --service_name="$app" --action="start"
 
