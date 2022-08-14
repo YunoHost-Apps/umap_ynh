@@ -77,6 +77,12 @@ These projects used `django_example_ynh`:
 
 ## package installation / debugging
 
+This app is not in YunoHost app catalog. Test install, e.g.:
+```bash
+~# git clone https://github.com/YunoHost-Apps/django_example_ynh.git
+~# yunohost app install django_example_ynh/ -f
+```
+
 To remove call e.g.:
 ```bash
 sudo yunohost app remove django_example_ynh
