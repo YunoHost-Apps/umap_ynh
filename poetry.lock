@@ -253,7 +253,7 @@ hiredis = ["redis[hiredis] (>=3,!=4.0.0,!=4.0.1)"]
 
 [[package]]
 name = "django-yunohost-integration"
-version = "0.2.5"
+version = "0.3.0"
 description = "Glue code to package django projects as yunohost apps."
 category = "main"
 optional = false
@@ -718,7 +718,7 @@ docs = ["jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "jaraco.packaging (>=9)
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7,<4.0.0"  # TODO: Update to >=3.8 after YunoHost updates to Bullseye
-content-hash = "477d486f59495a9e626d97f184b0c05db2642a62627f98758cdb90221cea1ebf"
+content-hash = "e1bf9af0ee47f901c1febf1757dafc4f2c736b9df0d36d33cbd44883ee06c556"
 
 [metadata.files]
 asgiref = [
@@ -861,8 +861,8 @@ django-redis = [
     {file = "django_redis-5.2.0-py3-none-any.whl", hash = "sha256:1d037dc02b11ad7aa11f655d26dac3fb1af32630f61ef4428860a2e29ff92026"},
 ]
 django-yunohost-integration = [
-    {file = "django_yunohost_integration-0.2.5-py3-none-any.whl", hash = "sha256:b5f9beea73515ffb8816644cde766cdd0170ce75441ceb9ac11e185f40470186"},
-    {file = "django_yunohost_integration-0.2.5.tar.gz", hash = "sha256:2cade1dc6d77974139624883475dfe360fe04a86335b635f1fac2401acae56d8"},
+    {file = "django_yunohost_integration-0.3.0-py3-none-any.whl", hash = "sha256:f7f8e9d55c50231bb32d3809b240d6ac718aadac1a1f471284baa1bfa6e98dff"},
+    {file = "django_yunohost_integration-0.3.0.tar.gz", hash = "sha256:d0e9cc91d241075613cb54b5da0879ad9b8ad3d22b84130cd7a331025650406e"},
 ]
 docopt = [
     {file = "docopt-0.6.2.tar.gz", hash = "sha256:49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"},
