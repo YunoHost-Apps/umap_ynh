@@ -85,6 +85,12 @@ This app is not in YunoHost app catalog. Test install, e.g.:
 ~# git clone https://github.com/YunoHost-Apps/django_example_ynh.git
 ~# yunohost app install django_example_ynh/ -f
 ```
+To update:
+```bash
+~# cd django_example_ynh
+~/django_example_ynh# git fetch && git reset --hard origin/testing
+~/django_example_ynh# yunohost app upgrade django_example_ynh -u . -F
+```
 
 To remove call e.g.:
 ```bash
