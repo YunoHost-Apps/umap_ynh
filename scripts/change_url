@@ -30,7 +30,11 @@ final_path=$(ynh_app_setting_get --app="$app" --key=final_path)
 log_path=$(ynh_app_setting_get --app="$app" --key=log_path)
 
 port=$(ynh_app_setting_get --app="$app" --key=port)
+
 db_pwd=$(ynh_app_setting_get --app="$app" --key=psqlpwd)
+db_name=$(ynh_sanitize_dbid --db_name="$app")
+db_user=$db_name
+
 redis_db=$(ynh_app_setting_get --app="$app" --key=redis_db)
 
 #-------------------------------------------------
