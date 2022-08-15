@@ -31,6 +31,6 @@ if settings.PATH_URL:
 else:
     # Installed to domain root, without a path prefix
     urlpatterns = [
-        path('/debug/', request_media_debug_view),
-        path('/', admin.site.urls),
+        path('debug/', request_media_debug_view),
+        path('', admin.site.urls),
     ]

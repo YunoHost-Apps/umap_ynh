@@ -3,7 +3,7 @@
 	"id": "django_example_ynh",
 	"packaging_format": 1,
 	"description": {
-		"en": "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost via https://github.com/YunoHost-Apps/django_yunohost_integration"
+		"en": "App to demonstrate the integration of a Django project under YunoHost via https://github.com/YunoHost-Apps/django_yunohost_integration"
 	},
 	"version": "0.3.0~ynh1",
 	"url": "https://github.com/YunoHost-Apps/django_example_ynh",
