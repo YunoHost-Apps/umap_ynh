@@ -1,9 +1,12 @@
 name: pytest
 
 on:
+  push:
+    branches:
+      - master
+  pull_request:
   schedule:
     - cron: '0 8 * * *'
-  push:
 
 jobs:
   test:
@@ -11,11 +14,16 @@ jobs:
     strategy:
       max-parallel: 2
       matrix:
-        python-version: [3.9, 3.8, 3.7]
+        python-version: ["3.10", "3.9", "3.8", "3.7"]
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: 'fetch master'
+      run: |
+        git fetch origin master
     - name: 'Set up Python ${{ matrix.python-version }}'
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
         python-version: '${{ matrix.python-version }}'
 
@@ -33,9 +41,7 @@ jobs:
         make pytest
 
     - name: 'Upload coverage report'
-      run: bash <(curl -s https://codecov.io/bash)
-
-    - name: 'Run linters'
-      if: matrix.python-version == '3.8'
-      run: |
-        make lint
+      uses: codecov/codecov-action@v2
+      with:
+        fail_ci_if_error: false
+        verbose: true
