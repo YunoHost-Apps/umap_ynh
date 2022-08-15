@@ -21,6 +21,9 @@ debug_enabled="0"
 # 'log_level' -> '__LOG_LEVEL__' -> settings.LOG_LEVEL
 log_level="WARNING"
 
+# 'admin_email' -> '__ADMIN_EMAIL__' add in settings.ADMINS
+admin_email="${admin}@${domain}"
+
 #=================================================
 # SET CONSTANTS
 #=================================================
@@ -29,8 +32,6 @@ public_path=/var/www/$app
 final_path=/opt/yunohost/$app
 log_path=/var/log/$app
 log_file="${log_path}/django_example_ynh.log"
-
-adminmail=$(ynh_user_get_info --username=$admin --key=mail)
 
 #=================================================
 # COMMON VARIABLES

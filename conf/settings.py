@@ -11,6 +11,8 @@
 
 from pathlib import Path as __Path
 
+from django.core.validators import EmailValidator as __EmailValidator
+
 from django_yunohost_integration.base_settings import *  # noqa
 from django_yunohost_integration.secret_key import get_or_create_secret as __get_or_create_secret
 
@@ -32,8 +34,9 @@ PATH_URL = PATH_URL.strip('/')
 
 DEBUG_ENABLED = '__DEBUG_ENABLED__'
 LOG_LEVEL = '__LOG_LEVEL__'
-
+ADMIN_EMAIL = '__ADMIN_EMAIL__'
 # -----------------------------------------------------------------------------
+# Use/convert/validate config_panel.toml settings:
 
 DEBUG = bool(int(DEBUG_ENABLED))
 assert LOG_LEVEL in (
@@ -43,6 +46,7 @@ assert LOG_LEVEL in (
     'ERROR',
     'CRITICAL',
 ), f'Invalid LOG_LEVEL: {LOG_LEVEL!r}'
+__EmailValidator(message='ADMIN_EMAIL from config panel is not valid!')(ADMIN_EMAIL)
 
 # -----------------------------------------------------------------------------
 
@@ -56,7 +60,7 @@ SECRET_KEY = __get_or_create_secret(FINALPATH / 'secret.txt')  # /opt/yunohost/$
 # -----------------------------------------------------------------------------
 
 
-ADMINS = (('__ADMIN__', '__ADMINMAIL__'),)
+ADMINS = (('__ADMIN__', ADMIN_EMAIL),)
 
 MANAGERS = ADMINS
 
@@ -87,7 +91,7 @@ SERVER_EMAIL = 'noreply@__DOMAIN__'
 
 # Default email address to use for various automated correspondence from
 # the site managers. Used for registration emails.
-DEFAULT_FROM_EMAIL = '__ADMINMAIL__'
+DEFAULT_FROM_EMAIL = ADMIN_EMAIL
 
 # List of URLs your site is supposed to serve
 ALLOWED_HOSTS = ['__DOMAIN__']

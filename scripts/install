@@ -55,7 +55,6 @@ port=$(ynh_find_port --port=8000)
 ynh_app_setting_set --app="$app" --key=port --value="$port"
 
 db_pwd=$(ynh_app_setting_get --app="$app" --key=psqlpwd)
-admin_mail=$(ynh_user_get_info --username="$admin" --key=mail)
 
 redis_db=$(ynh_redis_get_free_db)
 ynh_app_setting_set --app="$app" --key=redis_db --value="$redis_db"
@@ -65,6 +64,7 @@ ynh_app_setting_set --app="$app" --key=redis_db --value="$redis_db"
 
 ynh_app_setting_set --app="$app" --key=debug_enabled --value="$debug_enabled"
 ynh_app_setting_set --app="$app" --key=log_level --value="$log_level"
+ynh_app_setting_set --app="$app" --key=admin_email --value="$admin_email"
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -167,7 +167,7 @@ cd "$final_path" || exit
 ./manage.py collectstatic --no-input
 
 # Create/update Django superuser (set unusable password, because auth done via SSOwat):
-./manage.py create_superuser --username="$admin" --email="$admin_mail"
+./manage.py create_superuser --username="$admin" --email="$(ynh_user_get_info "$admin" mail)"
 
 # Check the configuration
 # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.

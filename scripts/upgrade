@@ -26,7 +26,6 @@ db_pwd=$(ynh_app_setting_get --app="$app" --key=psqlpwd)
 db_name=$(ynh_sanitize_dbid --db_name="$app")
 db_user=$db_name
 
-admin_mail=$(ynh_user_get_info "$admin" mail)
 redis_db=$(ynh_app_setting_get --app="$app" --key=redis_db)
 
 #-------------------------------------------------
@@ -42,6 +41,12 @@ log_level=$(ynh_app_setting_get --app="$app" --key=log_level)
 if [ -z "$log_level" ]; then
 	log_level="WARNING"
 	ynh_app_setting_set --app="$app" --key=log_level --value="$log_level"
+fi
+
+admin_email=$(ynh_app_setting_get --app="$app" --key=admin_email)
+if [ -z "$admin_email" ]; then
+	admin_email="root@localhost"
+	ynh_app_setting_set --app="$app" --key=admin_email --value="$admin_email"
 fi
 
 #=================================================
@@ -158,7 +163,7 @@ cd "$final_path" || exit
 ./manage.py collectstatic --no-input
 
 # Create/update Django superuser (set unusable password, because auth done via SSOwat):
-./manage.py create_superuser --username="$admin" --email="$admin_mail"
+./manage.py create_superuser --username="$admin" --email="$(ynh_user_get_info "$admin" mail)"
 
 # Check the configuration
 # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.

@@ -31,8 +31,14 @@ log_path=$(ynh_app_setting_get --app="$app" --key=log_path)
 
 port=$(ynh_app_setting_get --app="$app" --key=port)
 db_pwd=$(ynh_app_setting_get --app="$app" --key=psqlpwd)
-admin_mail=$(ynh_user_get_info "$admin" mail)
 redis_db=$(ynh_app_setting_get --app="$app" --key=redis_db)
+
+#-------------------------------------------------
+# config_panel.toml settings:
+
+debug_enabled=$(ynh_app_setting_get --app="$app" --key=debug_enabled)
+log_level=$(ynh_app_setting_get --app="$app" --key=log_level)
+admin_email=$(ynh_app_setting_get --app="$app" --key=admin_email)
 
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
