@@ -32,6 +32,7 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         assert settings.DEBUG_ENABLED == '0' and settings.DEBUG is False
         assert settings.LOG_LEVEL == 'INFO'
         assert settings.ADMIN_EMAIL == 'foo-bar@test.tld'
+        assert settings.DEFAULT_FROM_EMAIL == 'django_app@test.tld'
 
     def test_urls(self):
         assert reverse('admin:index') == '/app_path/'

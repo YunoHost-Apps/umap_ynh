@@ -45,8 +45,14 @@ fi
 
 admin_email=$(ynh_app_setting_get --app="$app" --key=admin_email)
 if [ -z "$admin_email" ]; then
-	admin_email="root@localhost"
+	admin_email="${admin}@${domain}"
 	ynh_app_setting_set --app="$app" --key=admin_email --value="$admin_email"
+fi
+
+default_from_email=$(ynh_app_setting_get --app="$app" --key=default_from_email)
+if [ -z "$default_from_email" ]; then
+	default_from_email="${app}@${domain}"
+	ynh_app_setting_set --app="$app" --key=default_from_email --value="$default_from_email"
 fi
 
 #=================================================
