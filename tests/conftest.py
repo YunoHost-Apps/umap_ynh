@@ -30,6 +30,7 @@ def pytest_configure():
             '__DEBUG_ENABLED__': '0',
             '__LOG_LEVEL__': 'INFO',
             '__ADMIN_EMAIL__': 'foo-bar@test.tld',
+            '__DEFAULT_FROM_EMAIL__': 'django_app@test.tld',
         },
     )
     print('Local test files created here:')

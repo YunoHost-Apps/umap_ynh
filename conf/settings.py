@@ -35,6 +35,8 @@ PATH_URL = PATH_URL.strip('/')
 DEBUG_ENABLED = '__DEBUG_ENABLED__'
 LOG_LEVEL = '__LOG_LEVEL__'
 ADMIN_EMAIL = '__ADMIN_EMAIL__'
+DEFAULT_FROM_EMAIL = '__DEFAULT_FROM_EMAIL__'
+
 # -----------------------------------------------------------------------------
 # Use/convert/validate config_panel.toml settings:
 
@@ -46,7 +48,12 @@ assert LOG_LEVEL in (
     'ERROR',
     'CRITICAL',
 ), f'Invalid LOG_LEVEL: {LOG_LEVEL!r}'
-__EmailValidator(message='ADMIN_EMAIL from config panel is not valid!')(ADMIN_EMAIL)
+__EmailValidator(
+    message='ADMIN_EMAIL %(value)r from config panel is not valid!',
+)(ADMIN_EMAIL)
+__EmailValidator(
+    message='DEFAULT_FROM_EMAIL %(value)r from config panel is not valid!',
+)(DEFAULT_FROM_EMAIL)
 
 # -----------------------------------------------------------------------------
 
@@ -91,7 +98,6 @@ SERVER_EMAIL = 'noreply@__DOMAIN__'
 
 # Default email address to use for various automated correspondence from
 # the site managers. Used for registration emails.
-DEFAULT_FROM_EMAIL = ADMIN_EMAIL
 
 # List of URLs your site is supposed to serve
 ALLOWED_HOSTS = ['__DOMAIN__']
