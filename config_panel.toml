@@ -8,7 +8,7 @@ services = ["__APP__"]
     name = "Configuration Options"
 
         [main.config.debug_enabled]
-        ask = "Enable DEBUG mode"
+        ask = "DEBUG mode"
         type = "boolean"
         yes = "1"
         no = "0"

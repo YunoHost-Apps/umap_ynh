@@ -68,13 +68,6 @@ ynh_script_progression --message="Stopping systemd services..." --weight=5
 ynh_systemd_action --service_name="$app" --action="stop"
 
 #=================================================
-# Manage old settings
-#=================================================
-
-# Always deactivate settings.DEBUG:
-ynh_app_setting_set --app=$app --key=debug_enabled --value="False"
-
-#=================================================
 # NGINX CONFIGURATION
 #=================================================
 ynh_script_progression --message="Upgrading nginx web server configuration..."
