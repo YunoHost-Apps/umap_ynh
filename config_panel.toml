@@ -14,3 +14,10 @@ services = ["__APP__"]
         no = "0"
         help = "Should be never enabled in production!"
         bind = "debug_enabled:__FINALPATH__/settings.py"
+
+        [main.config.log_level]
+        type = "string"
+        ask = "Log Level"
+        choices = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+        default = "WARNING"
+        bind = "log_level:__FINALPATH__/settings.py"

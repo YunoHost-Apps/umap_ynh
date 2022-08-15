@@ -18,6 +18,9 @@ app=$YNH_APP_INSTANCE_NAME
 # 'debug_enabled' -> '__DEBUG_ENABLED__' -> settings.DEBUG
 debug_enabled="0"
 
+# 'log_level' -> '__LOG_LEVEL__' -> settings.LOG_LEVEL
+log_level="WARNING"
+
 #=================================================
 # SET CONSTANTS
 #=================================================

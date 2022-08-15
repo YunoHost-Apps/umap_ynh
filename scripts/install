@@ -60,8 +60,11 @@ admin_mail=$(ynh_user_get_info --username="$admin" --key=mail)
 redis_db=$(ynh_redis_get_free_db)
 ynh_app_setting_set --app="$app" --key=redis_db --value="$redis_db"
 
-# Always deactivate settings.DEBUG:
+#-------------------------------------------------
+# config_panel.toml settings:
+
 ynh_app_setting_set --app="$app" --key=debug_enabled --value="$debug_enabled"
+ynh_app_setting_set --app="$app" --key=log_level --value="$log_level"
 
 #=================================================
 # STANDARD MODIFICATIONS

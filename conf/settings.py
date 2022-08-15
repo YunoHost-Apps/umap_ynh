@@ -15,12 +15,6 @@ from django_yunohost_integration.base_settings import *  # noqa
 from django_yunohost_integration.secret_key import get_or_create_secret as __get_or_create_secret
 
 
-# Set via config_panel.toml
-DEBUG_ENABLED = '__DEBUG_ENABLED__'
-DEBUG = bool(int(DEBUG_ENABLED))
-
-# -----------------------------------------------------------------------------
-
 FINALPATH = __Path('__FINALPATH__')  # /opt/yunohost/$app
 assert FINALPATH.is_dir(), f'Directory not exists: {FINALPATH}'
 
@@ -32,6 +26,23 @@ assert LOG_FILE.is_file(), f'File not exists: {LOG_FILE}'
 
 PATH_URL = '__PATH_URL__'  # $YNH_APP_ARG_PATH
 PATH_URL = PATH_URL.strip('/')
+
+# -----------------------------------------------------------------------------
+# config_panel.toml settings:
+
+DEBUG_ENABLED = '__DEBUG_ENABLED__'
+LOG_LEVEL = '__LOG_LEVEL__'
+
+# -----------------------------------------------------------------------------
+
+DEBUG = bool(int(DEBUG_ENABLED))
+assert LOG_LEVEL in (
+    'DEBUG',
+    'INFO',
+    'WARNING',
+    'ERROR',
+    'CRITICAL',
+), f'Invalid LOG_LEVEL: {LOG_LEVEL!r}'
 
 # -----------------------------------------------------------------------------
 
@@ -111,6 +122,7 @@ else:
 STATIC_ROOT = str(PUBLIC_PATH / 'static')
 MEDIA_ROOT = str(PUBLIC_PATH / 'media')
 
+
 # -----------------------------------------------------------------------------
 
 LOGGING = {
@@ -137,17 +149,17 @@ LOGGING = {
         },
     },
     'loggers': {
-        '': {'handlers': ['log_file', 'mail_admins'], 'level': 'INFO', 'propagate': False},
-        'django': {'handlers': ['log_file', 'mail_admins'], 'level': 'INFO', 'propagate': False},
-        'axes': {'handlers': ['log_file', 'mail_admins'], 'level': 'WARNING', 'propagate': False},
+        '': {'handlers': ['log_file', 'mail_admins'], 'level': LOG_LEVEL, 'propagate': False},
+        'django': {'handlers': ['log_file', 'mail_admins'], 'level': LOG_LEVEL, 'propagate': False},
+        'axes': {'handlers': ['log_file', 'mail_admins'], 'level': LOG_LEVEL, 'propagate': False},
         'django_tools': {
             'handlers': ['log_file', 'mail_admins'],
-            'level': 'INFO',
+            'level': LOG_LEVEL,
             'propagate': False,
         },
         'django_yunohost_integration': {
             'handlers': ['log_file', 'mail_admins'],
-            'level': 'INFO',
+            'level': LOG_LEVEL,
             'propagate': False,
         },
     },
