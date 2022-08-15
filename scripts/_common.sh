@@ -34,7 +34,7 @@ default_from_email="${app}@${domain}"
 public_path=/var/www/$app
 final_path=/opt/yunohost/$app
 log_path=/var/log/$app
-log_file="${log_path}/django_example_ynh.log"
+log_file="${log_path}/${app}.log"
 
 #=================================================
 # COMMON VARIABLES
