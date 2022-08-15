@@ -27,6 +27,12 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
 
         assert settings.ROOT_URLCONF == 'urls'
 
+    def test_config_panel_settings(self):
+        # config_panel.toml settings, set via tests.conftest.pytest_configure():
+        assert settings.DEBUG_ENABLED == '0' and settings.DEBUG is False
+        assert settings.LOG_LEVEL == 'INFO'
+        assert settings.ADMIN_EMAIL == 'foo-bar@test.tld'
+
     def test_urls(self):
         assert reverse('admin:index') == '/app_path/'
 

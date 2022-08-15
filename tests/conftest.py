@@ -28,6 +28,8 @@ def pytest_configure():
         runserver=False,
         extra_replacements={
             '__DEBUG_ENABLED__': '0',
+            '__LOG_LEVEL__': 'INFO',
+            '__ADMIN_EMAIL__': 'foo-bar@test.tld',
         },
     )
     print('Local test files created here:')

@@ -11,15 +11,11 @@
 
 from pathlib import Path as __Path
 
+from django.core.validators import EmailValidator as __EmailValidator
+
 from django_yunohost_integration.base_settings import *  # noqa
 from django_yunohost_integration.secret_key import get_or_create_secret as __get_or_create_secret
 
-
-# Set via config_panel.toml
-DEBUG_ENABLED = '__DEBUG_ENABLED__'
-DEBUG = bool(int(DEBUG_ENABLED))
-
-# -----------------------------------------------------------------------------
 
 FINALPATH = __Path('__FINALPATH__')  # /opt/yunohost/$app
 assert FINALPATH.is_dir(), f'Directory not exists: {FINALPATH}'
@@ -34,6 +30,25 @@ PATH_URL = '__PATH_URL__'  # $YNH_APP_ARG_PATH
 PATH_URL = PATH_URL.strip('/')
 
 # -----------------------------------------------------------------------------
+# config_panel.toml settings:
+
+DEBUG_ENABLED = '__DEBUG_ENABLED__'
+LOG_LEVEL = '__LOG_LEVEL__'
+ADMIN_EMAIL = '__ADMIN_EMAIL__'
+# -----------------------------------------------------------------------------
+# Use/convert/validate config_panel.toml settings:
+
+DEBUG = bool(int(DEBUG_ENABLED))
+assert LOG_LEVEL in (
+    'DEBUG',
+    'INFO',
+    'WARNING',
+    'ERROR',
+    'CRITICAL',
+), f'Invalid LOG_LEVEL: {LOG_LEVEL!r}'
+__EmailValidator(message='ADMIN_EMAIL from config panel is not valid!')(ADMIN_EMAIL)
+
+# -----------------------------------------------------------------------------
 
 # Function that will be called to finalize a user profile:
 YNH_SETUP_USER = 'setup_user.setup_project_user'
@@ -45,7 +60,7 @@ SECRET_KEY = __get_or_create_secret(FINALPATH / 'secret.txt')  # /opt/yunohost/$
 # -----------------------------------------------------------------------------
 
 
-ADMINS = (('__ADMIN__', '__ADMINMAIL__'),)
+ADMINS = (('__ADMIN__', ADMIN_EMAIL),)
 
 MANAGERS = ADMINS
 
@@ -76,7 +91,7 @@ SERVER_EMAIL = 'noreply@__DOMAIN__'
 
 # Default email address to use for various automated correspondence from
 # the site managers. Used for registration emails.
-DEFAULT_FROM_EMAIL = '__ADMINMAIL__'
+DEFAULT_FROM_EMAIL = ADMIN_EMAIL
 
 # List of URLs your site is supposed to serve
 ALLOWED_HOSTS = ['__DOMAIN__']
@@ -111,6 +126,7 @@ else:
 STATIC_ROOT = str(PUBLIC_PATH / 'static')
 MEDIA_ROOT = str(PUBLIC_PATH / 'media')
 
+
 # -----------------------------------------------------------------------------
 
 LOGGING = {
@@ -137,17 +153,17 @@ LOGGING = {
         },
     },
     'loggers': {
-        '': {'handlers': ['log_file', 'mail_admins'], 'level': 'INFO', 'propagate': False},
-        'django': {'handlers': ['log_file', 'mail_admins'], 'level': 'INFO', 'propagate': False},
-        'axes': {'handlers': ['log_file', 'mail_admins'], 'level': 'WARNING', 'propagate': False},
+        '': {'handlers': ['log_file', 'mail_admins'], 'level': LOG_LEVEL, 'propagate': False},
+        'django': {'handlers': ['log_file', 'mail_admins'], 'level': LOG_LEVEL, 'propagate': False},
+        'axes': {'handlers': ['log_file', 'mail_admins'], 'level': LOG_LEVEL, 'propagate': False},
         'django_tools': {
             'handlers': ['log_file', 'mail_admins'],
-            'level': 'INFO',
+            'level': LOG_LEVEL,
             'propagate': False,
         },
         'django_yunohost_integration': {
             'handlers': ['log_file', 'mail_admins'],
-            'level': 'INFO',
+            'level': LOG_LEVEL,
             'propagate': False,
         },
     },
