@@ -188,7 +188,7 @@ ynh_use_logrotate "$log_file"
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..."
 
-yunohost service add $app --description="$app service" --log="${log_file}"
+yunohost service add $app --log="${log_file}"
 
 #=================================================
 # GENERIC FINALIZATION

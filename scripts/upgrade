@@ -108,7 +108,7 @@ ynh_system_user_create --username="$app" --home_dir="$final_path" --use_shell
 #=================================================
 # SETUP SYSTEMD
 #=================================================
-ynh_script_progression --message="Configuring a systemd service '$app'..." --weight=5
+ynh_script_progression --message="Configuring systemd service '$app'..." --weight=5
 
 ynh_add_systemd_config --service="$app" --template="systemd.service"
 
@@ -189,7 +189,7 @@ ynh_use_logrotate --non-append
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..."
 
-yunohost service add $app --description="Web based management to catalog things" --log="${log_file}"
+yunohost service add $app --log="${log_file}"
 
 #=================================================
 # GENERIC FINALIZATION

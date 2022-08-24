@@ -11,8 +11,6 @@
 
 from pathlib import Path as __Path
 
-from django.core.validators import EmailValidator as __EmailValidator
-
 from django_yunohost_integration.base_settings import *  # noqa
 from django_yunohost_integration.secret_key import get_or_create_secret as __get_or_create_secret
 
@@ -33,27 +31,12 @@ PATH_URL = PATH_URL.strip('/')
 # config_panel.toml settings:
 
 DEBUG_ENABLED = '__DEBUG_ENABLED__'
+DEBUG = bool(int(DEBUG_ENABLED))
+
 LOG_LEVEL = '__LOG_LEVEL__'
 ADMIN_EMAIL = '__ADMIN_EMAIL__'
 DEFAULT_FROM_EMAIL = '__DEFAULT_FROM_EMAIL__'
 
-# -----------------------------------------------------------------------------
-# Use/convert/validate config_panel.toml settings:
-
-DEBUG = bool(int(DEBUG_ENABLED))
-assert LOG_LEVEL in (
-    'DEBUG',
-    'INFO',
-    'WARNING',
-    'ERROR',
-    'CRITICAL',
-), f'Invalid LOG_LEVEL: {LOG_LEVEL!r}'
-__EmailValidator(
-    message='ADMIN_EMAIL %(value)r from config panel is not valid!',
-)(ADMIN_EMAIL)
-__EmailValidator(
-    message='DEFAULT_FROM_EMAIL %(value)r from config panel is not valid!',
-)(DEFAULT_FROM_EMAIL)
 
 # -----------------------------------------------------------------------------
 
@@ -94,7 +77,7 @@ EMAIL_SUBJECT_PREFIX = f'[{SITE_TITLE}] '
 
 
 # E-mail address that error messages come from.
-SERVER_EMAIL = 'noreply@__DOMAIN__'
+SERVER_EMAIL = ADMIN_EMAIL
 
 # Default email address to use for various automated correspondence from
 # the site managers. Used for registration emails.
