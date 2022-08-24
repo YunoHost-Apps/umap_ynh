@@ -83,7 +83,7 @@ fi
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Stopping systemd services..."
+ynh_script_progression --message="Stopping systemd service '$app'..."
 
 ynh_systemd_action --service_name="$app" --action="stop"
 
@@ -123,7 +123,7 @@ fi
 #=================================================
 # MODIFY SETTINGS
 #=================================================
-ynh_script_progression --message="Modify django-fmd's config file..."
+ynh_script_progression --message="Modify $app config file..."
 
 ynh_add_config --template="settings.py" --destination="$final_path/settings.py"
 
@@ -132,7 +132,7 @@ ynh_add_config --template="settings.py" --destination="$final_path/settings.py"
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting systemd services..." --weight=5
+ynh_script_progression --message="Starting systemd service '$app'..." --weight=5
 
 ynh_systemd_action --service_name="$app" --action="start"
 
