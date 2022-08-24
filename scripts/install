@@ -228,9 +228,9 @@ then
 fi
 
 #=================================================
-# Start django_example_ynh via systemd
+# Start the app server via systemd
 #=================================================
-ynh_script_progression --message="Starting django_example_ynh's services..." --weight=5
+ynh_script_progression --message="Starting the application..." --weight=5
 
 ynh_systemd_action --service_name="$app" --action="start"
 
