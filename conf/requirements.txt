@@ -7,18 +7,18 @@ async-timeout==4.0.2; python_version >= "3.7" and python_full_version < "4.0.0" 
 deprecated==1.2.13; python_version >= "3.7" and python_full_version < "3.0.0" or python_version >= "3.7" and python_full_version < "4.0.0" and python_full_version >= "3.4.0" \
     --hash=sha256:64756e3e14c8c5eea9795d93c524551432a0be75629f8f29e67ab8caf076c76d \
     --hash=sha256:43ac5335da90c31c24ba028af536a91d41d53f9e6901ddb021bcc572ce44e38d
-django-axes==5.36.0; python_version >= "3.7" and python_full_version < "4.0.0" \
-    --hash=sha256:bac08a7047fde26ffb54813c971fd40eeadb4ecb8d342a6e47d53de666d1a792 \
-    --hash=sha256:466e6ed1affd0866c78f245ee658d2619f74250aca5856852d86e61dba400eda
+django-axes==5.39.0; python_version >= "3.7" and python_full_version < "4.0.0" \
+    --hash=sha256:97702552f7939c81db5bba2ef855ae43f20df92fa261cb79fd4c8633ba3b3955 \
+    --hash=sha256:8f039f8e98f050f13f654efca599d8a04d0b57d330c590cf89ec2bf731c9a7fb
 django-ipware==4.0.2; python_version >= "3.7" and python_full_version < "3.0.0" or python_version >= "3.7" and python_full_version < "4.0.0" and python_full_version >= "3.6.0" \
     --hash=sha256:602a58325a4808bd19197fef2676a0b2da2df40d0ecf21be414b2ff48c72ad05 \
     --hash=sha256:878dbb06a87e25550798e9ef3204ed70a200dd8b15e47dcef848cf08244f04c9
 django-redis==5.2.0; python_version >= "3.7" and python_full_version < "4.0.0" \
     --hash=sha256:8a99e5582c79f894168f5865c52bd921213253b7fd64d16733ae4591564465de \
     --hash=sha256:1d037dc02b11ad7aa11f655d26dac3fb1af32630f61ef4428860a2e29ff92026
-django-yunohost-integration==0.3.0; python_version >= "3.7" and python_full_version < "4.0.0" \
-    --hash=sha256:f7f8e9d55c50231bb32d3809b240d6ac718aadac1a1f471284baa1bfa6e98dff \
-    --hash=sha256:d0e9cc91d241075613cb54b5da0879ad9b8ad3d22b84130cd7a331025650406e
+django-yunohost-integration==0.4.0rc1; python_version >= "3.7" and python_full_version < "4.0.0" \
+    --hash=sha256:241bf0fc39cedc39f4ab1e3f0a1c227ba834e301e4ff56df9d15ca951c4031b9 \
+    --hash=sha256:8cb192735884b2fc2862bdd1a9d1c271a05e8346deb56a35bf74c16c65493b89
 django==3.2.15; python_version >= "3.7" and python_full_version < "4.0.0" \
     --hash=sha256:115baf5049d5cf4163e43492cdc7139c306ed6d451e7d3571fe9612903903713 \
     --hash=sha256:f71934b1a822f14a86c9ac9634053689279cd04ae69cb6ade4a59471b886582b
