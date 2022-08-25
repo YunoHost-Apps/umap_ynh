@@ -16,9 +16,9 @@ django-ipware==4.0.2; python_version >= "3.7" and python_full_version < "3.0.0" 
 django-redis==5.2.0; python_version >= "3.7" and python_full_version < "4.0.0" \
     --hash=sha256:8a99e5582c79f894168f5865c52bd921213253b7fd64d16733ae4591564465de \
     --hash=sha256:1d037dc02b11ad7aa11f655d26dac3fb1af32630f61ef4428860a2e29ff92026
-django-yunohost-integration==0.4.0rc1; python_version >= "3.7" and python_full_version < "4.0.0" \
-    --hash=sha256:241bf0fc39cedc39f4ab1e3f0a1c227ba834e301e4ff56df9d15ca951c4031b9 \
-    --hash=sha256:8cb192735884b2fc2862bdd1a9d1c271a05e8346deb56a35bf74c16c65493b89
+django-yunohost-integration==0.4.0rc2; python_version >= "3.7" and python_full_version < "4.0.0" \
+    --hash=sha256:89f6e35966084f9e16af502f55a8bbec883d18b84e06be55d254567250b9005c \
+    --hash=sha256:ea7c6d2f8ef864c014158d9114815e24cde343e8c32bb8448ba63f250aea9d2f
 django==3.2.15; python_version >= "3.7" and python_full_version < "4.0.0" \
     --hash=sha256:115baf5049d5cf4163e43492cdc7139c306ed6d451e7d3571fe9612903903713 \
     --hash=sha256:f71934b1a822f14a86c9ac9634053689279cd04ae69cb6ade4a59471b886582b
