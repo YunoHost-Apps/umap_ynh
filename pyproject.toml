@@ -11,7 +11,7 @@ homepage = "https://github.com/YunoHost-Apps/django_example_ynh"
 
 [tool.poetry.dependencies]
 python = ">=3.7,<4.0.0"  # TODO: Update to >=3.8 after YunoHost updates to Bullseye
-django_yunohost_integration = {version = ">=0.4.0rc2", extras = ["ynh"]}
+django_yunohost_integration = {version = ">=0.4.0rc5", extras = ["ynh"]}
 
 [tool.poetry.dev-dependencies]
 bx_py_utils = "*"  # https://github.com/boxine/bx_py_utils
@@ -26,7 +26,7 @@ isort = "*"
 flake8 = "*"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 
