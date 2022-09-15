@@ -18,13 +18,12 @@ check-poetry:
 
 install-poetry:  ## install or update poetry
 	pip3 install -U pip
-	pip3 install -U poetry
+	pip3 install -U "poetry!=1.2.0"
 
 install: check-poetry  ## install project via poetry
 	poetry install
 
 update: install-poetry  ## update the sources and installation and generate "conf/requirements.txt"
-	poetry run pip install -U pip
 	poetry update
 	poetry export -f requirements.txt --output conf/requirements.txt
 
@@ -53,6 +52,8 @@ local-test: install  ## Run local_test.py to run the project locally
 local-diff-settings:  ## Run "manage.py diffsettings" with local test
 	poetry run python3 local_test/opt_yunohost/manage.py diffsettings
 
+safety:  ## Run https://github.com/pyupio/safety
+	poetry run safety check --full-report
 
 ##############################################################################
 

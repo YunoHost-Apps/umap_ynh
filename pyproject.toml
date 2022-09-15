@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django_example_ynh"
-version = "0.3.0"
+version = "0.4.0rc1"
 description = "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost."
 authors = ["JensDiemer <git@jensdiemer.de>"]
 license = "GPL"
@@ -11,7 +11,7 @@ homepage = "https://github.com/YunoHost-Apps/django_example_ynh"
 
 [tool.poetry.dependencies]
 python = ">=3.7,<4.0.0"  # TODO: Update to >=3.8 after YunoHost updates to Bullseye
-django_yunohost_integration = {version = ">=0.4.0rc2", extras = ["ynh"]}
+django_yunohost_integration = {version = ">=0.4.0", extras = ["ynh"]}
 
 [tool.poetry.dev-dependencies]
 bx_py_utils = "*"  # https://github.com/boxine/bx_py_utils
@@ -24,9 +24,11 @@ pytest-darker = "*"  # https://github.com/akaihola/pytest-darker
 coveralls = "*"
 isort = "*"
 flake8 = "*"
+EditorConfig = "*"  # https://github.com/editorconfig/editorconfig-core-py
+safety = "*"  # https://github.com/pyupio/safety
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 
@@ -54,7 +56,7 @@ line_length = 100
 # https://pycqa.github.io/isort/docs/configuration/config_files/#pyprojecttoml-preferred-format
 atomic=true
 profile='black'
-skip_glob=["*/htmlcov/*","*/migrations/*"]
+skip_glob=["*/htmlcov/*","*/migrations/*","*/local_test/*"]
 known_first_party=['django_yunohost_integration']
 line_length=100
 lines_after_imports=2

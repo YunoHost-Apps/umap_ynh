@@ -11,7 +11,7 @@
 
 from pathlib import Path as __Path
 
-from django_yunohost_integration.base_settings import *  # noqa
+from django_yunohost_integration.base_settings import *  # noqa:F401,F403
 from django_yunohost_integration.secret_key import get_or_create_secret as __get_or_create_secret
 
 
@@ -118,49 +118,19 @@ MEDIA_ROOT = str(PUBLIC_PATH / 'media')
 
 # -----------------------------------------------------------------------------
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'formatters': {
-        'verbose': {
-            'format': '{asctime} {levelname} {name} {module}.{funcName} {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'formatter': 'verbose',
-            'class': 'django.utils.log.AdminEmailHandler',
-            'include_html': True,
-        },
-        'log_file': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.WatchedFileHandler',
-            'formatter': 'verbose',
-            'filename': str(LOG_FILE),
-        },
-    },
-    'loggers': {
-        '': {'handlers': ['log_file', 'mail_admins'], 'level': LOG_LEVEL, 'propagate': False},
-        'django': {'handlers': ['log_file', 'mail_admins'], 'level': LOG_LEVEL, 'propagate': False},
-        'axes': {'handlers': ['log_file', 'mail_admins'], 'level': LOG_LEVEL, 'propagate': False},
-        'django_tools': {
-            'handlers': ['log_file', 'mail_admins'],
-            'level': LOG_LEVEL,
-            'propagate': False,
-        },
-        'django_yunohost_integration': {
-            'handlers': ['log_file', 'mail_admins'],
-            'level': LOG_LEVEL,
-            'propagate': False,
-        },
-    },
+# Set log file to e.g.: /var/log/$app/$app.log
+LOGGING['handlers']['log_file']['filename'] = str(LOG_FILE)
+
+# Example how to add logging to own app:
+LOGGING['loggers']['django_example_ynh'] = {
+    'handlers': ['syslog', 'log_file', 'mail_admins'],
+    'level': 'INFO',
+    'propagate': False,
 }
 
 # -----------------------------------------------------------------------------
 
 try:
-    from local_settings import *  # noqa
+    from local_settings import *  # noqa:F401,F403
 except ImportError:
     pass

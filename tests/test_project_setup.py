@@ -4,6 +4,7 @@ import subprocess
 from pathlib import Path
 
 import tomli
+from django_tools.unittest_utils.project_setup import check_editor_config
 
 
 PACKAGE_ROOT = Path(__file__).parent.parent
@@ -42,3 +43,7 @@ def test_poetry_check():
     )
     print(output)
     assert output == 'All set!\n'
+
+
+def test_check_editor_config():
+    check_editor_config(package_root=PACKAGE_ROOT)
