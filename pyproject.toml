@@ -56,7 +56,7 @@ line_length = 100
 # https://pycqa.github.io/isort/docs/configuration/config_files/#pyprojecttoml-preferred-format
 atomic=true
 profile='black'
-skip_glob=["*/htmlcov/*","*/migrations/*"]
+skip_glob=["*/htmlcov/*","*/migrations/*","*/local_test/*"]
 known_first_party=['django_yunohost_integration']
 line_length=100
 lines_after_imports=2
