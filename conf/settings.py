@@ -47,6 +47,30 @@ SECRET_KEY = __get_or_create_secret(FINALPATH / 'secret.txt')  # /opt/yunohost/$
 
 # INSTALLED_APPS.append('<insert-your-app-here>')
 
+MIDDLEWARE.insert(
+    MIDDLEWARE.index('django.contrib.auth.middleware.AuthenticationMiddleware') + 1,
+    # login a user via HTTP_REMOTE_USER header from SSOwat:
+    'django_yunohost_integration.sso_auth.auth_middleware.SSOwatRemoteUserMiddleware',
+)
+
+# Keep ModelBackend around for per-user permissions and superuser
+AUTHENTICATION_BACKENDS = (
+    'axes.backends.AxesBackend',  # AxesBackend should be the first backend!
+    #
+    # Authenticate via SSO and nginx 'HTTP_REMOTE_USER' header:
+    'django_yunohost_integration.sso_auth.auth_backend.SSOwatUserBackend',
+    #
+    # Fallback to normal Django model backend:
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+LOGIN_REDIRECT_URL = None
+LOGIN_URL = '/yunohost/sso/'
+LOGOUT_REDIRECT_URL = '/yunohost/sso/'
+# /yunohost/sso/?action=logout
+
+ROOT_URLCONF = 'urls'  # .../conf/urls.py
+
 # -----------------------------------------------------------------------------
 
 
