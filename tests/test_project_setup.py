@@ -6,6 +6,8 @@ from pathlib import Path
 import tomli
 from django_tools.unittest_utils.project_setup import check_editor_config
 
+import django_yunohost_integration
+
 
 PACKAGE_ROOT = Path(__file__).parent.parent
 
@@ -19,15 +21,20 @@ def assert_file_contains_string(file_path, string):
 
 
 def test_version():
+    upstream_version = django_yunohost_integration.__version__
+
     pyproject_toml_path = Path(PACKAGE_ROOT, 'pyproject.toml')
     pyproject_toml = tomli.loads(pyproject_toml_path.read_text(encoding='UTF-8'))
-    version = pyproject_toml['tool']['poetry']['version']
-    assert '~ynh' not in version
-    assert version[0].isdigit()
+    pyproject_version = pyproject_toml['tool']['poetry']['version']
+    assert pyproject_version.startswith(f'{upstream_version}+ynh')
+
+    # pyproject.toml needs a PEP 440 conform version and used "+ynh"
+    # the YunoHost syntax is: "~ynh", just "convert this:
+    manifest_version = pyproject_version.replace('+', '~')
 
     assert_file_contains_string(
         file_path=Path(PACKAGE_ROOT, 'manifest.json'),
-        string=f'"version": "{version}~ynh',
+        string=f'"version": "{manifest_version}"',
     )
 
 
