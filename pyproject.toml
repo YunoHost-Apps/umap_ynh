@@ -48,10 +48,6 @@ lint = [
 log_level = "INFO"
 
 
-[tool.flynt]
-line_length = 100
-
-
 [tool.isort]
 # https://pycqa.github.io/isort/docs/configuration/config_files/#pyprojecttoml-preferred-format
 atomic=true
