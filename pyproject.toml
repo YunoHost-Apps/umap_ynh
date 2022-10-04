@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django_example_ynh"
-version = "0.4.0+ynh1"
+version = "0.4.1+ynh1"
 description = "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost."
 authors = ["JensDiemer <git@jensdiemer.de>"]
 license = "GPL"
