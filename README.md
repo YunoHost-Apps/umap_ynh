@@ -17,7 +17,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 [![pytest](https://github.com/YunoHost-Apps/django_example_ynh/actions/workflows/pytest.yml/badge.svg)](https://github.com/YunoHost-Apps/django_example_ynh/actions/workflows/pytest.yml) [![YunoHost apps package linter](https://github.com/YunoHost-Apps/django_example_ynh/actions/workflows/package_linter.yml/badge.svg)](https://github.com/YunoHost-Apps/django_example_ynh/actions/workflows/package_linter.yml)
 
-Demo [YunoHost Application](https://install-app.yunohost.org/?app=django_example_ynh) to demonstrate the integration of a Django project under YunoHost.
+Demo [YunoHost Application](https://install-app.yunohost.org/?app=django_example_ynh) to demonstrate the integration of a [Python](https://www.python.org/)/[Django](https://www.djangoproject.com/) project under YunoHost using [django_yunohost_integration](https://github.com/YunoHost-Apps/django_yunohost_integration).
 
 [![Integration level](https://dash.yunohost.org/integration/django_example_ynh.svg)](https://dash.yunohost.org/appci/app/django_example_ynh) ![](https://ci-apps.yunohost.org/ci/badges/django_example_ynh.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/django_example_ynh.maintain.svg)
 [![Install django_example_ynh with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_example_ynh)
@@ -26,7 +26,7 @@ Demo [YunoHost Application](https://install-app.yunohost.org/?app=django_example
 Pull requests welcome ;)
 
 
-**Shipped version:** 0.4.0~ynh1
+**Shipped version:** 0.4.1~ynh1 *(:warning: This is the `testing` branch. The [`master` branch](https://github.com/YunoHost-Apps/django_example_ynh_ynh/tree/master) used in the catalog is currently on version 0.4.0\~ynh1.)*
 
 ## Disclaimers / important information
 
