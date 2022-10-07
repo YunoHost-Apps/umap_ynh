@@ -28,8 +28,7 @@ To demonstrate the functionality the small [django-example](https://github.com/j
 Pull requests welcome ;)
 
 
-**Version incluse :** 0.5.0rc1~ynh1 *(:warning: Il s'agit de la branche `dev`. La [branche `master`](https://github.com/YunoHost-Apps/django_example_ynh_ynh/tree/master) utilisée dans le catalogue est actuellement en 0.4.1\~ynh1.)*
-
+**Version incluse :** 0.5.0rc1~ynh1
 ## Avertissements / informations importantes
 
 ## local test
