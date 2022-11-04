@@ -19,6 +19,8 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 Demo [YunoHost Application](https://install-app.yunohost.org/?app=django_example_ynh) to demonstrate the integration of a [Python](https://www.python.org/)/[Django](https://www.djangoproject.com/) project under YunoHost using [django_yunohost_integration](https://github.com/YunoHost-Apps/django_yunohost_integration).
 
+To demonstrate the functionality the small [django-example](https://github.com/jedie/django-example) app will be installed.
+
 [![Integration level](https://dash.yunohost.org/integration/django_example_ynh.svg)](https://dash.yunohost.org/appci/app/django_example_ynh) ![](https://ci-apps.yunohost.org/ci/badges/django_example_ynh.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/django_example_ynh.maintain.svg)
 [![Install django_example_ynh with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_example_ynh)
 
@@ -26,8 +28,7 @@ Demo [YunoHost Application](https://install-app.yunohost.org/?app=django_example
 Pull requests welcome ;)
 
 
-**Version incluse :** 0.4.1~ynh1 *(:warning: Il s'agit de la branche `testing`. La [branche `master`](https://github.com/YunoHost-Apps/django_example_ynh_ynh/tree/master) utilisée dans le catalogue est actuellement en 0.4.0\~ynh1.)*
-
+**Version incluse :** 0.5.0rc1~ynh1
 ## Avertissements / informations importantes
 
 ## local test

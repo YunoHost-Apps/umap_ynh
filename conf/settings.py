@@ -15,6 +15,13 @@ from django_yunohost_integration.base_settings import *  # noqa:F401,F403
 from django_yunohost_integration.secret_key import get_or_create_secret as __get_or_create_secret
 
 
+# https://github.com/jedie/django-example/
+from django_example.settings.prod import *  # noqa:F401,F403 isort:skip
+
+
+from django_yunohost_integration.base_settings import LOGGING  # noqa:F401 isort:skip
+
+
 FINALPATH = __Path('__FINALPATH__')  # /opt/yunohost/$app
 assert FINALPATH.is_dir(), f'Directory not exists: {FINALPATH}'
 
@@ -26,6 +33,8 @@ assert LOG_FILE.is_file(), f'File not exists: {LOG_FILE}'
 
 PATH_URL = '__PATH_URL__'  # $YNH_APP_ARG_PATH
 PATH_URL = PATH_URL.strip('/')
+
+YNH_CURRENT_HOST = '__YNH_CURRENT_HOST__'  # YunoHost main domain from: /etc/yunohost/current_host
 
 # -----------------------------------------------------------------------------
 # config_panel.toml settings:
@@ -45,13 +54,18 @@ YNH_SETUP_USER = 'setup_user.setup_project_user'
 
 SECRET_KEY = __get_or_create_secret(FINALPATH / 'secret.txt')  # /opt/yunohost/$app/secret.txt
 
-# INSTALLED_APPS.append('<insert-your-app-here>')
+INSTALLED_APPS += [
+    'axes',  # https://github.com/jazzband/django-axes
+    'django_yunohost_integration.apps.YunohostIntegrationConfig',
+]
 
 MIDDLEWARE.insert(
     MIDDLEWARE.index('django.contrib.auth.middleware.AuthenticationMiddleware') + 1,
     # login a user via HTTP_REMOTE_USER header from SSOwat:
     'django_yunohost_integration.sso_auth.auth_middleware.SSOwatRemoteUserMiddleware',
 )
+# AxesMiddleware should be the last middleware:
+MIDDLEWARE.append('axes.middleware.AxesMiddleware')
 
 # Keep ModelBackend around for per-user permissions and superuser
 AUTHENTICATION_BACKENDS = (
@@ -146,7 +160,7 @@ MEDIA_ROOT = str(PUBLIC_PATH / 'media')
 LOGGING['handlers']['log_file']['filename'] = str(LOG_FILE)
 
 # Example how to add logging to own app:
-LOGGING['loggers']['django_example_ynh'] = {
+LOGGING['loggers']['django_example'] = {
     'handlers': ['syslog', 'log_file', 'mail_admins'],
     'level': 'INFO',
     'propagate': False,
