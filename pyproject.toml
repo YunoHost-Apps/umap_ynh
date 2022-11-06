@@ -2,8 +2,8 @@
 name = "django_example_ynh"
 version = "0.5.0rc1+ynh1"
 description = "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost."
-authors = ["JensDiemer <git@jensdiemer.de>"]
-license = "GPL"
+authors = ["Jens Diemer <django_example_ynh@jensdiemer.de>"]
+license = "GPL-3.0"
 homepage = "https://github.com/YunoHost-Apps/django_example_ynh"
 
 [tool.poetry.urls]
@@ -63,7 +63,7 @@ log_level = "INFO"
 atomic=true
 profile='black'
 skip_glob=["*/htmlcov/*","*/migrations/*","*/local_test/*"]
-known_first_party=['django_yunohost_integration']
+known_first_party=['django-example']
 line_length=100
 lines_after_imports=2
 
@@ -113,3 +113,27 @@ whitelist_externals = make
 commands =
     make pytest
 """
+
+
+[manageprojects] # https://github.com/jedie/manageprojects
+initial_revision = "da47a1e"
+initial_date = 2022-11-06T17:25:53+01:00
+cookiecutter_template = "https://github.com/jedie/cookiecutter_templates/"
+cookiecutter_directory = "yunohost_django_package"
+
+[manageprojects.cookiecutter_context.cookiecutter]
+project_name = "Django Example"
+full_name = "Jens Diemer"
+github_username = "jedie"
+author_email = "django_example_ynh@jensdiemer.de"
+upstream_pkg_name = "django_example"
+upstream_url = "https://github.com/jedie/django-example"
+ynh_app_pkg_name = "django_example_ynh"
+ynh_app_url = "https://github.com/YunoHost-Apps/django_example_ynh"
+bug_tracker_url = "https://github.com/jedie/django-example/issues"
+upstream_version = "0.1.0rc0"
+ynh_version = "1"
+description = "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost."
+license = "GPL-3.0"
+_template = "https://github.com/jedie/cookiecutter_templates/"
+_output_dir = "~/repos_ynh/django_example_ynh"
