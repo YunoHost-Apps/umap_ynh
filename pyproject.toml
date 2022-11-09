@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django_example_ynh"
-version = "0.5.0rc1+ynh1"
+version = "0.1.0rc0~ynh1"
 description = "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost."
 authors = ["Jens Diemer <django_example_ynh@jensdiemer.de>"]
 license = "GPL-3.0"
@@ -12,7 +12,7 @@ homepage = "https://github.com/YunoHost-Apps/django_example_ynh"
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0.0"  # Stay with 3.9 until YunoHost used >=Debian 11 (Bullseye)
 
-django-example = ">=0.1.0rc0"  # https://github.com/jedie/django-example
+django_example = ">=0.1.0rc0"  # https://github.com/jedie/django-example
 
 # extras "ynh" will install: gunicorn, psycopg2, django-redis and django-axes
 # see: https://github.com/YunoHost-Apps/django_yunohost_integration/blob/main/pyproject.toml
@@ -63,7 +63,7 @@ log_level = "INFO"
 atomic=true
 profile='black'
 skip_glob=["*/htmlcov/*","*/migrations/*","*/local_test/*"]
-known_first_party=['django-example']
+known_first_party=['django_example']
 line_length=100
 lines_after_imports=2
 
@@ -120,6 +120,9 @@ initial_revision = "da47a1e"
 initial_date = 2022-11-06T17:25:53+01:00
 cookiecutter_template = "https://github.com/jedie/cookiecutter_templates/"
 cookiecutter_directory = "yunohost_django_package"
+applied_migrations = [
+    "4dbd146", # 2022-11-06T17:59:58+01:00
+]
 
 [manageprojects.cookiecutter_context.cookiecutter]
 project_name = "Django Example"
