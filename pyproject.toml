@@ -4,7 +4,7 @@ version = "0.2.0+ynh1"
 description = "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost."
 authors = ["Jens Diemer <django_example_ynh@jensdiemer.de>"]
 homepage = "https://github.com/YunoHost-Apps/django_example_ynh"
-license = "GPL-3.0"
+license = "GPL-3.0-or-later"
 readme = 'README.md'
 
 [tool.poetry.urls]
@@ -17,7 +17,7 @@ django_example = ">=0.1.0rc0"  # https://github.com/jedie/django-example
 #
 # extras "ynh" will install: gunicorn, psycopg2, django-redis and django-axes
 # see: https://github.com/YunoHost-Apps/django_yunohost_integration/blob/main/pyproject.toml
-django_yunohost_integration = {version = ">=0.5.0rc1", extras = ["ynh"]}  # https://github.com/YunoHost-Apps/django_yunohost_integration
+django_yunohost_integration = {version = ">=0.5.1", extras = ["ynh"]}  # https://github.com/YunoHost-Apps/django_yunohost_integration
 
 
 [tool.poetry.dev-dependencies]
@@ -128,6 +128,7 @@ applied_migrations = [
     "4dbd146", # 2022-11-06T17:59:58+01:00
     "baf1ebc", # 2022-11-30T21:19:10+01:00
     "44aa620", # 2022-12-21T19:59:39+01:00
+    "b204761", # 2022-12-21T20:25:20+01:00
 ]
 
 [manageprojects.cookiecutter_context.cookiecutter]
@@ -142,8 +143,7 @@ ynh_app_url = "https://github.com/YunoHost-Apps/django_example_ynh"
 bug_tracker_url = "https://github.com/jedie/django-example/issues"
 upstream_version = "0.1.0rc0"
 ynh_version = "1"
-description = "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost."
 package_description = "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost."
-license = "GPL-3.0"
+license = "GPL-3.0-or-later"
 _template = "https://github.com/jedie/cookiecutter_templates/"
 _output_dir = "~/repos_ynh/django_example_ynh"

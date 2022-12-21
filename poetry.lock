@@ -610,14 +610,14 @@ pprintpp = "*"
 
 [[package]]
 name = "django-yunohost-integration"
-version = "0.5.0"
+version = "0.5.1"
 description = "Glue code to package django projects as yunohost apps."
 category = "main"
 optional = false
 python-versions = ">=3.9,<4.0.0"
 files = [
-    {file = "django_yunohost_integration-0.5.0-py3-none-any.whl", hash = "sha256:48063fece3630ec47e78f257e2e23890f703cc46e5f6d453e602222aa460c004"},
-    {file = "django_yunohost_integration-0.5.0.tar.gz", hash = "sha256:6bdb4bb00e8585ff7efa43efdf42250f351f6443f2736972d10cf97ad7755879"},
+    {file = "django_yunohost_integration-0.5.1-py3-none-any.whl", hash = "sha256:22a00dd9670ed8fbc6edb34939aa01f5e278334a445982216ebbabf93fe63c1e"},
+    {file = "django_yunohost_integration-0.5.1.tar.gz", hash = "sha256:a0f64b9f3de11b74eeb00476a7ece82be4e748d1c581e85833a7c852ffd57117"},
 ]
 
 [package.dependencies]
@@ -1760,4 +1760,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<4.0.0"  # Stay with 3.9 until YunoHost used >=Debian 11 (Bullseye)
-content-hash = "7b6a102ec0170e7387f0a718df873813b1686fdefd2ec3043414115aac8f2e3c"
+content-hash = "9205dc40ea325863bff567160c6ccd312da5131885c9ec15b81d9b3abca0d3d8"
