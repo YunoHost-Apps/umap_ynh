@@ -34,9 +34,9 @@ django-redis==5.2.0 ; python_version >= "3.9" and python_full_version < "4.0.0" 
 django-tools==0.54.0 ; python_version >= "3.9" and python_full_version < "4.0.0" \
     --hash=sha256:5040a91282be9d1c9d379b0c65da50bcb3691bff03cee54fd4123ace238c3a43 \
     --hash=sha256:a7b7bfa5b9c5a81966454d17dffb2403cee25a806c858ee0486a08798227598f
-django-yunohost-integration[ynh]==0.5.0 ; python_version >= "3.9" and python_full_version < "4.0.0" \
-    --hash=sha256:48063fece3630ec47e78f257e2e23890f703cc46e5f6d453e602222aa460c004 \
-    --hash=sha256:6bdb4bb00e8585ff7efa43efdf42250f351f6443f2736972d10cf97ad7755879
+django-yunohost-integration[ynh]==0.5.1 ; python_version >= "3.9" and python_full_version < "4.0.0" \
+    --hash=sha256:22a00dd9670ed8fbc6edb34939aa01f5e278334a445982216ebbabf93fe63c1e \
+    --hash=sha256:a0f64b9f3de11b74eeb00476a7ece82be4e748d1c581e85833a7c852ffd57117
 django==4.1.4 ; python_version >= "3.9" and python_full_version < "4.0.0" \
     --hash=sha256:0b223bfa55511f950ff741983d408d78d772351284c75e9f77d2b830b6b4d148 \
     --hash=sha256:d38a4e108d2386cb9637da66a82dc8d0733caede4c83c4afdbda78af4214211b
