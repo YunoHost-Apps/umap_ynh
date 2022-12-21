@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django_example_ynh"
-version = "0.1.0rc0+ynh1"
+version = "0.2.0+ynh1"
 description = "Demo YunoHost Application to demonstrate the integration of a Django project under YunoHost."
 authors = ["Jens Diemer <django_example_ynh@jensdiemer.de>"]
 homepage = "https://github.com/YunoHost-Apps/django_example_ynh"
@@ -37,7 +37,6 @@ poetry-publish = "*"  # https://github.com/jedie/poetry-publish
 pytest = "*"
 pytest-cov = "*"
 pytest-django = "*"
-pytest-darker = "*"  # https://github.com/akaihola/pytest-darker
 requests = "*"  # https://github.com/psf/requests
 packaging = "*"  # https://github.com/pypa/packagi
 beautifulsoup4 = "*"  # https://pypi.org/project/beautifulsoup4/
@@ -94,7 +93,6 @@ addopts = """
     --cov-report xml
     --no-cov-on-fail
     --showlocals
-    --darker
     --doctest-modules
     --failed-first
     --new-first
