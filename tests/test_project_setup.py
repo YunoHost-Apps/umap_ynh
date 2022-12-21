@@ -33,9 +33,9 @@ def test_version():
     pyproject_toml_path = Path(PACKAGE_ROOT, 'pyproject.toml')
     pyproject_toml = tomli.loads(pyproject_toml_path.read_text(encoding='UTF-8'))
     pyproject_version = pyproject_toml['tool']['poetry']['version']
-    assert pyproject_version.startswith(f'{__version__}+ynh'), (
-        f'{pyproject_version!r} does not start with "{__version__}+ynh"'
-    )
+    assert pyproject_version.startswith(
+        f'{__version__}+ynh'
+    ), f'{pyproject_version!r} does not start with "{__version__}+ynh"'
 
     # pyproject.toml needs a PEP 440 conform version and used "+ynh"
     # the YunoHost syntax is: "~ynh", just "convert this:
