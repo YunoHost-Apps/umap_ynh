@@ -15,7 +15,11 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 ## Vue d'ensemble
 
-[![pytest](https://github.com/YunoHost-Apps/django_example_ynh/actions/workflows/pytest.yml/badge.svg)](https://github.com/YunoHost-Apps/django_example_ynh/actions/workflows/pytest.yml) [![YunoHost apps package linter](https://github.com/YunoHost-Apps/django_example_ynh/actions/workflows/package_linter.yml/badge.svg)](https://github.com/YunoHost-Apps/django_example_ynh/actions/workflows/package_linter.yml)
+[![tests](https://github.com/YunoHost-Apps/django_example_ynh/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/YunoHost-Apps/django_example_ynh/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/github/jedie/django_example_ynh/branch/main/graph/badge.svg)](https://codecov.io/github/jedie/django_example_ynh)
+[![django_example_ynh @ PyPi](https://img.shields.io/pypi/v/django_example_ynh?label=django_example_ynh%20%40%20PyPi)](https://pypi.org/project/django_example_ynh/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/django_example_ynh)](https://github.com/YunoHost-Apps/django_example_ynh/blob/main/pyproject.toml)
+[![License GPL-3.0](https://img.shields.io/pypi/l/django_example_ynh)](https://github.com/YunoHost-Apps/django_example_ynh/blob/main/LICENSE)
 
 Demo [YunoHost Application](https://install-app.yunohost.org/?app=django_example_ynh) to demonstrate the integration of a [Python](https://www.python.org/)/[Django](https://www.djangoproject.com/) project under YunoHost using [django_yunohost_integration](https://github.com/YunoHost-Apps/django_yunohost_integration).
 
@@ -28,7 +32,7 @@ To demonstrate the functionality the small [django-example](https://github.com/j
 Pull requests welcome ;)
 
 
-**Version incluse :** 0.5.0rc1~ynh1
+**Version incluse :** 0.2.0~ynh1
 ## Avertissements / informations importantes
 
 ## local test
@@ -187,7 +191,7 @@ root@yunohost:~# journalctl --unit=django_example_ynh --follow
 ## Documentations et ressources
 
 * Site officiel de l'app : <https://github.com/YunoHost-Apps/django_example_ynh>
-* Documentation officielle utilisateur : <https://github.com/YunoHost-Apps/django_example_ynh>
+* Documentation officielle utilisateur : <https://github.com/jedie/django-example>
 * Documentation officielle de l'admin : <https://github.com/YunoHost-Apps/django_example_ynh>
 * Dépôt de code officiel de l'app : <https://github.com/YunoHost-Apps/django_example_ynh>
 * Documentation YunoHost pour cette app : <https://yunohost.org/app_django_example_ynh>
