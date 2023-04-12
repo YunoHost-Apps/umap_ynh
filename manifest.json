@@ -1,6 +1,6 @@
 {
 	"name": "Django Example",
-	"id": "django_example_ynh",
+	"id": "django_example",
 	"packaging_format": 1,
 	"description": {
 		"en": "App to demonstrate the integration of a Django project under YunoHost via https://github.com/YunoHost-Apps/django_yunohost_integration"
