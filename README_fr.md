@@ -5,15 +5,16 @@ It shall NOT be edited by hand.
 
 # Django Example pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/django_example_ynh.svg)](https://dash.yunohost.org/appci/app/django_example_ynh) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/django_example_ynh.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/django_example_ynh.maintain.svg)  
-[![Installer Django Example avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_example_ynh)
+[![Niveau d’intégration](https://dash.yunohost.org/integration/django_example.svg)](https://dash.yunohost.org/appci/app/django_example) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/django_example.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/django_example.maintain.svg)
+
+[![Installer Django Example avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_example)
 
 *[Read this readme in english.](./README.md)*
 
-> *Ce package vous permet d'installer Django Example rapidement et simplement sur un serveur YunoHost.
-Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
+> *Ce package vous permet d’installer Django Example rapidement et simplement sur un serveur YunoHost.
+Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l’installer et en profiter.*
 
-## Vue d'ensemble
+## Vue d’ensemble
 
 [![tests](https://github.com/YunoHost-Apps/django_example_ynh/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/YunoHost-Apps/django_example_ynh/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/github/jedie/django_example_ynh/branch/main/graph/badge.svg)](https://codecov.io/github/jedie/django_example_ynh)
@@ -190,23 +191,23 @@ root@yunohost:~# journalctl --unit=django_example_ynh --follow
 
 ## Documentations et ressources
 
-* Site officiel de l'app : <https://github.com/YunoHost-Apps/django_example_ynh>
+* Site officiel de l’app : <https://github.com/YunoHost-Apps/django_example_ynh>
 * Documentation officielle utilisateur : <https://github.com/jedie/django-example>
-* Documentation officielle de l'admin : <https://github.com/YunoHost-Apps/django_example_ynh>
-* Dépôt de code officiel de l'app : <https://github.com/YunoHost-Apps/django_example_ynh>
-* Documentation YunoHost pour cette app : <https://yunohost.org/app_django_example_ynh>
-* Signaler un bug : <https://github.com/YunoHost-Apps/django_example_ynh_ynh/issues>
+* Documentation officielle de l’admin : <https://github.com/YunoHost-Apps/django_example_ynh>
+* Dépôt de code officiel de l’app : <https://github.com/YunoHost-Apps/django_example_ynh>
+* Documentation YunoHost pour cette app : <https://yunohost.org/app_django_example>
+* Signaler un bug : <https://github.com/YunoHost-Apps/django_example_ynh/issues>
 
 ## Informations pour les développeurs
 
-Merci de faire vos pull request sur la [branche testing](https://github.com/YunoHost-Apps/django_example_ynh_ynh/tree/testing).
+Merci de faire vos pull request sur la [branche testing](https://github.com/YunoHost-Apps/django_example_ynh/tree/testing).
 
 Pour essayer la branche testing, procédez comme suit.
 
 ``` bash
-sudo yunohost app install https://github.com/YunoHost-Apps/django_example_ynh_ynh/tree/testing --debug
+sudo yunohost app install https://github.com/YunoHost-Apps/django_example_ynh/tree/testing --debug
 ou
-sudo yunohost app upgrade django_example_ynh -u https://github.com/YunoHost-Apps/django_example_ynh_ynh/tree/testing --debug
+sudo yunohost app upgrade django_example -u https://github.com/YunoHost-Apps/django_example_ynh/tree/testing --debug
 ```
 
-**Plus d'infos sur le packaging d'applications :** <https://yunohost.org/packaging_apps>
+**Plus d’infos sur le packaging d’applications :** <https://yunohost.org/packaging_apps>

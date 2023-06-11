@@ -5,8 +5,9 @@ It shall NOT be edited by hand.
 
 # Django Example for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/django_example_ynh.svg)](https://dash.yunohost.org/appci/app/django_example_ynh) ![Working status](https://ci-apps.yunohost.org/ci/badges/django_example_ynh.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/django_example_ynh.maintain.svg)  
-[![Install Django Example with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_example_ynh)
+[![Integration level](https://dash.yunohost.org/integration/django_example.svg)](https://dash.yunohost.org/appci/app/django_example) ![Working status](https://ci-apps.yunohost.org/ci/badges/django_example.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/django_example.maintain.svg)
+
+[![Install Django Example with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_example)
 
 *[Lire ce readme en français.](./README_fr.md)*
 
@@ -194,19 +195,19 @@ root@yunohost:~# journalctl --unit=django_example_ynh --follow
 * Official user documentation: <https://github.com/jedie/django-example>
 * Official admin documentation: <https://github.com/YunoHost-Apps/django_example_ynh>
 * Upstream app code repository: <https://github.com/YunoHost-Apps/django_example_ynh>
-* YunoHost documentation for this app: <https://yunohost.org/app_django_example_ynh>
-* Report a bug: <https://github.com/YunoHost-Apps/django_example_ynh_ynh/issues>
+* YunoHost documentation for this app: <https://yunohost.org/app_django_example>
+* Report a bug: <https://github.com/YunoHost-Apps/django_example_ynh/issues>
 
 ## Developer info
 
-Please send your pull request to the [testing branch](https://github.com/YunoHost-Apps/django_example_ynh_ynh/tree/testing).
+Please send your pull request to the [testing branch](https://github.com/YunoHost-Apps/django_example_ynh/tree/testing).
 
 To try the testing branch, please proceed like that.
 
 ``` bash
-sudo yunohost app install https://github.com/YunoHost-Apps/django_example_ynh_ynh/tree/testing --debug
+sudo yunohost app install https://github.com/YunoHost-Apps/django_example_ynh/tree/testing --debug
 or
-sudo yunohost app upgrade django_example_ynh -u https://github.com/YunoHost-Apps/django_example_ynh_ynh/tree/testing --debug
+sudo yunohost app upgrade django_example -u https://github.com/YunoHost-Apps/django_example_ynh/tree/testing --debug
 ```
 
 **More info regarding app packaging:** <https://yunohost.org/packaging_apps>
