@@ -113,7 +113,7 @@ These projects used `django_example_ynh`:
 
 # Developer info
 
-The App project will be stored under `__FINALPATH__` (e.g.: `/opt/yunohost/$app`) that's Django's `settings.FINALPATH`
+The App project will be stored under `__DATA_DIR__` (e.g.: `/home/yunohost.app/$app`) that's Django's `settings.DATA_DIR_PATH`
 "static" / "media" files to serve via nginx are under `__PUBLIC_PATH__` (e.g.: `/var/www/$app`) that's `settings.PUBLIC_PATH`
 
 ## package installation / debugging
@@ -158,7 +158,7 @@ drwxr-xr-x 6 root root 6 Dec  8 08:36 ..
 drwxr-xr-x 2 root root 2 Dec  8 08:36 media
 drwxr-xr-x 7 root root 8 Dec  8 08:40 static
 
-root@yunohost:~# ls -la /opt/yunohost/django_example_ynh/
+root@yunohost:~# ls -la /home/yunohost.app/django_example_ynh/
 total 58
 drwxr-xr-x 5 django_example_ynh django_example_ynh   11 Dec  8 08:39 .
 drwxr-xr-x 3 root        root           3 Dec  8 08:36 ..
@@ -170,13 +170,13 @@ drwxr-xr-x 6 django_example_ynh django_example_ynh    6 Dec  8 08:37 venv
 -rw-r--r-- 1 django_example_ynh django_example_ynh  115 Dec  8 08:39 wsgi.py
 -rw-r--r-- 1 django_example_ynh django_example_ynh 4737 Dec  8 08:39 django_example_ynh_demo_settings.py
 
-root@yunohost:~# cd /opt/yunohost/django_example_ynh/
-root@yunohost:/opt/yunohost/django_example_ynh# source venv/bin/activate
-(venv) root@yunohost:/opt/yunohost/django_example_ynh# ./manage.py check
+root@yunohost:~# cd /home/yunohost.app/django_example_ynh/
+root@yunohost:/home/yunohost.app/django_example_ynh# source venv/bin/activate
+(venv) root@yunohost:/home/yunohost.app/django_example_ynh# ./manage.py check
 django_example_ynh v0.8.2 (Django v2.2.17)
 DJANGO_SETTINGS_MODULE='django_example_ynh_demo_settings'
-PROJECT_PATH:/opt/yunohost/django_example_ynh/venv/lib/python3.7/site-packages
-BASE_PATH:/opt/yunohost/django_example_ynh
+PROJECT_PATH:/home/yunohost.app/django_example_ynh/venv/lib/python3.7/site-packages
+BASE_PATH:/home/yunohost.app/django_example_ynh
 System check identified no issues (0 silenced).
 
 root@yunohost:~# tail -f /var/log/django_example_ynh/django_example_ynh.log
