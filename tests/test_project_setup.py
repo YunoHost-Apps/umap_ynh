@@ -3,8 +3,14 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
+from unittest import TestCase
 
-import tomli
+
+try:
+    import tomllib  # New in Python 3.11
+except ImportError:
+    import tomli as tomllib
+
 from bx_django_utils.filename import clean_filename
 from bx_py_utils.path import assert_is_dir, assert_is_file
 from django_tools.unittest_utils.project_setup import check_editor_config
@@ -25,13 +31,15 @@ def assert_file_contains_string(file_path, string):
 
 
 def test_version():
-    assert_project_version(
-        current_version=__version__,
-        github_project_url='https://github.com/jedie/django-example',
-    )
+    if 'GITHUB_ACTION' not in os.environ:
+        # Github has a rate-limiting... So don't fetch the API if we run as GitHub action
+        assert_project_version(
+            current_version=__version__,
+            github_project_url='https://github.com/jedie/django-example',
+        )
 
     pyproject_toml_path = Path(PACKAGE_ROOT, 'pyproject.toml')
-    pyproject_toml = tomli.loads(pyproject_toml_path.read_text(encoding='UTF-8'))
+    pyproject_toml = tomllib.loads(pyproject_toml_path.read_text(encoding='UTF-8'))
     pyproject_version = pyproject_toml['tool']['poetry']['version']
     assert pyproject_version.startswith(
         f'{__version__}+ynh'
@@ -128,8 +136,43 @@ def test_check_code_style():
         _call_make('lint')
     except subprocess.CalledProcessError:
         # Fix and test again:
-        _call_make('fix-code-style')
         try:
+            _call_make('fix-code-style')
             _call_make('lint')
         except subprocess.CalledProcessError as err:
             raise AssertionError(f'Linting error:\n{"-"*100}\n{err.stdout}\n{"-"*100}')
+
+
+class ManifestTestCase(TestCase):
+    def test_manifest_toml(self):
+        manifest_path = PACKAGE_ROOT / 'manifest.toml'
+        assert_is_file(manifest_path)
+
+        cfg = tomllib.loads(manifest_path.read_text(encoding='UTF-8'))
+
+        self.assertEqual(cfg['packaging_format'], 2)
+        self.assertEqual(
+            set(cfg['install'].keys()),
+            {
+                'admin',
+                'admin_email',
+                'debug_enabled',
+                'default_from_email',
+                'domain',
+                'init_main_permission',
+                'log_level',
+                'path',
+            },
+        )
+        self.assertEqual(
+            set(cfg['resources'].keys()),
+            {
+                'apt',
+                'data_dir',
+                'database',
+                'install_dir',
+                'permissions',
+                'ports',
+                'system_user',
+            },
+        )
