@@ -41,10 +41,6 @@ ram.runtime = "50M"
     type = "path"
     default = "/django_example_ynh"
 
-    [install.init_main_permission]
-    type = "group"
-    default = "visitors"
-
     [install.admin]
     # this is a generic question - ask strings are automatically handled by Yunohost's core
     type = "user"
