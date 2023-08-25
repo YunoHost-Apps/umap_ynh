@@ -205,7 +205,6 @@ root@yunohost:~# cat /etc/nginx/conf.d/$domain.d/django_example.conf
 
 ## Documentations et ressources
 
-* Site officiel de l’app : <https://github.com/YunoHost-Apps/django_example_ynh>
 * Documentation officielle utilisateur : <https://github.com/jedie/django-example>
 * Documentation officielle de l’admin : <https://github.com/YunoHost-Apps/django_example_ynh>
 * Dépôt de code officiel de l’app : <https://github.com/YunoHost-Apps/django_example_ynh>
