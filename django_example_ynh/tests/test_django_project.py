@@ -1,7 +1,10 @@
+from unittest.mock import patch
+
 from axes.models import AccessLog
-from bx_django_utils.test_utils.html_assertion import HtmlAssertionMixin
-from django.conf import settings
+from bx_django_utils.test_utils.html_assertion import HtmlAssertionMixin, assert_html_response_snapshot
+from django.conf import LazySettings, settings
 from django.contrib.auth.models import User
+from django.template.defaulttags import CsrfTokenNode
 from django.test import override_settings
 from django.test.testcases import TestCase
 from django.urls.base import reverse
@@ -17,6 +20,9 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         self.client = self.client_class()
 
     def test_settings(self):
+        assert isinstance(settings, LazySettings)
+        assert settings.configured is True
+
         assert settings.PATH_URL == 'app_path'
 
         assert str(settings.DATA_DIR_PATH).endswith('/local_test/opt_yunohost')
@@ -27,7 +33,7 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
 
     def test_config_panel_settings(self):
         # config_panel.toml settings, set via tests.conftest.pytest_configure():
-        assert settings.DEBUG_ENABLED == 'NO' and settings.DEBUG is False
+        assert settings.DEBUG_ENABLED == '0' and settings.DEBUG is False
         assert settings.LOG_LEVEL == 'INFO'
         assert settings.ADMIN_EMAIL == 'foo-bar@test.tld'
         assert settings.DEFAULT_FROM_EMAIL == 'django_app@test.tld'
@@ -58,13 +64,14 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
 
         self.client.cookies['SSOwAuthUser'] = 'test'
 
-        response = self.client.get(
-            path='/app_path/admin/',
-            HTTP_REMOTE_USER='test',
-            HTTP_AUTH_USER='test',
-            HTTP_AUTHORIZATION='basic dGVzdDp0ZXN0MTIz',
-            secure=True,
-        )
+        with patch.object(CsrfTokenNode, 'render', return_value='MockedCsrfTokenNode'):
+            response = self.client.get(
+                path='/app_path/admin/',
+                HTTP_REMOTE_USER='test',
+                HTTP_AUTH_USER='test',
+                HTTP_AUTHORIZATION='basic dGVzdDp0ZXN0MTIz',
+                secure=True,
+            )
 
         assert User.objects.count() == 1
         user = User.objects.first()
@@ -80,6 +87,7 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
                 '<strong>test</strong>',
             ),
         )
+        assert_html_response_snapshot(response, query_selector='#container', validate=False)
 
     def test_wrong_auth_user(self):
         assert User.objects.count() == 0

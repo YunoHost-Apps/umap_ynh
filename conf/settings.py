@@ -9,13 +9,14 @@
 ################################################################################
 ################################################################################
 
+
 from pathlib import Path as __Path
 
 from django_yunohost_integration.base_settings import *  # noqa:F401,F403
 from django_yunohost_integration.secret_key import get_or_create_secret as __get_or_create_secret
 
 
-# https://github.com/jedie/django_example/
+# https://github.com/jedie/django-example
 from django_example.settings.prod import *  # noqa:F401,F403 isort:skip
 
 
@@ -40,7 +41,7 @@ YNH_CURRENT_HOST = '__YNH_CURRENT_HOST__'  # YunoHost main domain from: /etc/yun
 # config_panel.toml settings:
 
 DEBUG_ENABLED = '__DEBUG_ENABLED__'
-DEBUG = DEBUG_ENABLED == 'YES'
+DEBUG = DEBUG_ENABLED == '1'
 
 LOG_LEVEL = '__LOG_LEVEL__'
 ADMIN_EMAIL = '__ADMIN_EMAIL__'
@@ -52,22 +53,25 @@ DEFAULT_FROM_EMAIL = '__DEFAULT_FROM_EMAIL__'
 # Function that will be called to finalize a user profile:
 YNH_SETUP_USER = 'setup_user.setup_project_user'
 
-SECRET_KEY = __get_or_create_secret(
-    DATA_DIR_PATH / 'secret.txt'
-)  # /home/yunohost.app/$app/secret.txt
 
-INSTALLED_APPS += [
-    'axes',  # https://github.com/jazzband/django-axes
-    'django_yunohost_integration.apps.YunohostIntegrationConfig',
-]
+if 'axes' not in INSTALLED_APPS:
+    INSTALLED_APPS.append('axes')  # https://github.com/jazzband/django-axes
+
+INSTALLED_APPS.append('django_yunohost_integration.apps.YunohostIntegrationConfig')
+
+
+SECRET_KEY = __get_or_create_secret(DATA_DIR_PATH / 'secret.txt')  # /home/yunohost.app/$app/secret.txt
+
 
 MIDDLEWARE.insert(
     MIDDLEWARE.index('django.contrib.auth.middleware.AuthenticationMiddleware') + 1,
     # login a user via HTTP_REMOTE_USER header from SSOwat:
     'django_yunohost_integration.sso_auth.auth_middleware.SSOwatRemoteUserMiddleware',
 )
-# AxesMiddleware should be the last middleware:
-MIDDLEWARE.append('axes.middleware.AxesMiddleware')
+if 'axes.middleware.AxesMiddleware' not in MIDDLEWARE:
+    # AxesMiddleware should be the last middleware:
+    MIDDLEWARE.append('axes.middleware.AxesMiddleware')
+
 
 # Keep ModelBackend around for per-user permissions and superuser
 AUTHENTICATION_BACKENDS = (
@@ -131,7 +135,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': 'redis://127.0.0.1:6379/__REDIS_DB__',
-        # If redis is running on same host as PyInventory, you might
+        # If redis is running on same host as Django Example, you might
         # want to use unix sockets instead:
         # 'LOCATION': 'unix:///var/run/redis/redis.sock?db=1',
         'OPTIONS': {
@@ -164,9 +168,10 @@ LOGGING['handlers']['log_file']['filename'] = str(LOG_FILE_PATH)
 # Example how to add logging to own app:
 LOGGING['loggers']['django_example'] = {
     'handlers': ['syslog', 'log_file', 'mail_admins'],
-    'level': 'INFO',
     'propagate': False,
 }
+for __logger_name in LOGGING['loggers'].keys():
+    LOGGING['loggers'][__logger_name]['level'] = 'DEBUG' if DEBUG else LOG_LEVEL
 
 # -----------------------------------------------------------------------------
 

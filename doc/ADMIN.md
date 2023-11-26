@@ -1,3 +1,32 @@
+## Settings and upgrades
+
+Almost everything related to Django Example's configuration is handled in a `"../conf/settings.py"` file.
+You can edit the file `/home/yunohost.app/django_example/local_settings.py` to enable or disable features.
+
+Test sending emails, e.g.:
+
+```bash
+ssh admin@yourdomain.tld
+root@yunohost:~# /home/yunohost.app/django_example/manage.py sendtestemail --admins
+```
+
+## Settings and upgrades
+
+Almost everything related to Django Example's configuration is handled in a `"../conf/settings.py"` file.
+You can edit the file `/home/yunohost.app/django_example/local_settings.py` to enable or disable features.
+
+Test sending emails, e.g.:
+
+```bash
+ssh admin@yourdomain.tld
+root@yunohost:~# /home/yunohost.app/django_example/manage.py sendtestemail --admins
+```
+
+How to debug a django YunoHost app, take a look into:
+
+* https://github.com/YunoHost-Apps/django_example_ynh#developer-info
+
+
 ## local test
 
 For quicker developing of django_example_ynh in the context of YunoHost app,
@@ -8,23 +37,41 @@ e.g.:
 ```bash
 ~$ git clone https://github.com/YunoHost-Apps/django_example.git
 ~$ cd django_example_ynh/
-~/django_example$ make
-install-poetry         install or update poetry
-install                install project via poetry
-update                 update the sources and installation and generate "conf/requirements.txt"
-lint                   Run code formatters and linter
-fix-code-style         Fix code formatting
-tox-listenvs           List all tox test environments
-tox                    Run pytest via tox with all environments
-pytest                 Run pytest
-publish                Release new version to PyPi
-local-test             Run local_test.py to run the project locally
-local-diff-settings    Run "manage.py diffsettings" with local test
-
-~/django_example$ make install-poetry
-~/django_example$ make install
-~/django_example$ make local-test
+~/django_example$ ./dev-cli.py --help
 ```
+
+The output will looks like:
+
+[comment]: <> (✂✂✂ auto generated help start ✂✂✂)
+```
+Usage: ./dev-cli.py [OPTIONS] COMMAND [ARGS]...
+
+╭─ Options ────────────────────────────────────────────────────────────────────────────────────────╮
+│ --help      Show this message and exit.                                                          │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ───────────────────────────────────────────────────────────────────────────────────────╮
+│ check-code-style            Check code style by calling darker + flake8                          │
+│ coverage                    Run and show coverage.                                               │
+│ diffsettings                Run "diffsettings" manage command against a "local_test" YunoHost    │
+│                             installation.                                                        │
+│ fix-code-style              Fix code style of all django_example_ynh source code files via       │
+│                             darker                                                               │
+│ install                     Run pip-sync and install 'django_example_ynh' via pip as editable.   │
+│ local-test                  Build a "local_test" YunoHost installation and start the Django dev. │
+│                             server against it.                                                   │
+│ mypy                        Run Mypy (configured in pyproject.toml)                              │
+│ publish                     Build and upload this project to PyPi                                │
+│ safety                      Run safety check against current requirements files                  │
+│ test                        Compile YunoHost files and run Django unittests                      │
+│ tox                         Run tox                                                              │
+│ update                      Update "requirements*.txt" dependencies files                        │
+│ update-test-snapshot-files  Update all test snapshot files (by remove and recreate all snapshot  │
+│                             files)                                                               │
+│ version                     Print version and exit                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+```
+[comment]: <> (✂✂✂ auto generated help end ✂✂✂)
+
 
 Notes:
 
@@ -162,5 +209,3 @@ root@yunohost:~# tail -f /var/log/nginx/*.log
 root@yunohost:~# ls -la /etc/nginx/conf.d/
 root@yunohost:~# cat /etc/nginx/conf.d/$domain.d/django_example.conf
 ```
-
-
