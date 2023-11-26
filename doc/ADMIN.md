@@ -10,6 +10,18 @@ ssh admin@yourdomain.tld
 root@yunohost:~# /home/yunohost.app/django_example/manage.py sendtestemail --admins
 ```
 
+## Settings and upgrades
+
+Almost everything related to Django Example's configuration is handled in a `"../conf/settings.py"` file.
+You can edit the file `/home/yunohost.app/django_example/local_settings.py` to enable or disable features.
+
+Test sending emails, e.g.:
+
+```bash
+ssh admin@yourdomain.tld
+root@yunohost:~# /home/yunohost.app/django_example/manage.py sendtestemail --admins
+```
+
 How to debug a django YunoHost app, take a look into:
 
 * https://github.com/YunoHost-Apps/django_example_ynh#developer-info
@@ -179,5 +191,3 @@ root@yunohost:~# tail -f /var/log/nginx/*.log
 root@yunohost:~# ls -la /etc/nginx/conf.d/
 root@yunohost:~# cat /etc/nginx/conf.d/$domain.d/django_example.conf
 ```
-
-
