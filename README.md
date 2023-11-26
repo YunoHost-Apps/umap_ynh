@@ -46,23 +46,11 @@ e.g.:
 ```bash
 ~$ git clone https://github.com/YunoHost-Apps/django_example.git
 ~$ cd django_example_ynh/
-~/django_example$ make
-install-poetry         install or update poetry
-install                install project via poetry
-update                 update the sources and installation and generate "conf/requirements.txt"
-lint                   Run code formatters and linter
-fix-code-style         Fix code formatting
-tox-listenvs           List all tox test environments
-tox                    Run pytest via tox with all environments
-pytest                 Run pytest
-publish                Release new version to PyPi
-local-test             Run local_test.py to run the project locally
-local-diff-settings    Run "manage.py diffsettings" with local test
-
-~/django_example$ make install-poetry
-~/django_example$ make install
-~/django_example$ make local-test
+~/django_example$ ./dev-cli.py --help
 ```
+
+
+
 
 Notes:
 
