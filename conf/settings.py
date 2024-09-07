@@ -9,7 +9,6 @@
 ################################################################################
 ################################################################################
 
-
 from pathlib import Path as __Path
 
 from django_yunohost_integration.base_settings import *  # noqa:F401,F403
@@ -60,7 +59,9 @@ if 'axes' not in INSTALLED_APPS:
 INSTALLED_APPS.append('django_yunohost_integration.apps.YunohostIntegrationConfig')
 
 
-SECRET_KEY = __get_or_create_secret(DATA_DIR_PATH / 'secret.txt')  # /home/yunohost.app/$app/secret.txt
+SECRET_KEY = __get_or_create_secret(
+    DATA_DIR_PATH / 'secret.txt'
+)  # /home/yunohost.app/$app/secret.txt
 
 
 MIDDLEWARE.insert(
