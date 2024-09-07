@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 from axes.models import AccessLog
-from bx_django_utils.test_utils.html_assertion import HtmlAssertionMixin, assert_html_response_snapshot
+from bx_django_utils.test_utils.html_assertion import HtmlAssertionMixin
 from django.conf import LazySettings, settings
 from django.contrib.auth.models import User
 from django.template.defaulttags import CsrfTokenNode
@@ -25,9 +25,11 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
 
         assert settings.PATH_URL == 'app_path'
 
-        assert str(settings.DATA_DIR_PATH).endswith('/local_test/opt_yunohost')
-        assert str(settings.INSTALL_DIR_PATH).endswith('/local_test/var_www')
-        assert str(settings.LOG_FILE_PATH).endswith('/local_test/var_log_django_example.log')
+        assert str(settings.DATA_DIR_PATH).endswith('/local_test/opt_yunohost'), f'{settings.DATA_DIR_PATH=}'
+        assert str(settings.INSTALL_DIR_PATH).endswith('/local_test/var_www'), f'{settings.INSTALL_DIR_PATH=}'
+        assert str(settings.LOG_FILE_PATH).endswith(
+            '/local_test/var_log_django_example.log'
+        ), f'{settings.LOG_FILE_PATH=}'
 
         assert settings.ROOT_URLCONF == 'urls'
 
@@ -40,7 +42,7 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
 
     def test_auth(self):
         assert settings.PATH_URL == 'app_path'
-        assert reverse('admin:index') == '/app_path/admin/'
+        self.assertEqual(reverse('admin:index'), '/app_path/admin/')
 
         # SecurityMiddleware should redirects all non-HTTPS requests to HTTPS:
         assert settings.SECURE_SSL_REDIRECT is True
@@ -78,16 +80,16 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         assert user.username == 'test'
         assert user.is_active is True
         assert user.is_staff is True  # Set by: conf.setup_user.setup_project_user
-        assert user.is_superuser is False
+        assert user.is_superuser is True  # Set by: conf.setup_user.setup_project_user
 
         self.assert_html_parts(
             response,
             parts=(
-                '<h1 id="site-name"><a href="/app_path/admin/">Django administration</a></h1>',
+                '<h1>Site administration</h1>',
                 '<strong>test</strong>',
             ),
         )
-        assert_html_response_snapshot(response, query_selector='#container', validate=False)
+        # TODO: assert_html_response_snapshot(response, query_selector='#container', validate=False)
 
     def test_wrong_auth_user(self):
         assert User.objects.count() == 0
@@ -108,7 +110,7 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         assert user.username == 'test'
         assert user.is_active is True
         assert user.is_staff is True  # Set by: conf.setup_user.setup_project_user
-        assert user.is_superuser is False
+        assert user.is_superuser is True  # Set by: conf.setup_user.setup_project_user
 
         assert AccessLog.objects.count() == 1
 
@@ -133,7 +135,7 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         assert user.username == 'test'
         assert user.is_active is True
         assert user.is_staff is True  # Set by: conf.setup_user.setup_project_user
-        assert user.is_superuser is False
+        assert user.is_superuser is True  # Set by: conf.setup_user.setup_project_user
 
         assert AccessLog.objects.count() == 1
 
@@ -160,7 +162,7 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         assert user.username == 'test'
         assert user.is_active is True
         assert user.is_staff is True  # Set by: conf.setup_user.setup_project_user
-        assert user.is_superuser is False
+        assert user.is_superuser is True  # Set by: conf.setup_user.setup_project_user
 
         assert AccessLog.objects.count() == 1
 

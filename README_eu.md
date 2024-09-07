@@ -5,7 +5,7 @@ EZ editatu eskuz.
 
 # Django Example YunoHost-erako
 
-[![Integrazio maila](https://dash.yunohost.org/integration/django_example.svg)](https://dash.yunohost.org/appci/app/django_example) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/django_example.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/django_example.maintain.svg)
+[![Integrazio maila](https://dash.yunohost.org/integration/django_example.svg)](https://ci-apps.yunohost.org/ci/apps/django_example/) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/django_example.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/django_example.maintain.svg)
 
 [![Instalatu Django Example YunoHost-ekin](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_example)
 
@@ -32,9 +32,7 @@ This package for YunoHost used [django-yunohost-integration](https://github.com/
 **Paketatutako bertsioa:** 0.2.0~ynh3
 ## Dokumentazioa eta baliabideak
 
-- Erabiltzaileen dokumentazio ofiziala: <https://github.com/jedie/django-example>
-- Administratzaileen dokumentazio ofiziala: <https://github.com/YunoHost-Apps/django_example_ynh>
-- Jatorrizko aplikazioaren kode-gordailua: <https://github.com/YunoHost-Apps/django_example_ynh>
+- Jatorrizko aplikazioaren kode-gordailua: <https://github.com/jedie/django-example>
 - YunoHost Denda: <https://apps.yunohost.org/app/django_example>
 - Eman errore baten berri: <https://github.com/YunoHost-Apps/django_example_ynh/issues>
 
