@@ -5,7 +5,7 @@ No se debe editar a mano.
 
 # Django Example para Yunohost
 
-[![Nivel de integración](https://dash.yunohost.org/integration/django_example.svg)](https://dash.yunohost.org/appci/app/django_example) ![Estado funcional](https://ci-apps.yunohost.org/ci/badges/django_example.status.svg) ![Estado En Mantención](https://ci-apps.yunohost.org/ci/badges/django_example.maintain.svg)
+[![Nivel de integración](https://dash.yunohost.org/integration/django_example.svg)](https://ci-apps.yunohost.org/ci/apps/django_example/) ![Estado funcional](https://ci-apps.yunohost.org/ci/badges/django_example.status.svg) ![Estado En Mantención](https://ci-apps.yunohost.org/ci/badges/django_example.maintain.svg)
 
 [![Instalar Django Example con Yunhost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_example)
 
@@ -32,9 +32,7 @@ This package for YunoHost used [django-yunohost-integration](https://github.com/
 **Versión actual:** 0.2.0~ynh3
 ## Documentaciones y recursos
 
-- Documentación usuario oficial: <https://github.com/jedie/django-example>
-- Documentación administrador oficial: <https://github.com/YunoHost-Apps/django_example_ynh>
-- Repositorio del código fuente oficial de la aplicación : <https://github.com/YunoHost-Apps/django_example_ynh>
+- Repositorio del código fuente oficial de la aplicación : <https://github.com/jedie/django-example>
 - Catálogo YunoHost: <https://apps.yunohost.org/app/django_example>
 - Reportar un error: <https://github.com/YunoHost-Apps/django_example_ynh/issues>
 
