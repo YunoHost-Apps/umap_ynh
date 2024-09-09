@@ -81,7 +81,10 @@ myynh_setup_python_venv() {
     # Try to reuse existing venv (call without --clear flag)
     if ! myynh_create_venv ""; then
         # If there was an error: Recreate the venv by call with --clear flag
+        ynh_print_warn "Recreate $app virtualenv..."
         myynh_create_venv "--clear"
+    else
+        ynh_print_info "Existing $app virtualenv reused, ok."
     fi
 }
 
