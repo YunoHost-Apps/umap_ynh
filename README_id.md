@@ -5,13 +5,15 @@ Ini TIDAK boleh diedit dengan tangan.
 
 # Django Example untuk YunoHost
 
-[![Tingkat integrasi](https://dash.yunohost.org/integration/django_example.svg)](https://ci-apps.yunohost.org/ci/apps/django_example/) ![Status kerja](https://ci-apps.yunohost.org/ci/badges/django_example.status.svg) ![Status pemeliharaan](https://ci-apps.yunohost.org/ci/badges/django_example.maintain.svg)
+[![Tingkat integrasi](https://apps.yunohost.org/badge/integration/django_example)](https://ci-apps.yunohost.org/ci/apps/django_example/)
+![Status kerja](https://apps.yunohost.org/badge/state/django_example)
+![Status pemeliharaan](https://apps.yunohost.org/badge/maintained/django_example)
 
 [![Pasang Django Example dengan YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_example)
 
 *[Baca README ini dengan bahasa yang lain.](./ALL_README.md)*
 
-> *Paket ini memperbolehkan Anda untuk memasang Django Example secara cepat dan mudah pada server YunoHost.*
+> *Paket ini memperbolehkan Anda untuk memasang Django Example secara cepat dan mudah pada server YunoHost.*  
 > *Bila Anda tidak mempunyai YunoHost, silakan berkonsultasi dengan [panduan](https://yunohost.org/install) untuk mempelajari bagaimana untuk memasangnya.*
 
 ## Ringkasan

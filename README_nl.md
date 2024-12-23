@@ -5,13 +5,15 @@ Hij mag NIET handmatig aangepast worden.
 
 # Django Example voor Yunohost
 
-[![Integratieniveau](https://dash.yunohost.org/integration/django_example.svg)](https://ci-apps.yunohost.org/ci/apps/django_example/) ![Mate van functioneren](https://ci-apps.yunohost.org/ci/badges/django_example.status.svg) ![Onderhoudsstatus](https://ci-apps.yunohost.org/ci/badges/django_example.maintain.svg)
+[![Integratieniveau](https://apps.yunohost.org/badge/integration/django_example)](https://ci-apps.yunohost.org/ci/apps/django_example/)
+![Mate van functioneren](https://apps.yunohost.org/badge/state/django_example)
+![Onderhoudsstatus](https://apps.yunohost.org/badge/maintained/django_example)
 
 [![Django Example met Yunohost installeren](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_example)
 
 *[Deze README in een andere taal lezen.](./ALL_README.md)*
 
-> *Met dit pakket kun je Django Example snel en eenvoudig op een YunoHost-server installeren.*
+> *Met dit pakket kun je Django Example snel en eenvoudig op een YunoHost-server installeren.*  
 > *Als je nog geen YunoHost hebt, lees dan [de installatiehandleiding](https://yunohost.org/install), om te zien hoe je 'm installeert.*
 
 ## Overzicht

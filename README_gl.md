@@ -5,13 +5,15 @@ NON debe editarse manualmente.
 
 # Django Example para YunoHost
 
-[![Nivel de integración](https://dash.yunohost.org/integration/django_example.svg)](https://ci-apps.yunohost.org/ci/apps/django_example/) ![Estado de funcionamento](https://ci-apps.yunohost.org/ci/badges/django_example.status.svg) ![Estado de mantemento](https://ci-apps.yunohost.org/ci/badges/django_example.maintain.svg)
+[![Nivel de integración](https://apps.yunohost.org/badge/integration/django_example)](https://ci-apps.yunohost.org/ci/apps/django_example/)
+![Estado de funcionamento](https://apps.yunohost.org/badge/state/django_example)
+![Estado de mantemento](https://apps.yunohost.org/badge/maintained/django_example)
 
 [![Instalar Django Example con YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_example)
 
 *[Le este README en outros idiomas.](./ALL_README.md)*
 
-> *Este paquete permíteche instalar Django Example de xeito rápido e doado nun servidor YunoHost.*
+> *Este paquete permíteche instalar Django Example de xeito rápido e doado nun servidor YunoHost.*  
 > *Se non usas YunoHost, le a [documentación](https://yunohost.org/install) para saber como instalalo.*
 
 ## Vista xeral

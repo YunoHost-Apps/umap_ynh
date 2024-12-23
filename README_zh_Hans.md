@@ -5,13 +5,15 @@
 
 # YunoHost 上的 Django Example
 
-[![集成程度](https://dash.yunohost.org/integration/django_example.svg)](https://ci-apps.yunohost.org/ci/apps/django_example/) ![工作状态](https://ci-apps.yunohost.org/ci/badges/django_example.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/django_example.maintain.svg)
+[![集成程度](https://apps.yunohost.org/badge/integration/django_example)](https://ci-apps.yunohost.org/ci/apps/django_example/)
+![工作状态](https://apps.yunohost.org/badge/state/django_example)
+![维护状态](https://apps.yunohost.org/badge/maintained/django_example)
 
 [![使用 YunoHost 安装 Django Example](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_example)
 
 *[阅读此 README 的其它语言版本。](./ALL_README.md)*
 
-> *通过此软件包，您可以在 YunoHost 服务器上快速、简单地安装 Django Example。*
+> *通过此软件包，您可以在 YunoHost 服务器上快速、简单地安装 Django Example。*  
 > *如果您还没有 YunoHost，请参阅[指南](https://yunohost.org/install)了解如何安装它。*
 
 ## 概况
