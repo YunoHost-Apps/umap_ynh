@@ -11,7 +11,7 @@ NON DEVE essere modificato manualmente.
 
 *[Leggi questo README in altre lingue.](./ALL_README.md)*
 
-> *Questo pacchetto ti permette di installare Django Example su un server YunoHost in modo semplice e veloce.*  
+> *Questo pacchetto ti permette di installare Django Example su un server YunoHost in modo semplice e veloce.*
 > *Se non hai YunoHost, consulta [la guida](https://yunohost.org/install) per imparare a installarlo.*
 
 ## Panoramica
@@ -29,7 +29,7 @@ Pull requests welcome ;)
 This package for YunoHost used [django-yunohost-integration](https://github.com/YunoHost-Apps/django_yunohost_integration)
 
 
-**Versione pubblicata:** 0.2.0~ynh3
+**Versione pubblicata:** 0.2.0~ynh4
 ## Documentazione e risorse
 
 - Documentazione ufficiale per gli utenti: <https://github.com/jedie/django-example>

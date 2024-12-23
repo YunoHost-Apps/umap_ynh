@@ -4,6 +4,7 @@ from bx_django_utils.test_utils.html_assertion import HtmlAssertionMixin
 from django.conf import settings
 from django.test.testcases import TestCase
 from django.urls.base import reverse
+from django_yunohost_integration.yunohost.tests.test_ynh_jwt import create_jwt
 
 
 class ExampleProjectTestCase(HtmlAssertionMixin, TestCase):
@@ -29,19 +30,17 @@ class ExampleProjectTestCase(HtmlAssertionMixin, TestCase):
                 '<tr><td>META:</td><td></td></tr>',
             ),
         )
-        self.assertEqual(
-            logs.output, ['INFO:django_example.views:DebugView request from user: AnonymousUser']
-        )
+        self.assertEqual(logs.output, ['INFO:django_example.views:DebugView request from user: AnonymousUser'])
 
         ###############################################################################
         # Test as SSO user
 
-        self.client.cookies['SSOwAuthUser'] = 'test'
+        self.client.cookies['yunohost.portal'] = create_jwt(username='test')
 
         with self.assertLogs('django_example') as logs:
             response = self.client.get(
                 path='/app_path/',
-                HTTP_REMOTE_USER='test',
+                HTTP_YNH_USER='test',
                 HTTP_AUTH_USER='test',
                 HTTP_AUTHORIZATION='basic dGVzdDp0ZXN0MTIz',
                 secure=True,
@@ -54,6 +53,4 @@ class ExampleProjectTestCase(HtmlAssertionMixin, TestCase):
                 f'<tr><td>Process ID:</td><td>{os.getpid()}</td></tr>',
             ),
         )
-        self.assertEqual(
-            logs.output, ['INFO:django_example.views:DebugView request from user: test']
-        )
+        self.assertEqual(logs.output, ['INFO:django_example.views:DebugView request from user: test'])
