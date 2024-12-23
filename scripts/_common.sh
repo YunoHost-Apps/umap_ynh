@@ -95,6 +95,11 @@ myynh_create_venv() {
 }
 
 myynh_setup_python_venv() {
+    #
+    # Install/Setup newer Python Interpreter, if needed.
+    # Discuss here:
+    # https://forum.yunohost.org/t/use-newer-python-than-3-9/22568/17
+    #
     if [ "$update_python" = "SETUP" ]; then
         myynh_setup_python
     elif  [ "$update_python" = "INSTALL" ]; then

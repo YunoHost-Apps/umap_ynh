@@ -5,7 +5,9 @@ Ini TIDAK boleh diedit dengan tangan.
 
 # Django Example untuk YunoHost
 
-[![Tingkat integrasi](https://dash.yunohost.org/integration/django_example.svg)](https://ci-apps.yunohost.org/ci/apps/django_example/) ![Status kerja](https://ci-apps.yunohost.org/ci/badges/django_example.status.svg) ![Status pemeliharaan](https://ci-apps.yunohost.org/ci/badges/django_example.maintain.svg)
+[![Tingkat integrasi](https://apps.yunohost.org/badge/integration/django_example)](https://ci-apps.yunohost.org/ci/apps/django_example/)
+![Status kerja](https://apps.yunohost.org/badge/state/django_example)
+![Status pemeliharaan](https://apps.yunohost.org/badge/maintained/django_example)
 
 [![Pasang Django Example dengan YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_example)
 
@@ -29,7 +31,7 @@ Pull requests welcome ;)
 This package for YunoHost used [django-yunohost-integration](https://github.com/YunoHost-Apps/django_yunohost_integration)
 
 
-**Versi terkirim:** 0.2.0~ynh3
+**Versi terkirim:** 0.2.0~ynh4
 ## Dokumentasi dan sumber daya
 
 - Depot kode aplikasi hulu: <https://github.com/jedie/django-example>

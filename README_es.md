@@ -5,7 +5,9 @@ No se debe editar a mano.
 
 # Django Example para Yunohost
 
-[![Nivel de integración](https://dash.yunohost.org/integration/django_example.svg)](https://ci-apps.yunohost.org/ci/apps/django_example/) ![Estado funcional](https://ci-apps.yunohost.org/ci/badges/django_example.status.svg) ![Estado En Mantención](https://ci-apps.yunohost.org/ci/badges/django_example.maintain.svg)
+[![Nivel de integración](https://apps.yunohost.org/badge/integration/django_example)](https://ci-apps.yunohost.org/ci/apps/django_example/)
+![Estado funcional](https://apps.yunohost.org/badge/state/django_example)
+![Estado En Mantención](https://apps.yunohost.org/badge/maintained/django_example)
 
 [![Instalar Django Example con Yunhost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_example)
 
@@ -29,7 +31,7 @@ Pull requests welcome ;)
 This package for YunoHost used [django-yunohost-integration](https://github.com/YunoHost-Apps/django_yunohost_integration)
 
 
-**Versión actual:** 0.2.0~ynh3
+**Versión actual:** 0.2.0~ynh4
 ## Documentaciones y recursos
 
 - Repositorio del código fuente oficial de la aplicación : <https://github.com/jedie/django-example>
