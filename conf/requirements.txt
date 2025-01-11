@@ -13,6 +13,11 @@ asgiref==3.8.1 \
     # via
     #   django
     #   django-axes
+async-timeout==5.0.1 \
+    --hash=sha256:39e3809566ff85354557ec2398b55e096c8364bacac9405a7a1fa429e77fe76c \
+    --hash=sha256:b471f74c18347ba08c5313229f8514c924d017c934822c240e69072be5aa455a \
+    --hash=sha256:d9321a7a3d5a6a5e187e824d2fa0793ce379a202935782d555d6e9d2735677d3
+    # via django_example_ynh (pyproject.toml)
 bleach==6.2.0 \
     --hash=sha256:117d9c6097a7c3d22fd578fcd8d35ff1e125df6736f554da4e432fdd63f31e5e \
     --hash=sha256:123e894118b8a599fd80d3ec1a6d4cc7ce4e5882b1317a7e1ba69b56e95f991f \
@@ -81,7 +86,8 @@ django-tools==0.56.2 \
     # via django-yunohost-integration
 django-yunohost-integration==0.9.0 \
     --hash=sha256:01d3e30bb5d5a07b5c520f7b29c27f83cf25d06c41a55a06100d49f0ed2ccc87 \
-    --hash=sha256:a00c96c70021fbfa1b52a2cc0a584eb6595b0223d71fcf71cda85c784cd8e342
+    --hash=sha256:a00c96c70021fbfa1b52a2cc0a584eb6595b0223d71fcf71cda85c784cd8e342 \
+    --hash=sha256:fe7f0e8b8f6960279e52da5699bd2d9a2548423ca61abceace54a3f201836899
     # via
     #   django-yunohost-integration
     #   django_example_ynh (pyproject.toml)
@@ -193,9 +199,9 @@ psycopg-binary==3.2.3 \
     --hash=sha256:fd65774ed7d65101b314808b6893e1a75b7664f680c3ef18d2e5c84d570fa393 \
     --hash=sha256:fda0162b0dbfa5eaed6cdc708179fa27e148cb8490c7d62e5cf30713909658ea
     # via psycopg
-pygments==2.18.0 \
-    --hash=sha256:786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199 \
-    --hash=sha256:b8e6aca0523f3ab76fee51799c488e38782ac06eafcf95e7ba832985c8e7b13a
+pygments==2.19.1 \
+    --hash=sha256:61c16d2a8576dc0649d9f39e089b5f02bcd27fba10d8fb4dcc28173f7a45151f \
+    --hash=sha256:9ea1544ad55cecf4b8242fab6dd35a93bbce657034b0611ee383099054ab6d8c
     # via rich
 pyjwt==2.10.1 \
     --hash=sha256:3cc5772eb20009233caf06e9d8a0577824723b44e6648ee0a2aedb6cf9381953 \
@@ -311,9 +317,9 @@ typing-extensions==4.12.2 \
     #   psycopg
     #   typeguard
     #   tyro
-tyro==0.9.4 \
-    --hash=sha256:00546f1863f842b2b400b3fa3ca4606dc4de53f989ed570357da393580b0a6c5 \
-    --hash=sha256:1f6c8fe19040e2f8bde32013c5255693a2f311d3599bb051474bc92561de25e2
+tyro==0.9.8 \
+    --hash=sha256:31766819a9ccf3047a1fad8bd5bb3102fed130436ac6bb9080ee6c209f07d07a \
+    --hash=sha256:dd146d506253c6c9c68d46e4f452e4ae5747357b12397027d844e6b52ba183fc
     # via cli-base-utilities
 webencodings==0.5.1 \
     --hash=sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78 \
