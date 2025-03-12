@@ -5,7 +5,9 @@
 
 # YunoHost 上的 Django Example
 
-[![集成程度](https://dash.yunohost.org/integration/django_example.svg)](https://ci-apps.yunohost.org/ci/apps/django_example/) ![工作状态](https://ci-apps.yunohost.org/ci/badges/django_example.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/django_example.maintain.svg)
+[![集成程度](https://apps.yunohost.org/badge/integration/django_example)](https://ci-apps.yunohost.org/ci/apps/django_example/)
+![工作状态](https://apps.yunohost.org/badge/state/django_example)
+![维护状态](https://apps.yunohost.org/badge/maintained/django_example)
 
 [![使用 YunoHost 安装 Django Example](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=django_example)
 
@@ -29,7 +31,7 @@ Pull requests welcome ;)
 This package for YunoHost used [django-yunohost-integration](https://github.com/YunoHost-Apps/django_yunohost_integration)
 
 
-**分发版本：** 0.2.0~ynh3
+**分发版本：** 0.2.0~ynh4
 ## 文档与资源
 
 - 上游应用代码库： <https://github.com/jedie/django-example>
