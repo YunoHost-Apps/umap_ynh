@@ -31,7 +31,7 @@ Pull requests welcome ;)
 This package for YunoHost used [django-yunohost-integration](https://github.com/YunoHost-Apps/django_yunohost_integration)
 
 
-**Versi terkirim:** 0.2.0~ynh4
+**Versi terkirim:** 0.2.0~ynh5
 ## Dokumentasi dan sumber daya
 
 - Depot kode aplikasi hulu: <https://github.com/jedie/django-example>
