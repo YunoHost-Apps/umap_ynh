@@ -6,7 +6,7 @@ name = "Django Example"
 description.en = "Application demonstrating the integration of a Django project under YunoHost"
 description.fr = "Application démontrant l'intégration d'un projet Django sous YunoHost"
 
-version = "0.2.0~ynh4"
+version = "0.2.0~ynh5"
 
 maintainers = ["Jens Diemer"]
 
@@ -20,7 +20,7 @@ code = "https://github.com/jedie/django-example"
 
 [integration]
 # https://yunohost.org/en/packaging_manifest#integration-section
-yunohost = ">=11.2"
+yunohost = ">=12"
 helpers_version = "2.1" # https://yunohost.org/en/packaging_apps_helpers_v2.1
 architectures = "all"
 multi_instance = true

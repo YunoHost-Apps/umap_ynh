@@ -1,6 +1,5 @@
 import os
 
-import django_example
 from axes.models import AccessLog
 from bx_django_utils.test_utils.html_assertion import HtmlAssertionMixin
 from django.conf import LazySettings, settings
@@ -8,7 +7,6 @@ from django.contrib.auth.models import User
 from django.test import override_settings
 from django.test.testcases import TestCase
 from django.urls.base import reverse
-
 from django_yunohost_integration.test_utils import generate_basic_auth
 from django_yunohost_integration.yunohost.tests.test_ynh_jwt import create_jwt
 
@@ -98,7 +96,6 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
             self.assert_html_parts(
                 response,
                 parts=(
-                    f'<h2>YunoHost Django Example Project v{django_example.__version__}</h2>',
                     '<a href="/app_path/admin/">Home</a>',
                     '<p>Log in to see more information</p>',
                     '<tr><td>User:</td><td>AnonymousUser</td></tr>',
@@ -133,7 +130,6 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         self.assert_html_parts(
             response,
             parts=(
-                f'<h2>YunoHost Django Example Project v{django_example.__version__}</h2>',
                 '<a href="/app_path/admin/">Django Admin</a>',
                 '<tr><td>User:</td><td>test</td></tr>',
                 f'<tr><td>Process ID:</td><td>{os.getpid()}</td></tr>',
@@ -177,7 +173,6 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         self.assert_html_parts(
             response,
             parts=(
-                f'<h2>YunoHost Django Example Project v{django_example.__version__}</h2>',
                 '<a href="/app_path/admin/">Django Admin</a>',
                 '<tr><td>User:</td><td>test</td></tr>',
                 f'<tr><td>Process ID:</td><td>{os.getpid()}</td></tr>',

@@ -31,7 +31,7 @@ Pull requests welcome ;)
 This package for YunoHost used [django-yunohost-integration](https://github.com/YunoHost-Apps/django_yunohost_integration)
 
 
-**Dostarczona wersja:** 0.2.0~ynh4
+**Dostarczona wersja:** 0.2.0~ynh5
 ## Dokumentacja i zasoby
 
 - Repozytorium z kodem źródłowym: <https://github.com/jedie/django-example>
