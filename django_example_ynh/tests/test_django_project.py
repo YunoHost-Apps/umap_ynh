@@ -7,8 +7,11 @@ from django.contrib.auth.models import User
 from django.test import override_settings
 from django.test.testcases import TestCase
 from django.urls.base import reverse
-from django_yunohost_integration.test_utils import generate_basic_auth
+from django.views.generic import RedirectView
+from django_example.views import DebugView, LoginRequiredView
+from django_yunohost_integration.test_utils import MockYnhCurrentHost, generate_basic_auth
 from django_yunohost_integration.yunohost.tests.test_ynh_jwt import create_jwt
+from django_yunohost_integration.yunohost_utils import SSOwatLoginRedirectView, decode_ssowat_uri
 
 
 class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
@@ -75,10 +78,61 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
     def test_urls(self):
         self.assertEqual(settings.PATH_URL, 'app_path')
         self.assertEqual(settings.ROOT_URLCONF, 'urls')
+        self.assertEqual(settings.LOGIN_URL, 'ssowat-login')
         self.assertEqual(reverse('admin:index'), '/app_path/admin/')
 
+        # After SSO login, user should be redirected to app root path:
+        self.assertEqual(settings.LOGIN_REDIRECT_URL, '/app_path/')
+
         response = self.client.get('/', secure=True)
+        self.assertEqual(response.resolver_match.func.view_class, RedirectView)
         self.assertRedirects(response, expected_url='/app_path/', fetch_redirect_response=False)
+
+        # The debug view can be reached by anonymous user:
+        response = self.client.get(
+            path='/app_path/',
+            headers={'Host': 'testserver'},
+            secure=True,
+        )
+        self.assertEqual(response.resolver_match.func.view_class, DebugView)
+        self.assert_html_parts(
+            response,
+            parts=(
+                '<title>Example Project / Debug View</title>',
+                '<a href="/app_path/admin/">Home</a>',
+                '<p>Log in to see more information</p>',
+                '<tr><td>User:</td><td>AnonymousUser</td></tr>',
+                '<tr><td>META:</td><td></td></tr>',
+            ),
+        )
+
+        # We have the "login-required" that needs authentication -> redirect to login:
+        with MockYnhCurrentHost(ssowat_domain='ynh.test.tld'):
+            response = self.client.get(
+                path='/app_path/login-required/',
+                headers={'Host': 'testserver'},
+                secure=True,
+            )
+        # The first redirect is created by Django default view and goes to our SSOwatLoginRedirectView
+        self.assertEqual(response.resolver_match.func.view_class, LoginRequiredView)
+        self.assertRedirects(
+            response,
+            expected_url='/app_path/login/?next=%2Fapp_path%2Flogin-required%2F',
+            fetch_redirect_response=False,
+        )
+        # Follow the redirect to our SSOwatLoginRedirectView that goes to SSOWat:
+        response = self.client.get('/app_path/login/?next=%2Fapp_path%2Flogin-required%2F', secure=True)
+        self.assertEqual(response.resolver_match.func.view_class, SSOwatLoginRedirectView)
+        self.assertRedirects(
+            response,
+            expected_url='https://testserver/yunohost/sso/?r=aHR0cHM6Ly90ZXN0c2VydmVyL2FwcF9wYXRoL2xvZ2luLXJlcXVpcmVkLw%3D%3D',
+            fetch_redirect_response=False,
+        )
+        # check the encoded URL -> should go to the initial requested URL:
+        self.assertEqual(
+            decode_ssowat_uri('aHR0cHM6Ly90ZXN0c2VydmVyL2FwcF9wYXRoL2xvZ2luLXJlcXVpcmVkLw%3D%3D'),
+            'https://testserver/app_path/login-required/',
+        )
 
     def test_auth(self):
         # SecurityMiddleware should redirects all non-HTTPS requests to HTTPS:
@@ -130,6 +184,7 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         self.assert_html_parts(
             response,
             parts=(
+                 '<title>Example Project / Debug View</title>',
                 '<a href="/app_path/admin/">Django Admin</a>',
                 '<tr><td>User:</td><td>test</td></tr>',
                 f'<tr><td>Process ID:</td><td>{os.getpid()}</td></tr>',
