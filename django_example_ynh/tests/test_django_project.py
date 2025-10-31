@@ -9,7 +9,7 @@ from django.test.testcases import TestCase
 from django.urls.base import reverse
 from django.views.generic import RedirectView
 from django_example.views import DebugView, LoginRequiredView
-from django_yunohost_integration.test_utils import MockYnhCurrentHost, generate_basic_auth
+from django_yunohost_integration.test_utils import generate_basic_auth
 from django_yunohost_integration.yunohost.tests.test_ynh_jwt import create_jwt
 from django_yunohost_integration.yunohost_utils import SSOwatLoginRedirectView, decode_ssowat_uri
 
@@ -80,14 +80,19 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         self.assertEqual(settings.ROOT_URLCONF, 'urls')
         self.assertEqual(settings.LOGIN_URL, 'ssowat-login')
         self.assertEqual(reverse('admin:index'), '/app_path/admin/')
+        self.assertEqual(reverse('ssowat-login'), '/app_path/sso-login/')
 
-        # After SSO login, user should be redirected to app root path:
+        # After login redirected to app root path:
         self.assertEqual(settings.LOGIN_REDIRECT_URL, '/app_path/')
 
+        #########################################################################################
+        # non-HTTPS request should be redirected to HTTPS:
+        self.assertIs(settings.SECURE_SSL_REDIRECT, True)
         response = self.client.get('/', secure=True)
         self.assertEqual(response.resolver_match.func.view_class, RedirectView)
         self.assertRedirects(response, expected_url='/app_path/', fetch_redirect_response=False)
 
+        #########################################################################################
         # The debug view can be reached by anonymous user:
         response = self.client.get(
             path='/app_path/',
@@ -106,32 +111,46 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
             ),
         )
 
+        #########################################################################################
         # We have the "login-required" that needs authentication -> redirect to login:
-        with MockYnhCurrentHost(ssowat_domain='ynh.test.tld'):
-            response = self.client.get(
-                path='/app_path/login-required/',
-                headers={'Host': 'testserver'},
-                secure=True,
-            )
+        response = self.client.get(
+            path='/app_path/login-required/',
+            headers={'Host': 'testserver'},
+            secure=True,
+        )
         # The first redirect is created by Django default view and goes to our SSOwatLoginRedirectView
         self.assertEqual(response.resolver_match.func.view_class, LoginRequiredView)
         self.assertRedirects(
             response,
-            expected_url='/app_path/login/?next=%2Fapp_path%2Flogin-required%2F',
+            expected_url='/app_path/sso-login/?next=/app_path/login-required/',
             fetch_redirect_response=False,
         )
         # Follow the redirect to our SSOwatLoginRedirectView that goes to SSOWat:
-        response = self.client.get('/app_path/login/?next=%2Fapp_path%2Flogin-required%2F', secure=True)
+        response = self.client.get('/app_path/sso-login/?next=/app_path/login-required/', secure=True)
         self.assertEqual(response.resolver_match.func.view_class, SSOwatLoginRedirectView)
         self.assertRedirects(
             response,
-            expected_url='https://testserver/yunohost/sso/?r=aHR0cHM6Ly90ZXN0c2VydmVyL2FwcF9wYXRoL2xvZ2luLXJlcXVpcmVkLw%3D%3D',
+            expected_url='/yunohost/sso/?r=aHR0cHM6Ly90ZXN0c2VydmVyL2FwcF9wYXRoL2xvZ2luLXJlcXVpcmVkLw%3D%3D',
             fetch_redirect_response=False,
         )
         # check the encoded URL -> should go to the initial requested URL:
         self.assertEqual(
             decode_ssowat_uri('aHR0cHM6Ly90ZXN0c2VydmVyL2FwcF9wYXRoL2xvZ2luLXJlcXVpcmVkLw%3D%3D'),
             'https://testserver/app_path/login-required/',
+        )
+
+        #########################################################################################
+        # The Django Admin is also protected -> redirect to login:
+        response = self.client.get(
+            path='/app_path/admin/',
+            headers={'Host': 'testserver'},
+            secure=True,
+        )
+        # FIXME: It redirects to the Django Admin login view, but it should redirect to SSOwatLoginRedirectView!
+        self.assertRedirects(
+            response,
+            expected_url='/app_path/admin/login/?next=/app_path/admin/',
+            fetch_redirect_response=False,
         )
 
     def test_auth(self):
@@ -184,7 +203,7 @@ class DjangoYnhTestCase(HtmlAssertionMixin, TestCase):
         self.assert_html_parts(
             response,
             parts=(
-                 '<title>Example Project / Debug View</title>',
+                '<title>Example Project / Debug View</title>',
                 '<a href="/app_path/admin/">Django Admin</a>',
                 '<tr><td>User:</td><td>test</td></tr>',
                 f'<tr><td>Process ID:</td><td>{os.getpid()}</td></tr>',

@@ -24,7 +24,7 @@ if settings.PATH_URL:
         path(f'{settings.PATH_URL}/', include('django_example.urls')),
         #
         # Cover over the default Django Admin Login with SSOWat login:
-        path(f'{settings.PATH_URL}/login/', SSOwatLoginRedirectView.as_view(), name='ssowat-login'),
+        path(f'{settings.PATH_URL}/sso-login/', SSOwatLoginRedirectView.as_view(), name='ssowat-login'),
     ]
 else:
     # Installed to domain root, without a path prefix
@@ -32,5 +32,5 @@ else:
     from django_example.urls import urlpatterns  # noqa
 
     urlpatterns.append(
-        path('login/', SSOwatLoginRedirectView.as_view(), name='ssowat-login'),
+        path('sso-login/', SSOwatLoginRedirectView.as_view(), name='ssowat-login'),
     )
