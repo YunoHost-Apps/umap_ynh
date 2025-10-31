@@ -87,7 +87,11 @@ AUTHENTICATION_BACKENDS = (
 LOGIN_URL = 'ssowat-login'
 
 # After login, redirect back to the YunoHost App:
-LOGIN_REDIRECT_URL = f'/{PATH_URL}/'
+if PATH_URL:
+    LOGIN_REDIRECT_URL = f'/{PATH_URL}/'
+else:
+    # Installed to domain root, without a path prefix:
+    LOGIN_REDIRECT_URL = '/'
 
 ROOT_URLCONF = 'urls'  # .../conf/urls.py
 
