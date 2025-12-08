@@ -15,22 +15,25 @@ from django.urls import include, path
 from django.views.generic import RedirectView
 from django_yunohost_integration.yunohost_utils import SSOwatLoginRedirectView
 
-
 if settings.PATH_URL:
     # settings.PATH_URL is __PATH__
     # Prefix all urls with "PATH_URL":
     urlpatterns = [
-        path('', RedirectView.as_view(url=f'{settings.PATH_URL}/')),
-        path(f'{settings.PATH_URL}/', include('django_example.urls')),
+        path("", RedirectView.as_view(url=f"{settings.PATH_URL}/")),
+        path(f"{settings.PATH_URL}/", include("umap.urls")),
         #
         # Cover over the default Django Admin Login with SSOWat login:
-        path(f'{settings.PATH_URL}/sso-login/', SSOwatLoginRedirectView.as_view(), name='ssowat-login'),
+        path(
+            f"{settings.PATH_URL}/sso-login/",
+            SSOwatLoginRedirectView.as_view(),
+            name="ssowat-login",
+        ),
     ]
 else:
     # Installed to domain root, without a path prefix
     # Just use the default project urls.py
-    from django_example.urls import urlpatterns  # noqa
+    from umap.urls import urlpatterns  # noqa
 
     urlpatterns.append(
-        path('sso-login/', SSOwatLoginRedirectView.as_view(), name='ssowat-login'),
+        path("sso-login/", SSOwatLoginRedirectView.as_view(), name="ssowat-login"),
     )

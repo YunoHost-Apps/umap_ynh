@@ -52,7 +52,7 @@ ynh_app_setting_set --key=log_level --value="$log_level"
 #=================================================
 ynh_script_progression "Validating installation parameters..."
 
-mkdir -p "$install_dir/media" "$install_dir/static"
+mkdir -p "$install_dir/data" "$install_dir/static"
 
 #=================================================
 # SETUP LOG FILE
@@ -78,15 +78,16 @@ myynh_setup_python_venv
 # ================================================
 ynh_script_progression "Create $app configuration files..."
 
-ynh_config_add --template="gunicorn.conf.py" --destination="$data_dir/gunicorn.conf.py"
+# ynh_config_add --template="gunicorn.conf.py" --destination="$data_dir/gunicorn.conf.py"
 
-ynh_config_add --template="manage.py" --destination="$data_dir/manage.py"
-chmod -c +x "$data_dir/manage.py"
+#ynh_config_add --template="manage.py" --destination="$data_dir/manage.py"
+# chmod -c +x "$data_dir/manage.py"
 
 ynh_config_add --template="settings.py" --destination="$data_dir/settings.py"
 ynh_config_add --template="setup_user.py" --destination="$data_dir/setup_user.py"
 ynh_config_add --template="urls.py" --destination="$data_dir/urls.py"
-ynh_config_add --template="wsgi.py" --destination="$data_dir/wsgi.py"
+ynh_config_add --template="env" --destination="$data_dir/env"
+# ynh_config_add --template="wsgi.py" --destination="$data_dir/wsgi.py"
 
 touch "$data_dir/local_settings.py"
 
@@ -97,18 +98,31 @@ ynh_script_progression "migrate/collectstatic/createadmin..."
 
 cd "$data_dir" || exit
 
-# Just for debugging:
-./manage.py diffsettings
+set -a
+. $data_dir/env
+set +a
 
-./manage.py migrate --no-input
-./manage.py collectstatic --no-input
+# Needed to be able to load "urls.py" as ROOT_URLCONF
+echo $data_dir > $data_dir/.venv/lib/python3.11/site-packages/_urls.pth
+
+$data_dir/.venv/bin/python -c "import sys; print(sys.path)"
+ls -lisah $data_dir
+pwd
+# Just for debugging:
+$data_dir/.venv/bin/umap diffsettings
+
+$data_dir/.venv/bin/umap collectstatic --no-input
+ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
+ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
+$data_dir/.venv/bin/umap migrate --no-input
 
 # Create/update Django superuser (set unusable password, because auth done via SSOwat):
-./manage.py create_superuser --username="$admin" --email="$(ynh_user_get_info --username="$admin" --key=mail)"
+# Call create_superuser from django_yunohost_integration instead of Django builtin.
+$data_dir/.venv/bin/umap create_superuser --username="$admin" --email="$(ynh_user_get_info --username="$admin" --key=mail)"
 
 # Check the configuration
 # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
-./manage.py check --deploy || true
+$data_dir/.venv/bin/umap check --deploy || true
 
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST

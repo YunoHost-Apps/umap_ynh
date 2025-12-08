@@ -5,8 +5,8 @@ After=network.target redis.service postgresql.service
 [Service]
 User=__APP__
 WorkingDirectory=__DATA_DIR__/
-
-ExecStart=__DATA_DIR__/.venv/bin/gunicorn --config __DATA_DIR__/gunicorn.conf.py wsgi
+EnvironmentFile=__DATA_DIR__/env
+ExecStart=__DATA_DIR__/.venv/bin/uvicorn --proxy-headers --no-access-log --port __PORT__ umap.asgi:application
 
 
 #____________________________________________________________________________________
