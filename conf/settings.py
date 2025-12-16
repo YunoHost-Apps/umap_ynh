@@ -146,6 +146,9 @@ else:
 
 STATIC_ROOT = str(INSTALL_DIR_PATH / "static")
 MEDIA_ROOT = str(INSTALL_DIR_PATH / "media")
+UMAP_PICTOGRAMS_COLLECTIONS = {
+    "OSMIC": {"path": DATA_DIR_PATH / "icons", "attribution": "Osmic"},
+}
 
 
 # -----------------------------------------------------------------------------
