@@ -78,16 +78,10 @@ myynh_setup_python_venv
 # ================================================
 ynh_script_progression "Create $app configuration files..."
 
-# ynh_config_add --template="gunicorn.conf.py" --destination="$data_dir/gunicorn.conf.py"
-
-#ynh_config_add --template="manage.py" --destination="$data_dir/manage.py"
-# chmod -c +x "$data_dir/manage.py"
-
 ynh_config_add --template="settings.py" --destination="$data_dir/settings.py"
 ynh_config_add --template="setup_user.py" --destination="$data_dir/setup_user.py"
 ynh_config_add --template="urls.py" --destination="$data_dir/urls.py"
 ynh_config_add --template="env" --destination="$data_dir/env"
-# ynh_config_add --template="wsgi.py" --destination="$data_dir/wsgi.py"
 
 touch "$data_dir/local_settings.py"
 
