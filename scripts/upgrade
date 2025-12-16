@@ -31,13 +31,6 @@ if [ -z "$default_from_email" ]; then
 fi
 
 #=================================================
-# CLEANUP OLD FILES
-#=================================================
-# old: "$data_dir/venv" -> cleanup
-# now: "$data_dir/.venv"
-ynh_safe_rm "$data_dir/venv"
-
-#=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
 ynh_script_progression "Stopping systemd service '$app'..."
@@ -67,6 +60,7 @@ ynh_script_progression "Create project configuration files..."
 
 ynh_config_add --template="settings.py" --destination="$data_dir/settings.py"
 ynh_config_add --template="setup_user.py" --destination="$data_dir/setup_user.py"
+ynh_config_add --template="env" --destination="$data_dir/env"
 
 #=================================================
 # MIGRATE APP
@@ -75,18 +69,22 @@ ynh_script_progression "migrate/collectstatic/createadmin..."
 
 cd "$data_dir" || exit
 
-# Just for debugging:
-./manage.py diffsettings
+set -a
+. $data_dir/env
+set +a
 
-./manage.py migrate --no-input
-./manage.py collectstatic --no-input
+# Just for debugging:
+$data_dir/.venv/bin/umap diffsettings
+
+$data_dir/.venv/bin/umap migrate --no-input
+$data_dir/.venv/bin/umap collectstatic --no-input
 
 # Create/update Django superuser (set unusable password, because auth done via SSOwat):
-./manage.py create_superuser --username="$admin" --email="$(ynh_user_get_info --username="$admin" --key=mail)"
+$data_dir/.venv/bin/umap create_superuser --username="$admin" --email="$(ynh_user_get_info --username="$admin" --key=mail)"
 
 # Check the configuration
 # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
-./manage.py check --deploy || true
+$data_dir/.venv/bin/umap check --deploy || true
 
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
