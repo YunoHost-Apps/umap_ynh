@@ -103,11 +103,8 @@ set -a
 set +a
 
 # Needed to be able to load "urls.py" as ROOT_URLCONF
-echo $data_dir > $data_dir/.venv/lib/python3.11/site-packages/_urls.pth
+echo $data_dir > $($data_dir/.venv/bin/python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')/_urls.pth
 
-$data_dir/.venv/bin/python -c "import sys; print(sys.path)"
-ls -lisah $data_dir
-pwd
 # Just for debugging:
 $data_dir/.venv/bin/umap diffsettings
 
