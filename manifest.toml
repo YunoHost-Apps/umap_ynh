@@ -3,8 +3,8 @@ packaging_format = 2
 
 id = "umap"
 name = "uMap"
-description.en = "Application demonstrating the integration of a Django project under YunoHost"
-description.fr = "Application démontrant l'intégration d'un projet Django sous YunoHost"
+description.en = "uMap lets you create maps with OpenStreetMap layers in a minute and embed them in your site. "
+description.fr = "uMap permet de créer des cartes personnalisées sur des fonds OpenStreetMap en un instant et les afficher dans votre site."
 
 version = "3.4.2~ynh0"
 
@@ -65,12 +65,12 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     example = "admin@example.com"
 
     [install.admin_email] # __ADMIN_EMAIL__
-    ask.en = "EMail address for error emails."
+    ask.en = "Email address for error emails."
     type = "email"
     example = "admin@example.com"
 
     [install.debug_enabled] # __DEBUG_ENABLED__ will be set to "0" or "1" string
-    ask.en = "Should be never enabled in production!"
+    ask.en = "Enable debug mode ? Should be never enabled in production!"
     type = "boolean"
 
     [install.log_level] # __LOG_LEVEL__
