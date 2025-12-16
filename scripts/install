@@ -80,7 +80,6 @@ ynh_script_progression "Create $app configuration files..."
 
 ynh_config_add --template="settings.py" --destination="$data_dir/settings.py"
 ynh_config_add --template="setup_user.py" --destination="$data_dir/setup_user.py"
-ynh_config_add --template="urls.py" --destination="$data_dir/urls.py"
 ynh_config_add --template="env" --destination="$data_dir/env"
 
 touch "$data_dir/local_settings.py"
@@ -89,6 +88,7 @@ touch "$data_dir/local_settings.py"
 #=================================================
 # copy icon files
 # ================================================
+ynh_script_progression "copy icons..."
 cp -r ../conf/icons "$data_dir/icons"
 
 #=================================================
