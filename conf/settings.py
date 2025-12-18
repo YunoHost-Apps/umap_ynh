@@ -150,7 +150,8 @@ MEDIA_ROOT = str(INSTALL_DIR_PATH / "media")
 UMAP_PICTOGRAMS_COLLECTIONS = {
     "OSMIC": {"path": DATA_DIR_PATH / "icons", "attribution": "Osmic"},
 }
-
+REALTIME_ENABLED = "__REALTIME_ENABLED__" == "1"
+UMAP_ALLOW_ANONYMOUS = "__ALLOW_ANONYMOUS__" == "1"
 
 # -----------------------------------------------------------------------------
 

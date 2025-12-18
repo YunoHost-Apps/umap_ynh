@@ -70,7 +70,7 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     example = "admin@example.com"
 
     [install.debug_enabled] # __DEBUG_ENABLED__ will be set to "0" or "1" string
-    ask.en = "Enable debug mode ? Should be never enabled in production!"
+    ask.en = "Enable debug mode? Should be never enabled in production!"
     type = "boolean"
 
     [install.log_level] # __LOG_LEVEL__
@@ -78,6 +78,16 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     type = "select"
     choices = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
     default = "WARNING"
+
+    [install.realtime_enabled] # __REALTIME_ENABLED__ will be set to "0" or "1" string
+    ask.en = "Enable realtime collaboration?"
+    type = "boolean"
+    default = "yes"
+
+    [install.allow_anonymous] # __ALLOW_ANONYMOUS__ will be set to "0" or "1" string
+    ask.en = "Allow non logged in users to create maps?"
+    type = "boolean"
+    default = "no"
 
 
 [resources]
