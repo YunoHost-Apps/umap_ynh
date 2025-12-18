@@ -1,2 +1,2 @@
 # umap-project[yunohost,sync]==3.2.9
-git+https://github.com/umap-project/umap@ynh-adptations#egg=umap-project[yunohost,sync]
+umap-project[yunohost,sync] @ git+https://github.com/umap-project/umap@ynh-adptations
