@@ -113,6 +113,7 @@ DATABASES = {
         "CONN_MAX_AGE": 600,
     }
 }
+REDIS_URL = "redis://127.0.0.1:6379/__REDIS_DB__"
 
 # Title of site to use
 SITE_TITLE = "__APP__"
