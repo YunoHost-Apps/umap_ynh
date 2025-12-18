@@ -41,12 +41,6 @@ ynh_app_setting_set --key=log_file --value="$log_file"
 redis_db=$(ynh_redis_get_free_db)
 ynh_app_setting_set --key=redis_db --value="$redis_db"
 
-# App settings:
-ynh_app_setting_set --key=default_from_email --value="$default_from_email"
-ynh_app_setting_set --key=admin_email --value="$admin_email"
-ynh_app_setting_set --key=debug_enabled --value="$debug_enabled"
-ynh_app_setting_set --key=log_level --value="$log_level"
-
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================
