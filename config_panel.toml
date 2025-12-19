@@ -49,7 +49,6 @@ services = ["__APP__"]
         help = "Allow for realtime collaboration"
         bind = "realtime_enabled:/home/yunohost.app/__APP__/settings.py"
 
-
         [main.config.allow_anonymous]
         ask = "Anonymous edition"
         type = "boolean"
@@ -57,3 +56,24 @@ services = ["__APP__"]
         no = "0"
         help = "Allow for non logged in users to create and edit maps"
         bind = "allow_anonymous:/home/yunohost.app/__APP__/settings.py"
+
+        [main.config.default_longitude]
+        ask = "Default longitude"
+        type = "string"
+        default = "2.0"
+        help = "Default longitude for new maps"
+        bind = "default_longitude:/home/yunohost.app/__APP__/settings.py"
+
+        [main.config.default_latitude]
+        ask = "Default latitude"
+        type = "string"
+        default = "51.0"
+        help = "Default latitude for new maps"
+        bind = "default_latitude:/home/yunohost.app/__APP__/settings.py"
+
+        [main.config.default_zoom]
+        ask = "Default zoom"
+        type = "number"
+        default = "6"
+        help = "Default zoom for new maps"
+        bind = "default_zoom:/home/yunohost.app/__APP__/settings.py"

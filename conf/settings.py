@@ -152,6 +152,14 @@ UMAP_PICTOGRAMS_COLLECTIONS = {
 }
 REALTIME_ENABLED = "__REALTIME_ENABLED__" == "1"
 UMAP_ALLOW_ANONYMOUS = "__ALLOW_ANONYMOUS__" == "1"
+# Do not allow to edit username, as it's managed by the Yunohost SSO
+UMAP_ALLOW_EDIT_PROFILE = False
+UMAP_IMPORTERS = {
+    "overpass": {"url": "https://overpass-api.de/api/interpreter"},
+}
+LEAFLET_LONGITUDE = float("__DEFAULT_LONGITUDE__")
+LEAFLET_LATITUDE = float("__DEFAULT_LATITUDE__")
+LEAFLET_ZOOM = int("__DEFAULT_ZOOM__")
 
 # -----------------------------------------------------------------------------
 
