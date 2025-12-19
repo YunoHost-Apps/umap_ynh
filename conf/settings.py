@@ -160,6 +160,7 @@ UMAP_IMPORTERS = {
 LEAFLET_LONGITUDE = float("__DEFAULT_LONGITUDE__")
 LEAFLET_LATITUDE = float("__DEFAULT_LATITUDE__")
 LEAFLET_ZOOM = int("__DEFAULT_ZOOM__")
+OPENROUTESERVICE_APIKEY = "__OPENROUTESERVICE__"
 
 # -----------------------------------------------------------------------------
 

@@ -77,3 +77,9 @@ services = ["__APP__"]
         default = "6"
         help = "Default zoom for new maps"
         bind = "default_zoom:/home/yunohost.app/__APP__/settings.py"
+
+        [main.config.openrouteservice]
+        ask = "OpenRouteService"
+        type = "string"
+        help = "Add your OpenRouteService APi key to activate the routing. The key can be created here: https://openrouteservice.org/"
+        bind = "openrouteservice:/home/yunohost.app/__APP__/settings.py"
