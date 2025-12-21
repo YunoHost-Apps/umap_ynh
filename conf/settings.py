@@ -151,16 +151,16 @@ UMAP_PICTOGRAMS_COLLECTIONS = {
     "OSMIC": {"path": DATA_DIR_PATH / "icons", "attribution": "Osmic"},
 }
 REALTIME_ENABLED = "__REALTIME_ENABLED__" == "1"
-UMAP_ALLOW_ANONYMOUS = "__ALLOW_ANONYMOUS__" == "1"
+UMAP_ALLOW_ANONYMOUS = "__UMAP_ALLOW_ANONYMOUS__" == "1"
 # Do not allow to edit username, as it's managed by the Yunohost SSO
 UMAP_ALLOW_EDIT_PROFILE = False
 UMAP_IMPORTERS = {
     "overpass": {"url": "https://overpass-api.de/api/interpreter"},
 }
-LEAFLET_LONGITUDE = float("__DEFAULT_LONGITUDE__")
-LEAFLET_LATITUDE = float("__DEFAULT_LATITUDE__")
-LEAFLET_ZOOM = int("__DEFAULT_ZOOM__")
-OPENROUTESERVICE_APIKEY = "__OPENROUTESERVICE__"
+LEAFLET_LONGITUDE = float("__LEAFLET_LONGITUDE__")
+LEAFLET_LATITUDE = float("__LEAFLET_LATITUDE__")
+LEAFLET_ZOOM = int("__LEAFLET_ZOOM__")
+OPENROUTESERVICE_APIKEY = "__OPENROUTESERVICE_APIKEY__"
 
 # -----------------------------------------------------------------------------
 

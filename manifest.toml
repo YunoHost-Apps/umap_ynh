@@ -84,7 +84,7 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     type = "boolean"
     default = "yes"
 
-    [install.allow_anonymous] # __ALLOW_ANONYMOUS__ will be set to "0" or "1" string
+    [install.umap_allow_anonymous] # __UMAP_ALLOW_ANONYMOUS__ will be set to "0" or "1" string
     ask.en = "Allow non logged in users to create maps?"
     type = "boolean"
     default = "no"
