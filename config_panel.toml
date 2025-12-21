@@ -74,7 +74,7 @@ services = ["__APP__"]
         [main.config.leaflet_zoom]
         ask = "Default zoom"
         type = "number"
-        default = "6"
+        default = 6
         help = "Default zoom for new maps"
         bind = "leaflet_zoom:/home/yunohost.app/__APP__/settings.py"
 
