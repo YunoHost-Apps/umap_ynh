@@ -85,9 +85,6 @@ $data_dir/.venv/bin/umap diffsettings
 $data_dir/.venv/bin/umap migrate --no-input
 $data_dir/.venv/bin/umap collectstatic --no-input
 
-# Create/update Django superuser (set unusable password, because auth done via SSOwat):
-$data_dir/.venv/bin/umap create_superuser --username="$admin" --email="$(ynh_user_get_info --username="$admin" --key=mail)"
-
 # Check the configuration
 # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
 $data_dir/.venv/bin/umap check --deploy || true
@@ -98,7 +95,6 @@ $data_dir/.venv/bin/umap check --deploy || true
 ynh_script_progression "Upgrading system configurations related to $app..."
 
 ynh_config_add_nginx
-ynh_config_add_systemd
 ynh_config_add_logrotate "$log_file"
 yunohost service add --description $app $app
 
