@@ -20,6 +20,8 @@ ynh_app_setting_set --key=log_file --value="$log_file"
 redis_db=$(ynh_redis_get_free_db)
 ynh_app_setting_set --key=redis_db --value="$redis_db"
 
+email=$(ynh_user_get_info --username=$admin --key=mail)
+
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================
