@@ -1,2 +1,1 @@
-# umap-project[yunohost,sync]==3.2.9
-umap-project[yunohost,sync] @ git+https://github.com/umap-project/umap@ynh-adptations
+umap-project[yunohost,sync]==3.5.0
