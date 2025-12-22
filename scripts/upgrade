@@ -38,16 +38,10 @@ ynh_script_progression "Stopping systemd service '$app'..."
 ynh_systemctl --service=$app --action="stop" --log_path="$log_file"
 
 #=================================================
-# SETUP SYSTEMD
-#=================================================
-ynh_script_progression "Configuring systemd service '$app'..."
-
-ynh_config_add_systemd
-
-#=================================================
 # PYTHON VIRTUALENV
 #=================================================
 ynh_script_progression "Setup Python virtualenv for $app ..."
+
 cp ../conf/install_python.py "$data_dir/install_python.py"
 cp ../conf/setup_python.py "$data_dir/setup_python.py"
 cp ../conf/requirements.txt "$data_dir/requirements.txt"
@@ -95,13 +89,18 @@ $data_dir/.venv/bin/umap check --deploy || true
 ynh_script_progression "Upgrading system configurations related to $app..."
 
 ynh_config_add_nginx
-ynh_config_add_logrotate "$log_file"
-yunohost service add --description $app $app
+
+ynh_config_add_systemd
+
+yunohost service add "$app" --description="A short description of the app" --log="/var/log/$app/$app.log"
+
+ynh_config_add_logrotate
 
 #=================================================
 # SECURE FILES AND DIRECTORIES
 #=================================================
 ynh_script_progression "Set $app file permissions..."
+
 myynh_fix_file_permissions
 
 #=================================================
@@ -110,13 +109,6 @@ myynh_fix_file_permissions
 ynh_script_progression "Starting systemd service '$app'..."
 
 ynh_systemctl --service=$app --action=restart --log_path=systemd
-
-#=================================================
-# RELOAD NGINX
-#=================================================
-ynh_script_progression "Reloading nginx web server..."
-
-ynh_systemctl --service="nginx" --action="reload"
 
 #=================================================
 # END OF SCRIPT

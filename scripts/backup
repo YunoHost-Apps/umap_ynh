@@ -12,34 +12,28 @@ ynh_print_info "Declaring files to be backed up..."
 # /var/www/$app/
 ynh_backup "$install_dir"
 
+#=================================================
+# BACKUP THE DATA DIR
+#=================================================
+
 # /home/yunohost.app/$app/
 ynh_backup "$data_dir"
 
 #=================================================
-# BACKUP THE NGINX CONFIGURATION
+# BACKUP SYSTEM CONFIGURATION
 #=================================================
 
 ynh_backup "/etc/nginx/conf.d/$domain.d/$app.conf"
+
+ynh_backup "/etc/logrotate.d/$app"
+
+ynh_backup "/etc/systemd/system/$app.service"
 
 #=================================================
 # BACKUP THE PostgreSQL DATABASE
 #=================================================
 
 ynh_psql_dump_db > db.sql
-
-#=================================================
-# SPECIFIC BACKUP
-#=================================================
-# BACKUP LOGROTATE
-#=================================================
-
-ynh_backup "/etc/logrotate.d/$app"
-
-#=================================================
-# BACKUP SYSTEMD
-#=================================================
-
-ynh_backup "/etc/systemd/system/$app.service"
 
 #=================================================
 # END OF SCRIPT
