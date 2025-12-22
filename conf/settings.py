@@ -150,16 +150,24 @@ MEDIA_ROOT = str(INSTALL_DIR_PATH / "media")
 UMAP_PICTOGRAMS_COLLECTIONS = {
     "OSMIC": {"path": DATA_DIR_PATH / "icons", "attribution": "Osmic"},
 }
-REALTIME_ENABLED = "__REALTIME_ENABLED__" == "1"
-UMAP_ALLOW_ANONYMOUS = "__UMAP_ALLOW_ANONYMOUS__" == "1"
+
 # Do not allow to edit username, as it's managed by the Yunohost SSO
 UMAP_ALLOW_EDIT_PROFILE = False
 UMAP_IMPORTERS = {
     "overpass": {"url": "https://overpass-api.de/api/interpreter"},
 }
-LEAFLET_LONGITUDE = float("__LEAFLET_LONGITUDE__")
-LEAFLET_LATITUDE = float("__LEAFLET_LATITUDE__")
-LEAFLET_ZOOM = int("__LEAFLET_ZOOM__")
+# YunoHost will try to parse this file to get the values backs, so each variables
+# must be key = value, without anything else (not key = int(value)…)
+REALTIME = "__REALTIME__"
+ALLOW_ANONYMOUS = "__ALLOW_ANONYMOUS__"
+DEFAULT_LONGITUDE = "__DEFAULT_LONGITUDE__"
+DEFAULT_LATITUDE = "__DEFAULT_LATITUDE__"
+DEFAULT_ZOOM = "__DEFAULT_ZOOM__"
+REALTIME_ENABLED = REALTIME == "1"
+UMAP_ALLOW_ANONYMOUS = ALLOW_ANONYMOUS == "1"
+LEAFLET_LONGITUDE = float(DEFAULT_LONGITUDE)
+LEAFLET_LATITUDE = float(DEFAULT_LATITUDE)
+LEAFLET_ZOOM = int(DEFAULT_ZOOM)
 
 # -----------------------------------------------------------------------------
 

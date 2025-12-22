@@ -23,7 +23,7 @@ services = ["__APP__"]
         [main.config.admin_email]
         ask = "ADMIN email"
         type = "email"
-        help = "EMail address for error emails."
+        help = "Email address for error emails."
         bind = "admin_email:/home/yunohost.app/__APP__/settings.py"
 
         [main.config.debug_enabled]
@@ -41,42 +41,42 @@ services = ["__APP__"]
         default = "WARNING"
         bind = "log_level:/home/yunohost.app/__APP__/settings.py"
 
-        [main.config.realtime_enabled]
+        [main.config.realtime]
         ask = "Realtime"
         type = "boolean"
         yes = "1"
         no = "0"
         help = "Allow for realtime collaboration"
-        bind = "realtime_enabled:/home/yunohost.app/__APP__/settings.py"
+        bind = "realtime:/home/yunohost.app/__APP__/settings.py"
 
-        [main.config.umap_allow_anonymous]
+        [main.config.allow_anonymous]
         ask = "Anonymous edition"
         type = "boolean"
         yes = "1"
         no = "0"
         help = "Allow for non logged in users to create and edit maps"
-        bind = "umap_allow_anonymous:/home/yunohost.app/__APP__/settings.py"
+        bind = "allow_anonymous:/home/yunohost.app/__APP__/settings.py"
 
-        [main.config.leaflet_longitude]
+        [main.config.default_longitude]
         ask = "Default longitude"
         type = "string"
         default = "2.0"
         help = "Default longitude for new maps"
-        bind = "leaflet_longitude:/home/yunohost.app/__APP__/settings.py"
+        bind = "default_longitude:/home/yunohost.app/__APP__/settings.py"
 
-        [main.config.leaflet_latitude]
+        [main.config.default_latitude]
         ask = "Default latitude"
         type = "string"
         default = "51.0"
         help = "Default latitude for new maps"
-        bind = "leaflet_latitude:/home/yunohost.app/__APP__/settings.py"
+        bind = "default_latitude:/home/yunohost.app/__APP__/settings.py"
 
-        [main.config.leaflet_zoom]
+        [main.config.default_zoom]
         ask = "Default zoom"
         type = "number"
         default = 6
         help = "Default zoom for new maps"
-        bind = "leaflet_zoom:/home/yunohost.app/__APP__/settings.py"
+        bind = "default_zoom:/home/yunohost.app/__APP__/settings.py"
 
         # [main.config.openrouteservice_apikey]
         # ask = "OpenRouteService"

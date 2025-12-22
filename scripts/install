@@ -72,12 +72,12 @@ myynh_setup_python_venv
 # ================================================
 ynh_script_progression "Create $app configuration files..."
 
-ynh_app_setting_set_default --key=leaflet_longitude --value="2.0"
-ynh_app_setting_set_default --key=leaflet_latitude --value="51.0"
-ynh_app_setting_set_default --key=leaflet_zoom --value=6
+ynh_app_setting_set_default --key=default_longitude --value="2.0"
+ynh_app_setting_set_default --key=default_latitude --value="51.0"
+ynh_app_setting_set_default --key=default_zoom --value=6
 # ynh_app_setting_set_default --key=openrouteservice_apikey --value=""
-ynh_app_setting_set_default --key=umap_allow_anonymous --value=0
-ynh_app_setting_set_default --key=realtime_enabled --value=1
+ynh_app_setting_set_default --key=allow_anonymous --value=0
+ynh_app_setting_set_default --key=realtime --value=1
 ynh_config_add --template="settings.py" --destination="$data_dir/settings.py"
 ynh_config_add --template="setup_user.py" --destination="$data_dir/setup_user.py"
 ynh_config_add --template="env" --destination="$data_dir/env"
