@@ -14,6 +14,9 @@ maintainers = ["Yohan Boniface", "David Larlet"]
 [upstream]
 # https://yunohost.org/en/packaging_manifest#upstream-section
 license = "AGPL-3.0-only"
+website = "https://umap-project.org"
+admindoc = "https://docs.umap-project.org/en/stable/install/"
+userdoc = "https://discover.umap-project.org/"
 code = "https://github.com/umap-project/umap"
 
 
@@ -30,8 +33,6 @@ sso = false
 disk = "1G" # **estimate** minimum disk requirement. e.g. 20M, 400M, 1G, ...
 ram.build = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
 ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
-
-
 
 [install]
 # https://yunohost.org/en/packaging_manifest#install-questions
@@ -53,12 +54,6 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     [install.init_main_permission]
     type = "group"
     default = "visitors"
-
-    [install.update_python] # __UPDATE_PYTHON__
-    ask.en = "How to update Python? 'setup' will use redistributable Python builts (fast), 'install' will compile Python from source (slow)."
-    type = "select"
-    choices = ["INSTALL", "SETUP"]
-    default = "SETUP"
 
     [install.realtime] # __REALTIME_ENABLED__ will be set to "0" or "1" string
     ask.en = "Enable realtime collaboration?"
