@@ -13,9 +13,8 @@ maintainers = ["Yohan Boniface", "David Larlet"]
 
 [upstream]
 # https://yunohost.org/en/packaging_manifest#upstream-section
-license = "AGPL-V3"
+license = "AGPL-3.0-only"
 code = "https://github.com/umap-project/umap"
-
 
 
 [integration]
