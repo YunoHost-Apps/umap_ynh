@@ -4,7 +4,6 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -61,7 +60,7 @@ cp -r ../conf/icons "$data_dir/icons"
 #=================================================
 # MIGRATE / COLLECTSTATIC / CREATEADMIN
 #=================================================
-ynh_script_progression "migrate/collectstatic/createadmin..."
+ynh_script_progression "Deploying $app..."
 
 pushd $install_dir
     mkdir -p "$install_dir/data" "$install_dir/static" 
