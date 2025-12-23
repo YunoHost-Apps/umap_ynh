@@ -7,7 +7,7 @@ User=__APP__
 Group=www-data
 WorkingDirectory=__INSTALL_DIR__/
 EnvironmentFile=__INSTALL_DIR__/umap/settings/.env
-ExecStart=__INSTALL_DIR__/venv/bin/gunicorn umap.asgi:application
+ExecStart=__INSTALL_DIR__/venv/bin/gunicorn umap.asgi:application -k uvicorn.workers.UvicornWorker
 
 
 #____________________________________________________________________________________
