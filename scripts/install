@@ -27,6 +27,13 @@ ynh_app_setting_set --key=timezone --value=$timezone
 mail_user="noreply"
 
 #=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+ynh_script_progression "Setting up source files..."
+
+ynh_setup_source --dest_dir="$install_dir"
+
+#=================================================
 # SETUP LOGROTATE
 #=================================================
 ynh_script_progression "Configuring log rotation..."
