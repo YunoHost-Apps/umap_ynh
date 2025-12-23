@@ -65,7 +65,7 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     type = "boolean"
     default = false
 
-    [install.umap_allow__edit_profile]
+    [install.umap_allow_edit_profile]
     ask.en = "Allow to edit profile?"
     type = "boolean"
     default = true
