@@ -95,6 +95,7 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     [resources.ports]
     # https://yunohost.org/en/packaging_apps_resources#ports
     # This will pick a random port for reverse-proxying and store it as the $port setting
+    main.default = 8000
 
     [resources.apt]
     # https://yunohost.org/en/packaging_apps_resources#apt
