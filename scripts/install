@@ -73,8 +73,8 @@ pushd $install_dir
     ynh_config_add --template="base.py" --destination="$install_dir/umap/settings/base.py"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
-    python manage.py migrate
     python manage.py collectstatic --noinput
+    python manage.py migrate
     DJANGO_SUPERUSER_USERNAME=$admin DJANGO_SUPERUSER_EMAIL=$admin_mail DJANGO_SUPERUSER_PASSWORD=$password python manage.py createsuperuser --noinput
     deactivate
 popd
