@@ -41,12 +41,6 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     # this is a generic question - ask strings are automatically handled by Yunohost's core
     type = "domain"
 
-    [install.path]
-    # this is a generic question - ask strings are automatically handled by Yunohost's core
-    # setting $path and template variable __PATH__
-    type = "path"
-    default = "/umap"
-
     [install.admin]
     # this is a generic question - ask strings are automatically handled by Yunohost's core
     type = "user"
