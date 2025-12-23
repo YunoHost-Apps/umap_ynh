@@ -62,7 +62,7 @@ pushd $install_dir
     source venv/bin/activate
     pip install umap-project
     pip install gunicorn
-    cp ../conf/base.py "$install_dir/umap/settings/base.py" -f
+    ynh_config_add --template="base.py" --destination="$install_dir/umap/settings/base.py"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
     python manage.py migrate
