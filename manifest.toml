@@ -55,25 +55,25 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     type = "group"
     default = "visitors"
 
-    [install.realtime] # __REALTIME_ENABLED__ will be set to "0" or "1" string
+    [install.realtime_enabled] # __REALTIME_ENABLED__ will be set to "0" or "1" string
     ask.en = "Enable realtime collaboration?"
     type = "boolean"
-    default = "1"
+    default = true
 
     [install.umap_allow_anonymous] # __ALLOW_ANONYMOUS__ will be set to "0" or "1" string
     ask.en = "Allow non logged in users to create maps?"
     type = "boolean"
-    default = "0"
+    default = false
 
     [install.umap_allow__edit_profile]
     ask.en = "Allow to edit profile?"
     type = "boolean"
-    default = "1"
+    default = true
 
     [install.enable_account_login]
     ask.en = "Enable account login?"
     type = "boolean"
-    default = "1"
+    default = true
 
 [resources]
     [resources.system_user]
