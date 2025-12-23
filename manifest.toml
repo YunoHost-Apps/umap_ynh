@@ -3,7 +3,7 @@ packaging_format = 2
 
 id = "umap"
 name = "uMap"
-description.en = "Vreate maps with OpenStreetMap layers in a minute and embed them in your site"
+description.en = "Create maps with OpenStreetMap layers in a minute and embed them in your site"
 description.fr = "Créer des cartes personnalisées sur des fonds OpenStreetMap en un instant et les afficher dans votre site"
 
 version = "3.4.2~ynh0"
