@@ -7,81 +7,46 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
-#-------------------------------------------------
-# config_panel.toml settings:
-
-if [ -z "$debug_enabled" ]; then
-	debug_enabled="0"
-	ynh_app_setting_set --key=debug_enabled --value="$debug_enabled"
-fi
-
-if [ -z "$log_level" ]; then
-	log_level="WARNING"
-	ynh_app_setting_set --key=log_level --value="$log_level"
-fi
-
-if [ -z "$admin_email" ]; then
-	admin_email="${admin}@${domain}"
-    ynh_app_setting_set --key=admin_email --value="$admin_email"
-fi
-
-if [ -z "$default_from_email" ]; then
-	default_from_email="${app}@${domain}"
-	ynh_app_setting_set --key=default_from_email --value="$default_from_email"
-fi
-
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
 ynh_script_progression "Stopping systemd service '$app'..."
 
-ynh_systemctl --service=$app --action="stop" --log_path="$log_file"
-
-#=================================================
-# PYTHON VIRTUALENV
-#=================================================
-ynh_script_progression "Setup Python virtualenv for $app ..."
-
-cp ../conf/install_python.py "$data_dir/install_python.py"
-cp ../conf/setup_python.py "$data_dir/setup_python.py"
-cp ../conf/requirements.txt "$data_dir/requirements.txt"
-myynh_setup_python_venv
+ynh_systemctl --service=$app --action="stop"
 
 #=================================================
 # copy config files
 # ================================================
 ynh_script_progression "Create project configuration files..."
 
-ynh_app_setting_set_default --key=default_longitude --value="2.0"
-ynh_app_setting_set_default --key=default_latitude --value="51.0"
-ynh_app_setting_set_default --key=default_zoom --value=6
-ynh_app_setting_set_default --key=openrouteservice --value=""
-ynh_app_setting_set_default --key=allow_anonymous --value=0
-ynh_app_setting_set_default --key=realtime --value=1
-ynh_config_add --template="settings.py" --destination="$data_dir/settings.py"
-ynh_config_add --template="setup_user.py" --destination="$data_dir/setup_user.py"
-ynh_config_add --template="env" --destination="$data_dir/env"
+redis_db=$(ynh_app_setting_get --app=$app --key=redis_db)
+admin_mail=$(ynh_app_setting_get --app=$app --key=admin_mail)
+timezone=$(ynh_app_setting_get --app=$app --key=timezone)
+secret_key=$(ynh_app_setting_get --app=$app --key=secret_key)
+mail_user="noreply"
+
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+ynh_script_progression "Upgrading source files..."
+
+ynh_setup_source --dest_dir="$install_dir" --full_replace --keep="umap/settings/.env"
 
 #=================================================
 # MIGRATE APP
 #=================================================
 ynh_script_progression "migrate/collectstatic/createadmin..."
 
-cd "$data_dir" || exit
+pushd $install_dir
+    source venv/bin/activate
+    pip install --upgrade
+    ynh_config_add --template="base.py" --destination="$install_dir/umap/settings/base.py"
+    python manage.py migrate
+    python manage.py collectstatic --noinput
+    deactivate
+popd
 
-set -a
-. $data_dir/env
-set +a
-
-# Just for debugging:
-$data_dir/.venv/bin/umap diffsettings
-
-$data_dir/.venv/bin/umap migrate --no-input
-$data_dir/.venv/bin/umap collectstatic --no-input
-
-# Check the configuration
-# This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
-$data_dir/.venv/bin/umap check --deploy || true
+chown -R "$app:www-data" "$install_dir"
 
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
@@ -92,23 +57,16 @@ ynh_config_add_nginx
 
 ynh_config_add_systemd
 
-yunohost service add "$app" --description="A short description of the app" --log="/var/log/$app/$app.log"
+yunohost service add "$app" --description="Create maps with OpenStreetMap layers" --log="/var/log/$app/$app.log"
 
 ynh_config_add_logrotate
-
-#=================================================
-# SECURE FILES AND DIRECTORIES
-#=================================================
-ynh_script_progression "Set $app file permissions..."
-
-myynh_fix_file_permissions
 
 #=================================================
 # Start the app server via systemd
 #=================================================
 ynh_script_progression "Starting systemd service '$app'..."
 
-ynh_systemctl --service=$app --action=restart --log_path=systemd
+ynh_systemctl --service=$app --action="start"
 
 #=================================================
 # END OF SCRIPT
