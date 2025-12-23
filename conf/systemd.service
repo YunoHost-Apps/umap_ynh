@@ -6,7 +6,7 @@ After=network.target redis.service postgresql.service
 User=__APP__
 Group=www-data
 WorkingDirectory=__INSTALL_DIR__/
-EnvironmentFile=__INSTALL_DIR__/.env
+EnvironmentFile=__INSTALL_DIR__/umap/settings/.env
 ExecStart=__INSTALL_DIR__/venv/bin/gunicorn --proxy-headers --no-access-log --port __PORT__ umap.asgi:application
 
 
