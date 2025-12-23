@@ -60,44 +60,40 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     type = "boolean"
     default = "1"
 
-    [install.allow_anonymous] # __ALLOW_ANONYMOUS__ will be set to "0" or "1" string
+    [install.umap_allow_anonymous] # __ALLOW_ANONYMOUS__ will be set to "0" or "1" string
     ask.en = "Allow non logged in users to create maps?"
     type = "boolean"
     default = "0"
 
+    [install.umap_allow__edit_profile]
+    ask.en = "Allow to edit profile?"
+    type = "boolean"
+    default = "1"
+
+    [install.enable_account_login]
+    ask.en = "Enable account login?"
+    type = "boolean"
+    default = "1"
 
 [resources]
     [resources.system_user]
-    # This will provision/deprovision a unix system user
+    allow_email = true
 
     [resources.install_dir]
-    # https://yunohost.org/en/packaging_apps_resources#install-dir
-    # This will create/remove the install dir as /var/www/$app/
-    # and store the corresponding setting $install_dir and template variable __INSTALL_DIR__
     group = "www-data:r-x" # static files served by nginx
 
     [resources.data_dir]
-    # https://yunohost.org/en/packaging_apps_resources#data-dir
-    # This will create/remove the data dir as /home/yunohost.app/$app/
-    # and store the corresponding setting $data_dir and template variable __DATA_DIR__
 
     [resources.permissions]
-    # https://yunohost.org/en/packaging_apps_resources#permissions
-    # This will configure SSOwat permission for $domain/$path/
-    # The initial allowed group of user is configured via the init_main_permission question (public=visitors, private=all_users)
     main.url = "/"
+    admin.url = "/admin"
+    admin.allowed = "admins"
+    admin.show_tile = true 
 
     [resources.ports]
-    # https://yunohost.org/en/packaging_apps_resources#ports
-    # This will pick a random port for reverse-proxying and store it as the $port setting
 
     [resources.apt]
-    # https://yunohost.org/en/packaging_apps_resources#apt
-    # This will automatically install/uninstall the following apt packages
     packages = "build-essential, python3-dev, python3-pip, python3-venv, libffi-dev, libpq-dev, postgresql, postgresql-contrib, redis-server, checkinstall, pkg-config, postgis"
 
     [resources.database]
-    # https://yunohost.org/en/packaging_apps_resources#database
-    # This will automatically provision/deprovison a Postgres DB
-    # and store the corresponding credentials in settings $db_user, $db_name, $db_pwd
     type = "postgresql"

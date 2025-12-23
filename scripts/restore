@@ -20,15 +20,10 @@ ynh_restore "$data_dir"
 
 ynh_script_progression "Set $app file permissions..."
 
-myynh_fix_file_permissions
-
-#=================================================
-# PYTHON VIRTUALENV
-# Maybe the backup contains a other Python version
-#=================================================
-ynh_script_progression "Setup Python virtualenv for $app ..."
-
-myynh_setup_python_venv
+chmod 400 "$install_dir/.env"
+chown "$app:$app" "$install_dir/.env"
+chown -R "$app:www-data" "$install_dir"
+chown -R "$app:www-data" "/var/log/$app"
 
 #=================================================
 # RESTORE THE PostgreSQL DATABASE
@@ -47,24 +42,16 @@ ynh_restore "/etc/nginx/conf.d/$domain.d/$app.conf"
 ynh_restore "/etc/systemd/system/$app.service"
 systemctl enable $app.service --quiet
 
-yunohost service add "$app" --description="A short description of the app" --log="/var/log/$app/$app.log"
+yunohost service add "$app" --description="Create maps with OpenStreetMap layers" --log="/var/log/$app/$app.log"
 
-myynh_setup_log_file
 ynh_restore "/etc/logrotate.d/$app"
-
-#=================================================
-# SECURE FILES AND DIRECTORIES
-#=================================================
-ynh_script_progression "Set $app file permissions..."
-
-myynh_fix_file_permissions
 
 #=================================================
 # RELOAD NGINX AND PHP-FPM OR THE APP SERVICE
 #=================================================
 ynh_script_progression "Reloading NGINX web server and $app's service..."
 
-ynh_systemctl --service=$app --action="start" --log_path="$log_file"
+ynh_systemctl --service=$app --action="start"
 
 ynh_systemctl --service="nginx" --action="reload"
 

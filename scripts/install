@@ -12,58 +12,38 @@ source /usr/share/yunohost/helpers
 #=================================================
 ynh_script_progression "Storing installation settings..."
 
-# Logging:
-log_file="/var/log/$app/$app.log"
-ynh_app_setting_set --key=log_file --value="$log_file"
+secret_key=$(ynh_string_random --length=32)
+ynh_app_setting_set --key=secret_key --value=$secret_key
 
-# Redis:
 redis_db=$(ynh_redis_get_free_db)
 ynh_app_setting_set --key=redis_db --value="$redis_db"
 
-email=$(ynh_user_get_info --username=$admin --key=mail)
+admin_mail=$(ynh_user_get_info --username=$admin --key=mail)
+ynh_app_setting_set --key=admin_mail --value=$admin_mail
+
+timezone="$(timedatectl show --value --property=Timezone)"
+ynh_app_setting_set --key=timezone --value=$timezone
+
+mail_user="noreply"
 
 #=================================================
-# CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
+# SETUP LOGROTATE
 #=================================================
-ynh_script_progression "Validating installation parameters..."
+ynh_script_progression "Configuring log rotation..."
 
-mkdir -p "$install_dir/data" "$install_dir/static"
-
-#=================================================
-# SETUP LOG FILE
-#=================================================
-ynh_script_progression "Setup logging..."
-
-myynh_setup_log_file
-
-# Use logrotate to manage application logfile(s)
-ynh_config_add_logrotate "$log_file"
-
-#=================================================
-# PYTHON VIRTUALENV
-#=================================================
-ynh_script_progression "Setup Python virtualenv for $app ..."
-cp ../conf/install_python.py "$data_dir/install_python.py"
-cp ../conf/setup_python.py "$data_dir/setup_python.py"
-cp ../conf/requirements.txt "$data_dir/requirements.txt"
-myynh_setup_python_venv
+mkdir -p "/var/log/$app"
+chown -R "$app:www-data" "/var/log/$app"
+ynh_config_add_logrotate
 
 #=================================================
 # copy config files
 # ================================================
 ynh_script_progression "Create $app configuration files..."
 
-ynh_app_setting_set_default --key=default_longitude --value="2.0"
-ynh_app_setting_set_default --key=default_latitude --value="51.0"
-ynh_app_setting_set_default --key=default_zoom --value=6
-ynh_app_setting_set_default --key=openrouteservice --value=""
-ynh_app_setting_set_default --key=allow_anonymous --value=0
-ynh_app_setting_set_default --key=realtime --value=1
-ynh_config_add --template="settings.py" --destination="$data_dir/settings.py"
-ynh_config_add --template="setup_user.py" --destination="$data_dir/setup_user.py"
-ynh_config_add --template="env" --destination="$data_dir/env"
-
-touch "$data_dir/local_settings.py"
+mkdir -p $install_dir/umap/settings
+ynh_config_add --template=".env.example" --destination="$install_dir/umap/settings/.env"
+chmod 400 "$install_dir/.env"
+chown "$app:$app" "$install_dir/.env"
 
 #=================================================
 # copy icon files
@@ -76,30 +56,22 @@ cp -r ../conf/icons "$data_dir/icons"
 #=================================================
 ynh_script_progression "migrate/collectstatic/createadmin..."
 
-cd "$data_dir" || exit
+pushd $install_dir
+    mkdir -p "$install_dir/data" "$install_dir/static" 
+    python -m venv venv
+    source venv/bin/activate
+    pip install umap-project
+    pip install gunicorn
+    cp ../conf/base.py "$install_dir/umap/settings/base.py" -f
+    ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
+    ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
+    python manage.py migrate
+    python manage.py collectstatic --noinput
+    DJANGO_SUPERUSER_USERNAME=$admin DJANGO_SUPERUSER_EMAIL=$admin_mail DJANGO_SUPERUSER_PASSWORD=$password python manage.py createsuperuser --noinput
+    deactivate
+popd
 
-set -a
-. $data_dir/env
-set +a
-
-# Needed to be able to load "urls.py" as ROOT_URLCONF
-echo $data_dir > $($data_dir/.venv/bin/python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')/_urls.pth
-
-# Just for debugging:
-$data_dir/.venv/bin/umap diffsettings
-
-$data_dir/.venv/bin/umap collectstatic --no-input
-ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
-ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
-$data_dir/.venv/bin/umap migrate --no-input
-
-# Create/update Django superuser (set unusable password, because auth done via SSOwat):
-# Call create_superuser from django_yunohost_integration instead of Django builtin.
-$data_dir/.venv/bin/umap create_superuser --username="$admin" --email="$(ynh_user_get_info --username="$admin" --key=mail)"
-
-# Check the configuration
-# This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
-$data_dir/.venv/bin/umap check --deploy || true
+chown -R "$app:www-data" "$install_dir"
 
 #=================================================
 # SYSTEM CONFIGURATION
@@ -110,21 +82,14 @@ ynh_config_add_nginx
 
 ynh_config_add_systemd
 
-yunohost service add "$app" --description="A short description of the app" --log="/var/log/$app/$app.log"
-
-#=================================================
-# SECURE FILES AND DIRECTORIES
-#=================================================
-ynh_script_progression "Set $app file permissions..."
-
-myynh_fix_file_permissions
+yunohost service add "$app" --description="Create maps with OpenStreetMap layers" --log="/var/log/$app/$app.log"
 
 #=================================================
 # Start the app server via systemd
 #=================================================
 ynh_script_progression "Starting systemd service '$app'..."
 
-ynh_systemctl --service=$app --action="start" --log_path="$log_file"
+ynh_systemctl --service=$app --action="start"
 
 #=================================================
 # END OF SCRIPT

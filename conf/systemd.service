@@ -4,9 +4,10 @@ After=network.target redis.service postgresql.service
 
 [Service]
 User=__APP__
-WorkingDirectory=__DATA_DIR__/
-EnvironmentFile=__DATA_DIR__/env
-ExecStart=__DATA_DIR__/.venv/bin/uvicorn --proxy-headers --no-access-log --port __PORT__ umap.asgi:application
+Group=www-data
+WorkingDirectory=__INSTALL_DIR__/
+EnvironmentFile=__INSTALL_DIR__/.env
+ExecStart=____INSTALL_DIR____/venv/bin/gunicorn --proxy-headers --no-access-log --port __PORT__ umap.asgi:application
 
 
 #____________________________________________________________________________________
@@ -17,7 +18,7 @@ ExecStart=__DATA_DIR__/.venv/bin/uvicorn --proxy-headers --no-access-log --port 
 RestartForceExitStatus=100
 Restart=on-failure
 RestartSec=5s
-StandardOutput=append:__LOG_FILE__
+StandardOutput=append:/var/log/__APP__/__APP__.log
 StandardError=inherit
 
 # Sandboxing options to harden security
