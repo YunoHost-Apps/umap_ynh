@@ -71,6 +71,7 @@ pushd $install_dir
     pip install umap-project
     pip install gunicorn
     pip install redis
+    pip install . 
     ynh_config_add --template="base.py" --destination="$install_dir/umap/settings/base.py"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
