@@ -33,7 +33,7 @@ ynh_script_progression "migrate/collectstatic/createadmin..."
 pushd $install_dir
     source venv/bin/activate
     pip install --upgrade
-    cp ../conf/base.py "$install_dir/umap/settings/base.py" -f
+    ynh_config_add --template="base.py" --destination="$install_dir/umap/settings/base.py"
     python manage.py migrate
     python manage.py collectstatic --noinput
     deactivate
