@@ -60,9 +60,10 @@ ynh_app_setting_set_default --key=default_zoom --value=6
 ynh_app_setting_set_default --key=openrouteservice --value=""
 ynh_app_setting_set_default --key=allow_anonymous --value=0
 ynh_app_setting_set_default --key=realtime --value=1
+
 ynh_config_add --template="settings.py" --destination="$data_dir/settings.py"
 ynh_config_add --template="setup_user.py" --destination="$data_dir/setup_user.py"
-ynh_config_add --template="env" --destination="$data_dir/env"
+ynh_config_add --template="env" --destination="$data_dir/.env"
 
 touch "$data_dir/local_settings.py"
 
