@@ -25,16 +25,16 @@ ynh_app_setting_set --key=timezone --value=$timezone
 
 mail_user="noreply"
 
-umap_readonly=false
+umap_readonly=False
 ynh_app_setting_set --key=umap_readonly --value=$umap_readonly
 
-umap_keep_versions=10
+umap_keep_versions="10"
 ynh_app_setting_set --key=umap_keep_versions --value=$umap_keep_versions
 
-umap_default_edit_status=3
+umap_default_edit_status="3"
 ynh_app_setting_set --key=umap_default_edit_status --value=$umap_default_edit_status
 
-umap_default_share_status=3
+umap_default_share_status="3"
 ynh_app_setting_set --key=umap_default_share_status --value=$umap_default_share_status
 
 umap_home_feed="latest"
