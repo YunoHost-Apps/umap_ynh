@@ -153,6 +153,7 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     [resources.sources.main]
     url = "https://github.com/umap-project/umap/archive/refs/tags/3.5.0.tar.gz"
     sha256 = "26183d0f35ae2fafaaac35e9b52010554bf5516ea98bd4c0dd0c4fe77fc53c02"
+    autoupdate.strategy = "latest_github_tag"
     
     [resources.system_user]
     allow_email = true
