@@ -25,6 +25,21 @@ ynh_app_setting_set --key=timezone --value=$timezone
 
 mail_user="noreply"
 
+umap_readonly=False
+ynh_app_setting_set --key=umap_readonly --value=$umap_readonly
+
+umap_keep_versions="10"
+ynh_app_setting_set --key=umap_keep_versions --value=$umap_keep_versions
+
+umap_default_edit_status="3"
+ynh_app_setting_set --key=umap_default_edit_status --value=$umap_default_edit_status
+
+umap_default_share_status="3"
+ynh_app_setting_set --key=umap_default_share_status --value=$umap_default_share_status
+
+umap_home_feed="latest"
+ynh_app_setting_set --key=umap_home_feed --value=$umap_home_feed
+
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
@@ -46,10 +61,13 @@ ynh_config_add_logrotate
 # ================================================
 ynh_script_progression "Create $app configuration files..."
 
-mkdir -p $install_dir/umap/settings
-ynh_config_add --template=".env.example" --destination="$install_dir/umap/settings/.env"
-chmod 400 "$install_dir/umap/settings/.env"
-chown "$app:$app" "$install_dir/umap/settings/.env"
+mkdir -p $data_dir/custom/static
+mkdir -p $data_dir/custom/templates
+mkdir -p $data_dir/data
+
+ynh_config_add --template="umap.conf" --destination="$data_dir/umap.conf"
+chmod 400 "$data_dir/umap.conf"
+chown -R "$app:$app" "$data_dir"
 
 #=================================================
 # copy icon files
@@ -70,12 +88,11 @@ pushd $install_dir
     pip install pyyaml
     pip install ".[sync,deploy]"
     pip install gunicorn
-    ynh_config_add --template="base.py" --destination="$install_dir/umap/settings/base.py"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
-    python manage.py collectstatic --noinput
-    python manage.py migrate
-    DJANGO_SUPERUSER_USERNAME=$admin DJANGO_SUPERUSER_EMAIL=$admin_mail DJANGO_SUPERUSER_PASSWORD=$password python manage.py createsuperuser --noinput
+    UMAP_SETTINGS=$data_dir/umap.conf python manage.py collectstatic --noinput
+    UMAP_SETTINGS=$data_dir/umap.conf python manage.py migrate
+    UMAP_SETTINGS=$data_dir/umap.conf DJANGO_SUPERUSER_USERNAME=$admin DJANGO_SUPERUSER_EMAIL=$admin_mail DJANGO_SUPERUSER_PASSWORD=$password python manage.py createsuperuser --noinput
     deactivate
 popd
 
