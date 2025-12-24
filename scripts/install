@@ -68,7 +68,7 @@ pushd $install_dir
     echo "source $install_dir/venv/bin/activate" >> $install_dir/.bashrc
     source venv/bin/activate
     pip install pyyaml
-    pip install .
+    pip install ".[sync,deploy]"
     pip install gunicorn
     ynh_config_add --template="base.py" --destination="$install_dir/umap/settings/base.py"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
