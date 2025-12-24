@@ -41,7 +41,7 @@ ynh_script_progression "Deploying $app..."
 
 pushd $install_dir
     source venv/bin/activate
-    pip install --upgrade
+    pip install -U .
     ynh_config_add --template="base.py" --destination="$install_dir/umap/settings/base.py"
     python manage.py migrate
     python manage.py collectstatic --noinput
