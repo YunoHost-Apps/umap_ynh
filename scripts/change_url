@@ -26,10 +26,15 @@ secret_key=$(ynh_app_setting_get --key=secret_key)
 redis_db=$(ynh_app_setting_get --key=redis_db)
 admin_mail=$(ynh_user_get_info --username=$admin --key=mail)
 timezone="$(timedatectl show --value --property=Timezone)"
+umap_readonly=$(ynh_app_setting_get --key=umap_readonly)
+umap_keep_versions=$(ynh_app_setting_get --key=umap_keep_versions)
+umap_default_edit_status=$(ynh_app_setting_get --key=umap_default_edit_status)
+umap_default_share_status=$(ynh_app_setting_get --key=umap_default_share_status)
+umap_home_feed=$(ynh_app_setting_get --key=umap_home_feed)
 
-ynh_config_add --template=".env.example" --destination="$install_dir/umap/settings/.env"
-chmod 400 "$install_dir/umap/settings/.env"
-chown "$app:$app" "$install_dir/umap/settings/.env"
+ynh_config_add --template="umap.conf" --destination="$data_dir/umap.conf"
+chmod 400 "$data_dir/umap.conf"
+chown "$app:$app" "$data_dir/umap.conf"
 
 #=================================================
 # START SYSTEMD SERVICE
