@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -8,7 +7,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 ynh_script_progression "Stopping systemd service '$app'..."
 
-ynh_systemctl --service=$app --action="stop" --log_path="$log_file"
+ynh_systemctl --service=$app --action="stop"
 
 #=================================================
 # MODIFY URL IN NGINX CONF
@@ -22,14 +21,27 @@ ynh_config_change_url_nginx
 #=================================================
 ynh_script_progression "Update $app settings file..."
 
-ynh_config_add --template="settings.py" --destination="$data_dir/settings.py"
+mail_user="noreply"
+secret_key=$(ynh_app_setting_get --key=secret_key)
+redis_db=$(ynh_app_setting_get --key=redis_db)
+admin_mail=$(ynh_user_get_info --username=$admin --key=mail)
+timezone="$(timedatectl show --value --property=Timezone)"
+umap_readonly=$(ynh_app_setting_get --key=umap_readonly)
+umap_keep_versions=$(ynh_app_setting_get --key=umap_keep_versions)
+umap_default_edit_status=$(ynh_app_setting_get --key=umap_default_edit_status)
+umap_default_share_status=$(ynh_app_setting_get --key=umap_default_share_status)
+umap_home_feed=$(ynh_app_setting_get --key=umap_home_feed)
+
+ynh_config_add --template="umap.conf" --destination="$data_dir/umap.conf"
+chmod 400 "$data_dir/umap.conf"
+chown "$app:$app" "$data_dir/umap.conf"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
 ynh_script_progression "Starting systemd service '$app'..."
 
-ynh_systemctl --service=$app --action="start" --log_path="$log_file"
+ynh_systemctl --service=$app --action="start"
 
 #=================================================
 # END OF SCRIPT

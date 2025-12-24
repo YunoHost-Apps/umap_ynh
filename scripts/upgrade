@@ -4,7 +4,6 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -19,30 +18,37 @@ ynh_systemctl --service=$app --action="stop"
 # ================================================
 ynh_script_progression "Create project configuration files..."
 
-redis_db=$(ynh_app_setting_get --app=$app --key=redis_db)
+# Get a new redis db
+redis_db=$(ynh_redis_get_free_db)
+ynh_app_setting_set --key=redis_db --value="$redis_db"
+
 admin_mail=$(ynh_app_setting_get --app=$app --key=admin_mail)
 timezone=$(ynh_app_setting_get --app=$app --key=timezone)
 secret_key=$(ynh_app_setting_get --app=$app --key=secret_key)
 mail_user="noreply"
+umap_readonly=$(ynh_app_setting_get --key=umap_readonly)
+umap_keep_versions=$(ynh_app_setting_get --key=umap_keep_versions)
+umap_default_edit_status=$(ynh_app_setting_get --key=umap_default_edit_status)
+umap_default_share_status=$(ynh_app_setting_get --key=umap_default_share_status)
+umap_home_feed=$(ynh_app_setting_get --key=umap_home_feed)
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 ynh_script_progression "Upgrading source files..."
 
-ynh_setup_source --dest_dir="$install_dir" --full_replace --keep="umap/settings/.env"
+ynh_setup_source --dest_dir="$install_dir" --full_replace --keep="venv"
 
 #=================================================
 # MIGRATE APP
 #=================================================
-ynh_script_progression "migrate/collectstatic/createadmin..."
+ynh_script_progression "Deploying $app..."
 
 pushd $install_dir
     source venv/bin/activate
-    pip install --upgrade
-    ynh_config_add --template="base.py" --destination="$install_dir/umap/settings/base.py"
-    python manage.py migrate
-    python manage.py collectstatic --noinput
+    pip install -U ".[sync,deploy]"
+    UMAP_SETTINGS=$data_dir/umap.conf python manage.py collectstatic --noinput
+    UMAP_SETTINGS=$data_dir/umap.conf python manage.py migrate
     deactivate
 popd
 
