@@ -65,6 +65,7 @@ ynh_script_progression "Deploying $app..."
 pushd $install_dir
     mkdir -p "$install_dir/data" "$install_dir/static" 
     python -m venv venv
+    echo "source $install_dir/venv/bin/activate" >> $install_dir/.bashrc
     source venv/bin/activate
     pip install pyyaml
     pip install umap-project[deploy,sync]==3.5.0
