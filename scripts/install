@@ -100,6 +100,7 @@ pushd $install_dir
 popd
 
 chown -R "$app:www-data" "$install_dir"
+chown -R "$app:www-data" "/var/log/$app"
 
 #=================================================
 # SYSTEM CONFIGURATION
