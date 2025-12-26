@@ -84,7 +84,7 @@ pushd $install_dir
     echo "source $install_dir/venv/bin/activate" >> $install_dir/.bashrc
     source venv/bin/activate
     ynh_config_add --template="yunohost.py" --destination="$install_dir/umap/settings/yunohost.py"
-    DJANGO_SETTINGS_MODULE=umap.settings.yunohost pip install pyyaml
+    pip install pyyaml
     DJANGO_SETTINGS_MODULE=umap.settings.yunohost pip install ".[sync,deploy,yunohost]"
     DJANGO_SETTINGS_MODULE=umap.settings.yunohost pip install gunicorn
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
