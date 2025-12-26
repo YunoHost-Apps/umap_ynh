@@ -85,8 +85,17 @@ pushd $install_dir
     python -m venv venv
     echo "source $install_dir/venv/bin/activate" >> $install_dir/.bashrc
     source venv/bin/activate
+
+    if [ "$use_sso" = "true" ]; then
+    ynh_config_add --template="settings.py" --destination="$install_dir/umap/settings/settings.py"
+    pip install django-yunohost-integration
+    fi
+
     pip install pyyaml
     pip install ".[sync,deploy]"
+
+
+
     pip install gunicorn
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
