@@ -1,7 +1,41 @@
 from pathlib import Path as __Path
-from umap.settings.base import * # Import base settings first
+import os
+
+# ==============================================================================
+# 1. LOAD UMAP DEFAULTS
+# ==============================================================================
+from umap.settings.base import *
+
+_umap_apps = list(INSTALLED_APPS)
+_umap_middleware = list(MIDDLEWARE)
+_umap_backends = list(AUTHENTICATION_BACKENDS)
+
+# ==============================================================================
+# 2. LOAD YUNOHOST INTEGRATION
+# ==============================================================================
 from django_yunohost_integration.base_settings import *
-from django_yunohost_integration.secret_key import get_or_create_secret as __get_or_create_secret
+
+# ==============================================================================
+# 3. Restore missing uMap settings
+# ==============================================================================
+
+for app in _umap_apps:
+    if app not in INSTALLED_APPS:
+        INSTALLED_APPS.append(app)
+
+for mw in _umap_middleware:
+    if mw not in MIDDLEWARE:
+        MIDDLEWARE.append(mw)
+
+for backend in _umap_backends:
+    if backend not in AUTHENTICATION_BACKENDS:
+        AUTHENTICATION_BACKENDS += (backend,)
+
+if 'django_yunohost_integration' not in INSTALLED_APPS:
+    INSTALLED_APPS.append('django_yunohost_integration')
+
+ROOT_URLCONF = 'umap.urls' 
+LOG_LEVEL = "INFO"
 
 # ==============================================================================
 # YunoHost Path & Setup
