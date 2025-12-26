@@ -87,7 +87,7 @@ pushd $install_dir
     ynh_config_add --template="yunohost.py" --destination="$install_dir/umap/settings/yunohost.py"
     export DJANGO_SETTINGS_MODULE=umap.settings.yunohost
     
-    pip install ".[sync,deploy,yunohost]"
+    pip install ".[sync,yunohost]"
     pip install gunicorn
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
