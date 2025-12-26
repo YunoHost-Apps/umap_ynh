@@ -83,15 +83,17 @@ pushd $install_dir
     python -m venv venv
     echo "source $install_dir/venv/bin/activate" >> $install_dir/.bashrc
     source venv/bin/activate
-    ynh_config_add --template="yunohost.py" --destination="$install_dir/umap/settings/yunohost.py"
     pip install pyyaml
-    DJANGO_SETTINGS_MODULE=umap.settings.yunohost pip install ".[sync,deploy,yunohost]"
-    DJANGO_SETTINGS_MODULE=umap.settings.yunohost pip install gunicorn
+    ynh_config_add --template="yunohost.py" --destination="$install_dir/umap/settings/yunohost.py"
+    export DJANGO_SETTINGS_MODULE=umap.settings.yunohost
+    
+    pip install ".[sync,deploy,yunohost]"
+    pip install gunicorn
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
-    DJANGO_SETTINGS_MODULE=umap.settings.yunohost python manage.py collectstatic --noinput
-    DJANGO_SETTINGS_MODULE=umap.settings.yunohost python manage.py migrate
-    DJANGO_SETTINGS_MODULE=umap.settings.yunohost DJANGO_SUPERUSER_USERNAME=$admin DJANGO_SUPERUSER_EMAIL=$admin_mail DJANGO_SUPERUSER_PASSWORD=$password python manage.py createsuperuser --noinput
+    python manage.py collectstatic --noinput
+    python manage.py migrate
+    DJANGO_SUPERUSER_USERNAME=$admin DJANGO_SUPERUSER_EMAIL=$admin_mail DJANGO_SUPERUSER_PASSWORD=$password python manage.py createsuperuser --noinput
     deactivate
 popd
 
