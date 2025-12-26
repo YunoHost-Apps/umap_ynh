@@ -1,5 +1,5 @@
 from pathlib import Path as __Path
-from .base import * # Import base settings first
+from umap.settings.base import * # Import base settings first
 from django_yunohost_integration.base_settings import *
 from django_yunohost_integration.secret_key import get_or_create_secret as __get_or_create_secret
 
