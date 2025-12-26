@@ -65,8 +65,6 @@ mkdir -p $data_dir/custom/static
 mkdir -p $data_dir/custom/templates
 mkdir -p $data_dir/data
 
-ynh_config_add --template="umap.conf" --destination="$data_dir/umap.conf"
-chmod 400 "$data_dir/umap.conf"
 chown -R "$app:$app" "$data_dir"
 
 #=================================================
@@ -85,16 +83,11 @@ pushd $install_dir
     python -m venv venv
     echo "source $install_dir/venv/bin/activate" >> $install_dir/.bashrc
     source venv/bin/activate
-
-    if [ "$use_sso" = "true" ]; then
     ynh_config_add --template="yunohost.py" --destination="$install_dir/umap/settings/yunohost.py"
     DJANGO_SETTINGS_MODULE=umap.settings.yunohost pip install django-yunohost-integration
-    fi
-
     DJANGO_SETTINGS_MODULE=umap.settings.yunohost pip install pyyaml
     DJANGO_SETTINGS_MODULE=umap.settings.yunohost pip install ".[sync,deploy]"
-
-    pip install gunicorn
+    DJANGO_SETTINGS_MODULE=umap.settings.yunohost pip install gunicorn
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
     DJANGO_SETTINGS_MODULE=umap.settings.yunohost python manage.py collectstatic --noinput
