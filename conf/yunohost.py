@@ -66,8 +66,8 @@ DATABASES = {
 # YunoHost Integration App & Middleware
 # ==============================================================================
 
-INSTALLED_APPS.append('django_yunohost_integration')
-
+if 'django_yunohost_integration' not in INSTALLED_APPS:
+    INSTALLED_APPS.append('django_yunohost_integration')
 # Insert SSO Middleware after standard AuthenticationMiddleware
 try:
     auth_mw_index = MIDDLEWARE.index('django.contrib.auth.middleware.AuthenticationMiddleware')
