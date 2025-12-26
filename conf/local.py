@@ -31,8 +31,8 @@ for backend in _umap_backends:
     if backend not in AUTHENTICATION_BACKENDS:
         AUTHENTICATION_BACKENDS += (backend,)
 
-if 'django_yunohost_integration' not in INSTALLED_APPS:
-    INSTALLED_APPS.append('django_yunohost_integration')
+#if 'django_yunohost_integration' not in INSTALLED_APPS:
+#    INSTALLED_APPS.append('django_yunohost_integration')
 
 ROOT_URLCONF = 'umap.urls' 
 LOG_LEVEL = "INFO"
