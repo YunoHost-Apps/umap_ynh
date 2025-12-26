@@ -32,9 +32,9 @@ umap_default_edit_status=$(ynh_app_setting_get --key=umap_default_edit_status)
 umap_default_share_status=$(ynh_app_setting_get --key=umap_default_share_status)
 umap_home_feed=$(ynh_app_setting_get --key=umap_home_feed)
 
-ynh_config_add --template="umap.conf" --destination="$data_dir/umap.conf"
-chmod 400 "$data_dir/umap.conf"
-chown "$app:$app" "$data_dir/umap.conf"
+ynh_config_add --template="yunohost.py" --destination="$install_dir/umap/settings/yunohost.py"
+chmod 400 "$install_dir/umap/settings/yunohost.py"
+chown "$app:$app" "$install_dir/umap/settings/yunohost.py"
 
 #=================================================
 # START SYSTEMD SERVICE
