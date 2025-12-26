@@ -46,9 +46,9 @@ ynh_script_progression "Deploying $app..."
 
 pushd $install_dir
     source venv/bin/activate
-    pip install -U ".[sync,deploy]"
-    UMAP_SETTINGS=$data_dir/umap.conf python manage.py collectstatic --noinput
-    UMAP_SETTINGS=$data_dir/umap.conf python manage.py migrate
+    DJANGO_SETTINGS_MODULE=umap.settings.yunohost pip install ".[sync,deploy,yunohost]"
+    DJANGO_SETTINGS_MODULE=umap.settings.yunohost python manage.py collectstatic --noinput
+    DJANGO_SETTINGS_MODULE=umap.settings.yunohost python manage.py migrate
     deactivate
 popd
 
