@@ -11,7 +11,7 @@ It shall NOT be edited by hand.
 Vreate maps with OpenStreetMap layers in a minute and embed them in your site
 
 [![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](https://umap-project.org)
-[![Version: 3.4.2~ynh0](https://img.shields.io/badge/Version-3.4.2~ynh0-rgb(18,138,11)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/umap/)
+[![Version: 3.5.0~ynh](https://img.shields.io/badge/Version-3.5.0~ynh-rgb(18,138,11)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/umap/)
 
 <div align="center">
 <a href="https://apps.yunohost.org/app/umap"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_more_info_on_the_appstore.svg"/></a>
