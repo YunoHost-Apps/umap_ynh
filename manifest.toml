@@ -70,6 +70,11 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     [install.enable_account_login]
     ask.en = "Enable account login?"
     type = "boolean"
+    default = false
+
+    [install.use_sso]
+    ask.en = "Enable SSO?"
+    type = "boolean"
     default = true
 
     [install.site_name]
