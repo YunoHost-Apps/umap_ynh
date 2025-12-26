@@ -79,20 +79,20 @@ cp -r ../conf/icons "$data_dir/icons"
 ynh_script_progression "Deploying $app..."
 
 pushd $install_dir
-    ynh_exec_as_app mkdir -p "$install_dir/data" "$install_dir/static" 
-    ynh_exec_as_app python -m venv venv
-    ynh_exec_as_app echo "source $install_dir/venv/bin/activate" >> $install_dir/.bashrc
-    ynh_exec_as_app source venv/bin/activate
-    ynh_exec_as_app pip install pyyaml wheel setuptools django-axes
+     mkdir -p "$install_dir/data" "$install_dir/static" 
+     python -m venv venv
+     echo "source $install_dir/venv/bin/activate" >> $install_dir/.bashrc
+     source venv/bin/activate
+     pip install pyyaml wheel setuptools django-axes
     ynh_config_add --template="local.py" --destination="$install_dir/umap/settings/local.py"
     chown -R "$app:www-data" "$install_dir"
-    ynh_exec_as_app pip install ".[sync,yunohost]"
-    ynh_exec_as_app pip install gunicorn
+     pip install ".[sync,yunohost]"
+     pip install gunicorn
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
-    ynh_exec_as_app python manage.py collectstatic --noinput
-    ynh_exec_as_app python manage.py migrate
-    ynh_exec_as_app DJANGO_SUPERUSER_USERNAME=$admin DJANGO_SUPERUSER_EMAIL=$admin_mail DJANGO_SUPERUSER_PASSWORD=$password python manage.py createsuperuser --noinput
+     python manage.py collectstatic --noinput
+     python manage.py migrate
+     DJANGO_SUPERUSER_USERNAME=$admin DJANGO_SUPERUSER_EMAIL=$admin_mail DJANGO_SUPERUSER_PASSWORD=$password python manage.py createsuperuser --noinput
     deactivate
 popd
 
