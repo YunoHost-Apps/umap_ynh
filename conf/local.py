@@ -79,7 +79,9 @@ CSRF_TRUSTED_ORIGINS = ["https://__DOMAIN____PATH__"]
 LANGUAGE_CODE = "__LANGUAGE_CODE__"
 
 # Admins
-ADMINS = ["__ADMIN_MAIL__"]
+ADMINS = (("__ADMIN__", __ADMIN_EMAIL__),)
+
+MANAGERS = ADMINS
 
 # ==============================================================================
 # Database (PostGIS)
