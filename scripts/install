@@ -53,6 +53,7 @@ ynh_setup_source --dest_dir="$install_dir"
 ynh_script_progression "Configuring log rotation..."
 
 mkdir -p "/var/log/$app"
+touch "/var/log/$app/$app.log"
 chown -R "$app:www-data" "/var/log/$app"
 ynh_config_add_logrotate
 
