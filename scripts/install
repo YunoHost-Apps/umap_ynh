@@ -53,6 +53,7 @@ ynh_setup_source --dest_dir="$install_dir"
 ynh_script_progression "Configuring log rotation..."
 
 mkdir -p "/var/log/$app"
+touch "/var/log/$app/$app.log"
 chown -R "$app:www-data" "/var/log/$app"
 ynh_config_add_logrotate
 
@@ -65,8 +66,6 @@ mkdir -p $data_dir/custom/static
 mkdir -p $data_dir/custom/templates
 mkdir -p $data_dir/data
 
-ynh_config_add --template="umap.conf" --destination="$data_dir/umap.conf"
-chmod 400 "$data_dir/umap.conf"
 chown -R "$app:$app" "$data_dir"
 
 #=================================================
@@ -81,22 +80,29 @@ cp -r ../conf/icons "$data_dir/icons"
 ynh_script_progression "Deploying $app..."
 
 pushd $install_dir
-    mkdir -p "$install_dir/data" "$install_dir/static" 
-    python -m venv venv
-    echo "source $install_dir/venv/bin/activate" >> $install_dir/.bashrc
-    source venv/bin/activate
-    pip install pyyaml
-    pip install ".[sync,deploy]"
-    pip install gunicorn
+     mkdir -p "$install_dir/data" "$install_dir/static" 
+     python -m venv venv
+     echo "source $install_dir/venv/bin/activate" >> $install_dir/.bashrc
+     source venv/bin/activate
+     pip install pyyaml wheel setuptools django-axes
+    ynh_config_add --template="local.py" --destination="$install_dir/umap/settings/local.py"
+    ynh_config_add --template="setup_user.py" --destination="$install_dir/setup_user.py"
+    chown -R "$app:www-data" "$install_dir"
+    ynh_script_progression "Installing dependencies" 
+     pip install ".[sync,yunohost]"
+     pip install gunicorn
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
-    UMAP_SETTINGS=$data_dir/umap.conf python manage.py collectstatic --noinput
-    UMAP_SETTINGS=$data_dir/umap.conf python manage.py migrate
-    UMAP_SETTINGS=$data_dir/umap.conf DJANGO_SUPERUSER_USERNAME=$admin DJANGO_SUPERUSER_EMAIL=$admin_mail DJANGO_SUPERUSER_PASSWORD=$password python manage.py createsuperuser --noinput
+    ynh_script_progression "Collect static" 
+     python manage.py collectstatic --noinput
+     ynh_script_progression "Migrate DB" 
+     python manage.py migrate
+     DJANGO_SUPERUSER_USERNAME=$admin DJANGO_SUPERUSER_EMAIL=$admin_mail DJANGO_SUPERUSER_PASSWORD=$password python manage.py createsuperuser --noinput
     deactivate
 popd
 
 chown -R "$app:www-data" "$install_dir"
+chown -R "$app:www-data" "/var/log/$app"
 
 #=================================================
 # SYSTEM CONFIGURATION

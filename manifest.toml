@@ -6,13 +6,12 @@ name = "uMap"
 description.en = "Vreate maps with OpenStreetMap layers in a minute and embed them in your site"
 description.fr = "Créer des cartes personnalisées sur des fonds OpenStreetMap en un instant et les afficher dans votre site"
 
-version = "3.4.2~ynh0"
+version = "3.5.0~ynh1"
 
 maintainers = ["Yohan Boniface", "David Larlet"]
 
 
 [upstream]
-# https://yunohost.org/en/packaging_manifest#upstream-section
 license = "AGPL-3.0-only"
 website = "https://umap-project.org"
 admindoc = "https://docs.umap-project.org/en/stable/install/"
@@ -21,28 +20,23 @@ code = "https://github.com/umap-project/umap"
 
 
 [integration]
-# https://yunohost.org/en/packaging_manifest#integration-section
 yunohost = ">=12.1.17"
-helpers_version = "2.1" # https://yunohost.org/en/packaging_apps_helpers_v2.1
+helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
 
 ldap = false
 sso = false
 
-disk = "1G" # **estimate** minimum disk requirement. e.g. 20M, 400M, 1G, ...
-ram.build = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
-ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
+disk = "500M"
+ram.build = "500M"
+ram.runtime = "1G"
 
 [install]
-# https://yunohost.org/en/packaging_manifest#install-questions
-
     [install.domain]
-    # this is a generic question - ask strings are automatically handled by Yunohost's core
     type = "domain"
 
     [install.admin]
-    # this is a generic question - ask strings are automatically handled by Yunohost's core
     type = "user"
 
     [install.password]
@@ -52,12 +46,12 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     type = "group"
     default = "visitors"
 
-    [install.realtime_enabled] # __REALTIME_ENABLED__ will be set to "0" or "1" string
+    [install.realtime_enabled]
     ask.en = "Enable realtime collaboration?"
     type = "boolean"
     default = true
 
-    [install.umap_allow_anonymous] # __ALLOW_ANONYMOUS__ will be set to "0" or "1" string
+    [install.umap_allow_anonymous]
     ask.en = "Allow non logged in users to create maps?"
     type = "boolean"
     default = false
@@ -65,12 +59,12 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     [install.umap_allow_edit_profile]
     ask.en = "Allow to edit profile?"
     type = "boolean"
-    default = true
+    default = false
 
     [install.enable_account_login]
     ask.en = "Enable account login?"
     type = "boolean"
-    default = true
+    default = false
 
     [install.site_name]
     ask.en = "What's your instance name?"
@@ -159,7 +153,7 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     allow_email = true
 
     [resources.install_dir]
-    group = "www-data:r-x" # static files served by nginx
+    group = "www-data:r-x"
 
     [resources.data_dir]
 
