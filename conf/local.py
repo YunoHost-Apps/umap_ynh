@@ -181,3 +181,8 @@ SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 # Other settings, to add
 # SOCIAL_AUTH_OPENSTREETMAP_OAUTH2_KEY = ...
 # SOCIAL_AUTH_OPENSTREETMAP_OAUTH2_SECRET = ...
+
+# PATCH LOGGING CONFIGURATION!!! Because it looks for /tmp/django_yunohost_integration.log that is probably owned by root and it's not there where we should have logs
+
+if "LOGGING" in locals() and "log_file" in LOGGING.get("handlers", {}):
+    LOGGING["handlers"]["log_file"]["filename"] = LOG_FILE
