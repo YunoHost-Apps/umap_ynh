@@ -59,10 +59,7 @@ PATH_URL = PATH_URL.strip('/')
 # ==============================================================================
 # Core Security & Configuration
 # ==============================================================================
-
-# SECRET_KEY, override :-
-if str(DATA_DIR_PATH) != '__DATA_DIR__':
-    SECRET_KEY = __get_or_create_secret(DATA_DIR_PATH / 'secret.txt')
+SECRET_KEY = __SECRET_KEY__
 
 # DEBUG
 DEBUG = False
