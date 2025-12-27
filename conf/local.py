@@ -59,7 +59,7 @@ PATH_URL = PATH_URL.strip('/')
 # ==============================================================================
 # Core Security & Configuration
 # ==============================================================================
-SECRET_KEY = __SECRET_KEY__
+SECRET_KEY = "__SECRET_KEY__" 
 
 # DEBUG
 DEBUG = False
