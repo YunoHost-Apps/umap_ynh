@@ -59,7 +59,7 @@ ram.runtime = "1G"
     [install.umap_allow_edit_profile]
     ask.en = "Allow to edit profile?"
     type = "boolean"
-    default = true
+    default = false
 
     [install.enable_account_login]
     ask.en = "Enable account login?"
