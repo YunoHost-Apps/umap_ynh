@@ -83,10 +83,12 @@ pushd $install_dir
     ynh_script_progression "Preparing data and static folders in install_dir..."
     mkdir -p "$install_dir/data" "$install_dir/static" 
 
-     python -m venv venv
-     echo "source $install_dir/venv/bin/activate" >> $install_dir/.bashrc
-     source venv/bin/activate
-     pip install pyyaml wheel setuptools django-axes
+    ynh_script_progression "Preparing virtual env..."
+    python -m venv venv
+    echo "source $install_dir/venv/bin/activate" >> $install_dir/.bashrc
+    source venv/bin/activate
+    
+    pip install pyyaml wheel setuptools django-axes
     ynh_config_add --template="local.py" --destination="$install_dir/umap/settings/local.py"
     ynh_config_add --template="setup_user.py" --destination="$install_dir/setup_user.py"
     chown -R "$app:www-data" "$install_dir"
