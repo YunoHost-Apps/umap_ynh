@@ -106,6 +106,7 @@ pushd $install_dir
     ynh_script_progression "Migrate database"
     python manage.py migrate
 
+    ynh_script_progression "Create django admin user"
     DJANGO_SUPERUSER_USERNAME=$admin DJANGO_SUPERUSER_EMAIL=$admin_mail DJANGO_SUPERUSER_PASSWORD=$password python manage.py createsuperuser --noinput
     deactivate
 popd
