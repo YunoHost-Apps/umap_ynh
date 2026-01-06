@@ -111,6 +111,7 @@ pushd $install_dir
     deactivate
 popd
 
+ynh_script_progression "Setting correct ownership for install and log folders"
 chown -R "$app:www-data" "$install_dir"
 chown -R "$app:www-data" "/var/log/$app"
 
