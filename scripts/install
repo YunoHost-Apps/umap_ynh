@@ -100,9 +100,10 @@ pushd $install_dir
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
 
-    ynh_script_progression "Collect static" 
-     python manage.py collectstatic --noinput
-     ynh_script_progression "Migrate DB" 
+    ynh_script_progression "Collect app static files" 
+    python manage.py collectstatic --noinput
+
+    ynh_script_progression "Migrate DB" 
      python manage.py migrate
      DJANGO_SUPERUSER_USERNAME=$admin DJANGO_SUPERUSER_EMAIL=$admin_mail DJANGO_SUPERUSER_PASSWORD=$password python manage.py createsuperuser --noinput
     deactivate
