@@ -54,7 +54,7 @@ pushd $install_dir
     ynh_script_progression "Updating app files from corresponding release..."
     pip install ".[sync,yunohost]"
 
-
+    ynh_script_progression "Collect app static files and migrate database..."
     python manage.py collectstatic --noinput
     python manage.py migrate
     deactivate
