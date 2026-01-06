@@ -80,7 +80,9 @@ cp -r ../conf/icons "$data_dir/icons"
 ynh_script_progression "Deploying $app..."
 
 pushd $install_dir
-     mkdir -p "$install_dir/data" "$install_dir/static" 
+    ynh_script_progression "Preparing data and static folders in install_dir..."
+    mkdir -p "$install_dir/data" "$install_dir/static" 
+
      python -m venv venv
      echo "source $install_dir/venv/bin/activate" >> $install_dir/.bashrc
      source venv/bin/activate
