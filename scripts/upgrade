@@ -65,7 +65,7 @@ chown -R "$app:www-data" "$install_dir"
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
 #=================================================
-ynh_script_progression "Upgrading system configurations related to $app..."
+ynh_script_progression "Upgrading system configurations related to $app (nginx and systemd)..."
 
 ynh_config_add_nginx
 
