@@ -42,7 +42,7 @@ ynh_setup_source --dest_dir="$install_dir" --full_replace --keep="venv"
 #=================================================
 # MIGRATE APP
 #=================================================
-ynh_script_progression "Deploying $app..."
+ynh_script_progression "Upgrading $app..."
 
 pushd $install_dir
     source venv/bin/activate
