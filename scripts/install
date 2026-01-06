@@ -11,68 +11,68 @@ source /usr/share/yunohost/helpers
 #=================================================
 ynh_script_progression "Storing installation settings..."
 
-secret_key=$(ynh_string_random --length=32)
-ynh_app_setting_set --key=secret_key --value=$secret_key
-
-redis_db=$(ynh_redis_get_free_db)
-ynh_app_setting_set --key=redis_db --value="$redis_db"
-
-admin_mail=$(ynh_user_get_info --username=$admin --key=mail)
-ynh_app_setting_set --key=admin_mail --value=$admin_mail
-
-timezone="$(timedatectl show --value --property=Timezone)"
-ynh_app_setting_set --key=timezone --value=$timezone
-
-mail_user="noreply"
-
-umap_readonly=False
-ynh_app_setting_set --key=umap_readonly --value=$umap_readonly
-
-umap_keep_versions="10"
-ynh_app_setting_set --key=umap_keep_versions --value=$umap_keep_versions
-
-umap_default_edit_status="3"
-ynh_app_setting_set --key=umap_default_edit_status --value=$umap_default_edit_status
-
-umap_default_share_status="3"
-ynh_app_setting_set --key=umap_default_share_status --value=$umap_default_share_status
-
-umap_home_feed="latest"
-ynh_app_setting_set --key=umap_home_feed --value=$umap_home_feed
+    secret_key=$(ynh_string_random --length=32)
+    ynh_app_setting_set --key=secret_key --value=$secret_key
+    
+    redis_db=$(ynh_redis_get_free_db)
+    ynh_app_setting_set --key=redis_db --value="$redis_db"
+    
+    admin_mail=$(ynh_user_get_info --username=$admin --key=mail)
+    ynh_app_setting_set --key=admin_mail --value=$admin_mail
+    
+    timezone="$(timedatectl show --value --property=Timezone)"
+    ynh_app_setting_set --key=timezone --value=$timezone
+    
+    mail_user="noreply"
+    
+    umap_readonly=False
+    ynh_app_setting_set --key=umap_readonly --value=$umap_readonly
+    
+    umap_keep_versions="10"
+    ynh_app_setting_set --key=umap_keep_versions --value=$umap_keep_versions
+    
+    umap_default_edit_status="3"
+    ynh_app_setting_set --key=umap_default_edit_status --value=$umap_default_edit_status
+    
+    umap_default_share_status="3"
+    ynh_app_setting_set --key=umap_default_share_status --value=$umap_default_share_status
+    
+    umap_home_feed="latest"
+    ynh_app_setting_set --key=umap_home_feed --value=$umap_home_feed
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 ynh_script_progression "Setting up source files..."
 
-ynh_setup_source --dest_dir="$install_dir"
+    ynh_setup_source --dest_dir="$install_dir"
 
 #=================================================
 # SETUP LOGROTATE
 #=================================================
 ynh_script_progression "Configuring log rotation..."
 
-mkdir -p "/var/log/$app"
-touch "/var/log/$app/$app.log"
-chown -R "$app:www-data" "/var/log/$app"
-ynh_config_add_logrotate
+    mkdir -p "/var/log/$app"
+    touch "/var/log/$app/$app.log"
+    chown -R "$app:www-data" "/var/log/$app"
+    ynh_config_add_logrotate
 
 #=================================================
 # copy config files
 # ================================================
 ynh_script_progression "Create $app configuration files..."
 
-mkdir -p $data_dir/custom/static
-mkdir -p $data_dir/custom/templates
-mkdir -p $data_dir/data
-
-chown -R "$app:$app" "$data_dir"
+    mkdir -p $data_dir/custom/static
+    mkdir -p $data_dir/custom/templates
+    mkdir -p $data_dir/data
+    
+    chown -R "$app:$app" "$data_dir"
 
 #=================================================
 # copy icon files
 # ================================================
 ynh_script_progression "copy icons..."
-cp -r ../conf/icons "$data_dir/icons"
+    cp -r ../conf/icons "$data_dir/icons"
 
 #=================================================
 # MIGRATE / COLLECTSTATIC / CREATEADMIN
@@ -81,57 +81,57 @@ ynh_script_progression "Deploying $app..."
 
 pushd $install_dir
     ynh_script_progression "Preparing data and static folders in install_dir..."
-    mkdir -p "$install_dir/data" "$install_dir/static" 
+        mkdir -p "$install_dir/data" "$install_dir/static" 
 
     ynh_script_progression "Preparing virtual env..."
-    python -m venv venv
-    echo "source $install_dir/venv/bin/activate" >> $install_dir/.bashrc
-    source venv/bin/activate
+        python -m venv venv
+        echo "source $install_dir/venv/bin/activate" >> $install_dir/.bashrc
+        source venv/bin/activate
 
     ynh_script_progression "Install $app and its dependencies..."
-    pip install pyyaml wheel setuptools django-axes
-    ynh_config_add --template="local.py" --destination="$install_dir/umap/settings/local.py"
-    ynh_config_add --template="setup_user.py" --destination="$install_dir/setup_user.py"
-    chown -R "$app:www-data" "$install_dir"
-    pip install ".[sync,yunohost]"
-    pip install gunicorn
+        pip install pyyaml wheel setuptools django-axes
+        ynh_config_add --template="local.py" --destination="$install_dir/umap/settings/local.py"
+        ynh_config_add --template="setup_user.py" --destination="$install_dir/setup_user.py"
+        chown -R "$app:www-data" "$install_dir"
+        pip install ".[sync,yunohost]"
+        pip install gunicorn
 
     ynh_script_progression "Preparing database..."
-    ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
-    ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
+        ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
+        ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
 
     ynh_script_progression "Collect app static files" 
-    python manage.py collectstatic --noinput
+        python manage.py collectstatic --noinput
 
     ynh_script_progression "Migrate database"
-    python manage.py migrate
+        python manage.py migrate
 
     ynh_script_progression "Create django admin user"
-    DJANGO_SUPERUSER_USERNAME=$admin DJANGO_SUPERUSER_EMAIL=$admin_mail DJANGO_SUPERUSER_PASSWORD=$password python manage.py createsuperuser --noinput
+        DJANGO_SUPERUSER_USERNAME=$admin DJANGO_SUPERUSER_EMAIL=$admin_mail DJANGO_SUPERUSER_PASSWORD=$password python manage.py createsuperuser --noinput
     deactivate
 popd
 
 ynh_script_progression "Setting correct ownership for install and log folders"
-chown -R "$app:www-data" "$install_dir"
-chown -R "$app:www-data" "/var/log/$app"
+    chown -R "$app:www-data" "$install_dir"
+    chown -R "$app:www-data" "/var/log/$app"
 
 #=================================================
 # SYSTEM CONFIGURATION
 #=================================================
 ynh_script_progression "Adding system configurations related to $app (nginx and systemd)..."
 
-ynh_config_add_nginx
-
-ynh_config_add_systemd
-
-yunohost service add "$app" --description="Create maps with OpenStreetMap layers" --log="/var/log/$app/$app.log"
+    ynh_config_add_nginx
+    
+    ynh_config_add_systemd
+    
+    yunohost service add "$app" --description="Create maps with OpenStreetMap layers" --log="/var/log/$app/$app.log"
 
 #=================================================
 # Start the app server via systemd
 #=================================================
 ynh_script_progression "Starting systemd service '$app'..."
 
-ynh_systemctl --service=$app --action="start"
+    ynh_systemctl --service=$app --action="start"
 
 #=================================================
 # END OF SCRIPT
