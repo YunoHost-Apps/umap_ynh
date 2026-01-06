@@ -16,7 +16,7 @@ ynh_systemctl --service=$app --action="stop"
 #=================================================
 # copy config files
 # ================================================
-ynh_script_progression "Create project configuration files..."
+ynh_script_progression "Getting installation settings..."
 
 # Get a new redis db
 redis_db=$(ynh_redis_get_free_db)
