@@ -20,11 +20,10 @@ ynh_systemctl --service=$app --action="stop" --log_path="$log_file"
 # PYTHON VIRTUALENV
 #=================================================
 ynh_script_progression "Setup Python virtualenv for $app ..."
-
-cp ../conf/install_python.py "$data_dir/install_python.py"
-cp ../conf/setup_python.py "$data_dir/setup_python.py"
-cp ../conf/requirements.txt "$data_dir/requirements.txt"
-myynh_setup_python_venv
+ynh_safe_rm "$data_dir/.venv" # FIXME: We should probably not install anything in $data_dir
+                              # $install_dir is meant for that
+ynh_exec_as_app python3 -m venv $data_dir/.venv
+ynh_exec_as_app $data_dir/.venv/bin/pip install -r "../conf/requirements.txt"
 
 #=================================================
 # copy config files
