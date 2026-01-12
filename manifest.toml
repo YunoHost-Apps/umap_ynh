@@ -36,6 +36,12 @@ ram.runtime = "1G"
     [install.domain]
     type = "domain"
 
+    [install.path]
+    # this is a generic question - ask strings are automatically handled by Yunohost's core
+    # setting $path and template variable __PATH__
+    type = "path"
+    default = "/umap" 
+    
     [install.admin]
     type = "user"
 
