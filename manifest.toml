@@ -26,7 +26,7 @@ architectures = "all"
 multi_instance = true
 
 ldap = false
-sso = false
+sso = true
 
 disk = "500M"
 ram.build = "500M"
@@ -37,8 +37,6 @@ ram.runtime = "1G"
     type = "domain"
 
     [install.path]
-    # this is a generic question - ask strings are automatically handled by Yunohost's core
-    # setting $path and template variable __PATH__
     type = "path"
     default = "/umap" 
     
