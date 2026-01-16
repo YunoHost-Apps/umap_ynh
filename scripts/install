@@ -87,29 +87,15 @@ pushd "$data_dir"
     # Just for debugging:
     $data_dir/.venv/bin/umap diffsettings
 
-    $data_dir/.venv/bin/umap migrate --no-input
     $data_dir/.venv/bin/umap collectstatic --no-input
+    ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
+    ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
+    $data_dir/.venv/bin/umap migrate --no-input
 
-    # Check the configuration
-    # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
-    $data_dir/.venv/bin/umap check --deploy || true
+    # Create/update Django superuser (set unusable password, because auth done via SSOwat):
+    # Call create_superuser from django_yunohost_integration instead of Django builtin.
+    $data_dir/.venv/bin/umap create_superuser --username="$admin" --email="$(ynh_user_get_info --username="$admin" --key=mail)"
 popd
-
-
-# Needed to be able to load "urls.py" as ROOT_URLCONF
-echo $data_dir > $($data_dir/.venv/bin/python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')/_urls.pth
-
-# Just for debugging:
-$data_dir/.venv/bin/umap diffsettings
-
-$data_dir/.venv/bin/umap collectstatic --no-input
-ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
-ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
-$data_dir/.venv/bin/umap migrate --no-input
-
-# Create/update Django superuser (set unusable password, because auth done via SSOwat):
-# Call create_superuser from django_yunohost_integration instead of Django builtin.
-$data_dir/.venv/bin/umap create_superuser --username="$admin" --email="$(ynh_user_get_info --username="$admin" --key=mail)"
 
 # Check the configuration
 # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.

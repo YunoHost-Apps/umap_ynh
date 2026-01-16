@@ -54,8 +54,10 @@ pushd "$data_dir"
     # Just for debugging:
     $data_dir/.venv/bin/umap diffsettings
 
-    $data_dir/.venv/bin/umap migrate --no-input
     $data_dir/.venv/bin/umap collectstatic --no-input
+    ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
+    ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
+    $data_dir/.venv/bin/umap migrate --no-input
 
     # Check the configuration
     # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
