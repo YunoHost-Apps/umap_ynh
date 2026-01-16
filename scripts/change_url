@@ -3,6 +3,8 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
+email=$(ynh_user_get_info --username=$admin --key=mail)
+
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
@@ -21,9 +23,6 @@ ynh_config_change_url_nginx
 # UPDATE DJANGO SETTINGS
 #=================================================
 ynh_script_progression "Update $app settings file..."
-
-path=$new_path
-domain=$new_domain
 
 ynh_config_add --template="settings.py" --destination="$data_dir/settings.py"
 

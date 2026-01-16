@@ -7,27 +7,6 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
-# Install parameters are automatically saved as settings
-#
-# Settings are automatically loaded as bash variables
-# in every app script context, therefore typically these will exist:
-# - $domain
-# - $path
-# - $language
-# ... etc
-#
-# Resources defined in the manifest are provisioned prior to this script
-# and corresponding settings are also available, such as:
-# - $install_dir
-# - $port
-# - $db_name
-# ...
-
-#
-# $app is the app id (i.e. 'example' for first install,
-# or 'example__2', '__3', ... for multi-instance installs)
-#
-
 #=================================================
 # SETTINGS
 #=================================================
@@ -40,6 +19,8 @@ ynh_app_setting_set --key=log_file --value="$log_file"
 # Redis:
 redis_db=$(ynh_redis_get_free_db)
 ynh_app_setting_set --key=redis_db --value="$redis_db"
+
+email=$(ynh_user_get_info --username=$admin --key=mail)
 
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
@@ -62,6 +43,7 @@ ynh_config_add_logrotate "$log_file"
 # PYTHON VIRTUALENV
 #=================================================
 ynh_script_progression "Setup Python virtualenv for $app ..."
+
 cp ../conf/install_python.py "$data_dir/install_python.py"
 cp ../conf/setup_python.py "$data_dir/setup_python.py"
 cp ../conf/requirements.txt "$data_dir/requirements.txt"
@@ -78,17 +60,18 @@ ynh_app_setting_set_default --key=default_zoom --value=6
 ynh_app_setting_set_default --key=openrouteservice --value=""
 ynh_app_setting_set_default --key=allow_anonymous --value=0
 ynh_app_setting_set_default --key=realtime --value=1
+
 ynh_config_add --template="settings.py" --destination="$data_dir/settings.py"
 ynh_config_add --template="setup_user.py" --destination="$data_dir/setup_user.py"
-ynh_config_add --template="env" --destination="$data_dir/env"
+ynh_config_add --template="env" --destination="$data_dir/.env"
 
 touch "$data_dir/local_settings.py"
-
 
 #=================================================
 # copy icon files
 # ================================================
 ynh_script_progression "copy icons..."
+
 cp -r ../conf/icons "$data_dir/icons"
 
 #=================================================
@@ -96,52 +79,45 @@ cp -r ../conf/icons "$data_dir/icons"
 #=================================================
 ynh_script_progression "migrate/collectstatic/createadmin..."
 
-cd "$data_dir" || exit
+pushd "$data_dir"
+    set -a
+    . $data_dir/.env
+    set +a
 
-set -a
-. $data_dir/env
-set +a
+    # Just for debugging:
+    $data_dir/.venv/bin/umap diffsettings
 
-# Needed to be able to load "urls.py" as ROOT_URLCONF
-echo $data_dir > $($data_dir/.venv/bin/python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')/_urls.pth
+    $data_dir/.venv/bin/umap collectstatic --no-input
+    ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
+    ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
+    $data_dir/.venv/bin/umap migrate --no-input
 
-# Just for debugging:
-$data_dir/.venv/bin/umap diffsettings
-
-$data_dir/.venv/bin/umap collectstatic --no-input
-ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
-ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
-$data_dir/.venv/bin/umap migrate --no-input
-
-# Create/update Django superuser (set unusable password, because auth done via SSOwat):
-# Call create_superuser from django_yunohost_integration instead of Django builtin.
-$data_dir/.venv/bin/umap create_superuser --username="$admin" --email="$(ynh_user_get_info --username="$admin" --key=mail)"
+    # Create/update Django superuser (set unusable password, because auth done via SSOwat):
+    # Call create_superuser from django_yunohost_integration instead of Django builtin.
+    $data_dir/.venv/bin/umap create_superuser --username="$admin" --email="$(ynh_user_get_info --username="$admin" --key=mail)"
+popd
 
 # Check the configuration
 # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
 $data_dir/.venv/bin/umap check --deploy || true
 
 #=================================================
-# INTEGRATE SERVICE IN YUNOHOST
+# SYSTEM CONFIGURATION
 #=================================================
-ynh_script_progression "Integrating service in YunoHost..."
+ynh_script_progression "Adding system configurations related to $app..."
 
-yunohost service add --description $app $app
+ynh_config_add_nginx
+
+ynh_config_add_systemd
+
+yunohost service add "$app" --description="Create maps with OpenStreetMap layers" --log="/var/log/$app/$app.log"
 
 #=================================================
 # SECURE FILES AND DIRECTORIES
 #=================================================
 ynh_script_progression "Set $app file permissions..."
+
 myynh_fix_file_permissions
-
-#=================================================
-# SETUP SYSTEMD
-#=================================================
-ynh_script_progression "Configuring systemd service '$app'..."
-
-# https://yunohost.org/en/packaging_apps_helpers#ynh-add-systemd-config
-# https://github.com/YunoHost/yunohost/blob/dev/helpers/systemd
-ynh_config_add_systemd
 
 #=================================================
 # Start the app server via systemd
@@ -149,16 +125,6 @@ ynh_config_add_systemd
 ynh_script_progression "Starting systemd service '$app'..."
 
 ynh_systemctl --service=$app --action="start" --log_path="$log_file"
-
-#=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression "Configuring nginx web server..."
-
-# Create a dedicated nginx config
-# https://yunohost.org/en/contribute/packaging_apps/helpers
-# https://github.com/YunoHost/yunohost/blob/dev/helpers/nginx
-ynh_config_add_nginx "public_path" "port"
 
 #=================================================
 # END OF SCRIPT

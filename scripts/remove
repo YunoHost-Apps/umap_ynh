@@ -4,57 +4,29 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# STANDARD REMOVE
+# REMOVE SYSTEM CONFIGURATIONS
 #=================================================
-# REMOVE SERVICE FROM ADMIN PANEL
-#=================================================
+ynh_script_progression "Removing system configurations related to $app..."
+
+ynh_safe_rm "$data_dir" # See https://github.com/YunoHost-Apps/umap_ynh/issues/11
+
+# Remove the app-specific logrotate config
+ynh_config_remove_logrotate
 
 # Remove a service from the admin panel, added by `yunohost service add`
-if yunohost service status $app >/dev/null 2>&1
-then
-	ynh_script_progression "Removing $app service integration..."
+if yunohost service status $app >/dev/null 2>&1; then
 	yunohost service remove $app
 fi
 
-#=================================================
-# STOP APP'S SERVICES
-#=================================================
-ynh_script_progression "Stopping and removing systemd service '$app'..."
-
 ynh_config_remove_systemd
+
+ynh_config_remove_nginx
 
 ##=================================================
 ## REMOVE REDIS DB
 ##=================================================
 
 ynh_redis_remove_db
-
-#=================================================
-# REMOVE APP MAIN DIR
-#=================================================
-ynh_script_progression "Removing app main directory..."
-
-# /var/www/$app/
-ynh_safe_rm "$install_dir"
-
-# /home/yunohost.app/$app/
-ynh_safe_rm "$data_dir"
-
-#=================================================
-# REMOVE NGINX CONFIGURATION
-#=================================================
-ynh_script_progression "Removing nginx web server configuration..."
-
-# Remove the dedicated nginx config
-ynh_config_remove_nginx
-
-#=================================================
-# REMOVE LOGROTATE CONFIGURATION
-#=================================================
-ynh_script_progression "Removing logrotate configuration..."
-
-# Remove the app-specific logrotate config
-ynh_config_remove_logrotate
 
 #=================================================
 # END OF SCRIPT

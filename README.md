@@ -8,7 +8,7 @@ It shall NOT be edited by hand.
   uMap, packaged for YunoHost
 </h1>
 
-uMap lets you create maps with OpenStreetMap layers in a minute and embed them in your site. 
+Create maps with OpenStreetMap layers in a minute and embed them in your site
 
 [![Version: 3.4.2~ynh0](https://img.shields.io/badge/Version-3.4.2~ynh0-rgb(18,138,11)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/umap/)
 

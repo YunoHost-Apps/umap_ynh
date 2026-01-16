@@ -41,12 +41,11 @@ YNH_CURRENT_HOST = (
 # -----------------------------------------------------------------------------
 # config_panel.toml settings:
 
-DEBUG_ENABLED = "__DEBUG_ENABLED__"
-DEBUG = DEBUG_ENABLED == "1"
+DEBUG = False
 
-LOG_LEVEL = "__LOG_LEVEL__"
-ADMIN_EMAIL = "__ADMIN_EMAIL__"
-DEFAULT_FROM_EMAIL = "__DEFAULT_FROM_EMAIL__"
+LOG_LEVEL = "WARNING"
+ADMIN_EMAIL = "__EMAIL__"
+DEFAULT_FROM_EMAIL = "__EMAIL__"
 FORCE_SCRIPT_NAME = f"/{PATH_URL}"
 
 # -----------------------------------------------------------------------------

@@ -7,28 +7,7 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
-#-------------------------------------------------
-# config_panel.toml settings:
-
-if [ -z "$debug_enabled" ]; then
-	debug_enabled="0"
-	ynh_app_setting_set --key=debug_enabled --value="$debug_enabled"
-fi
-
-if [ -z "$log_level" ]; then
-	log_level="WARNING"
-	ynh_app_setting_set --key=log_level --value="$log_level"
-fi
-
-if [ -z "$admin_email" ]; then
-	admin_email="${admin}@${domain}"
-    ynh_app_setting_set --key=admin_email --value="$admin_email"
-fi
-
-if [ -z "$default_from_email" ]; then
-	default_from_email="${app}@${domain}"
-	ynh_app_setting_set --key=default_from_email --value="$default_from_email"
-fi
+email=$(ynh_user_get_info --username=$admin --key=mail)
 
 #=================================================
 # STOP SYSTEMD SERVICE
@@ -38,16 +17,10 @@ ynh_script_progression "Stopping systemd service '$app'..."
 ynh_systemctl --service=$app --action="stop" --log_path="$log_file"
 
 #=================================================
-# SETUP SYSTEMD
-#=================================================
-ynh_script_progression "Configuring systemd service '$app'..."
-
-ynh_config_add_systemd
-
-#=================================================
 # PYTHON VIRTUALENV
 #=================================================
 ynh_script_progression "Setup Python virtualenv for $app ..."
+
 cp ../conf/install_python.py "$data_dir/install_python.py"
 cp ../conf/setup_python.py "$data_dir/setup_python.py"
 cp ../conf/requirements.txt "$data_dir/requirements.txt"
@@ -73,21 +46,23 @@ ynh_config_add --template="env" --destination="$data_dir/env"
 #=================================================
 ynh_script_progression "migrate/collectstatic/createadmin..."
 
-cd "$data_dir" || exit
+pushd "$data_dir"
+    set -a
+    . $data_dir/.env
+    set +a
 
-set -a
-. $data_dir/env
-set +a
+    # Just for debugging:
+    $data_dir/.venv/bin/umap diffsettings
 
-# Just for debugging:
-$data_dir/.venv/bin/umap diffsettings
+    $data_dir/.venv/bin/umap collectstatic --no-input
+    ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
+    ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
+    $data_dir/.venv/bin/umap migrate --no-input
 
-$data_dir/.venv/bin/umap migrate --no-input
-$data_dir/.venv/bin/umap collectstatic --no-input
-
-# Check the configuration
-# This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
-$data_dir/.venv/bin/umap check --deploy || true
+    # Check the configuration
+    # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
+    $data_dir/.venv/bin/umap check --deploy || true
+popd
 
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
@@ -95,13 +70,18 @@ $data_dir/.venv/bin/umap check --deploy || true
 ynh_script_progression "Upgrading system configurations related to $app..."
 
 ynh_config_add_nginx
-ynh_config_add_logrotate "$log_file"
-yunohost service add --description $app $app
+
+ynh_config_add_systemd
+
+yunohost service add "$app" --description="Create maps with OpenStreetMap layers" --log="/var/log/$app/$app.log"
+
+ynh_config_add_logrotate
 
 #=================================================
 # SECURE FILES AND DIRECTORIES
 #=================================================
 ynh_script_progression "Set $app file permissions..."
+
 myynh_fix_file_permissions
 
 #=================================================
@@ -110,13 +90,6 @@ myynh_fix_file_permissions
 ynh_script_progression "Starting systemd service '$app'..."
 
 ynh_systemctl --service=$app --action=restart --log_path=systemd
-
-#=================================================
-# RELOAD NGINX
-#=================================================
-ynh_script_progression "Reloading nginx web server..."
-
-ynh_systemctl --service="nginx" --action="reload"
 
 #=================================================
 # END OF SCRIPT
