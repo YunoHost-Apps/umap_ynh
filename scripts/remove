@@ -8,6 +8,8 @@ source /usr/share/yunohost/helpers
 #=================================================
 ynh_script_progression "Removing system configurations related to $app..."
 
+ynh_safe_rm "$data_dir" # See https://github.com/YunoHost-Apps/umap_ynh/issues/11
+
 # Remove the app-specific logrotate config
 ynh_config_remove_logrotate
 
