@@ -41,8 +41,7 @@ YNH_CURRENT_HOST = (
 # -----------------------------------------------------------------------------
 # config_panel.toml settings:
 
-DEBUG_ENABLED = "0"
-DEBUG = DEBUG_ENABLED == "1"
+DEBUG = False
 
 LOG_LEVEL = "WARNING"
 ADMIN_EMAIL = "__EMAIL__"
