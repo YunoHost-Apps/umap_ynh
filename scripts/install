@@ -79,11 +79,22 @@ cp -r ../conf/icons "$data_dir/icons"
 #=================================================
 ynh_script_progression "migrate/collectstatic/createadmin..."
 
-cd "$data_dir" || exit
+pushd "$data_dir"
+    set -a
+    . $data_dir/.env
+    set +a
 
-set -a
-. $data_dir/env
-set +a
+    # Just for debugging:
+    $data_dir/.venv/bin/umap diffsettings
+
+    $data_dir/.venv/bin/umap migrate --no-input
+    $data_dir/.venv/bin/umap collectstatic --no-input
+
+    # Check the configuration
+    # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
+    $data_dir/.venv/bin/umap check --deploy || true
+popd
+
 
 # Needed to be able to load "urls.py" as ROOT_URLCONF
 echo $data_dir > $($data_dir/.venv/bin/python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')/_urls.pth

@@ -67,21 +67,21 @@ ynh_config_add --template="env" --destination="$data_dir/env"
 #=================================================
 ynh_script_progression "migrate/collectstatic/createadmin..."
 
-cd "$data_dir" || exit
+pushd "$data_dir"
+    set -a
+    . $data_dir/.env
+    set +a
 
-set -a
-. $data_dir/env
-set +a
+    # Just for debugging:
+    $data_dir/.venv/bin/umap diffsettings
 
-# Just for debugging:
-$data_dir/.venv/bin/umap diffsettings
+    $data_dir/.venv/bin/umap migrate --no-input
+    $data_dir/.venv/bin/umap collectstatic --no-input
 
-$data_dir/.venv/bin/umap migrate --no-input
-$data_dir/.venv/bin/umap collectstatic --no-input
-
-# Check the configuration
-# This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
-$data_dir/.venv/bin/umap check --deploy || true
+    # Check the configuration
+    # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
+    $data_dir/.venv/bin/umap check --deploy || true
+popd
 
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
