@@ -6,26 +6,7 @@
 
 # Transfer the main SSO domain to the App:
 ynh_current_host=$(cat /etc/yunohost/current_host)
-__YNH_CURRENT_HOST__=${ynh_current_host}
-
-#=================================================
-# ARGUMENTS FROM CONFIG PANEL
-#=================================================
-
-# 'update_python' -> '__UPDATE_PYTHON__'
-update_python="SETUP"
-
-# 'debug_enabled' -> '__DEBUG_ENABLED__' -> settings.DEBUG
-debug_enabled="0" # "1" or "0" string
-
-# 'log_level' -> '__LOG_LEVEL__' -> settings.LOG_LEVEL
-log_level="WARNING"
-
-# 'admin_email' -> '__ADMIN_EMAIL__' add in settings.ADMINS
-admin_email="${admin}@${domain}"
-
-# 'default_from_email' -> '__DEFAULT_FROM_EMAIL__' -> settings.DEFAULT_FROM_EMAIL
-default_from_email="${app}@${domain}"
+__YNH_CURRENT_HOST__=${ynh_current_host} # Useful? Sounds like not, and there is a confusion.
 
 #=================================================
 # SET CONSTANTS

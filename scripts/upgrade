@@ -7,28 +7,7 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
-#-------------------------------------------------
-# config_panel.toml settings:
-
-if [ -z "$debug_enabled" ]; then
-	debug_enabled="0"
-	ynh_app_setting_set --key=debug_enabled --value="$debug_enabled"
-fi
-
-if [ -z "$log_level" ]; then
-	log_level="WARNING"
-	ynh_app_setting_set --key=log_level --value="$log_level"
-fi
-
-if [ -z "$admin_email" ]; then
-	admin_email="${admin}@${domain}"
-    ynh_app_setting_set --key=admin_email --value="$admin_email"
-fi
-
-if [ -z "$default_from_email" ]; then
-	default_from_email="${app}@${domain}"
-	ynh_app_setting_set --key=default_from_email --value="$default_from_email"
-fi
+email=$(ynh_user_get_info --username=$admin --key=mail)
 
 #=================================================
 # STOP SYSTEMD SERVICE
