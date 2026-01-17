@@ -20,6 +20,9 @@ ynh_app_setting_set --key=log_file --value="$log_file"
 redis_db=$(ynh_redis_get_free_db)
 ynh_app_setting_set --key=redis_db --value="$redis_db"
 
+# TODO: this email should rather be set in 2 distinct variables
+# and then stored in yunohost settings, so the user can customize their
+# values through the config panel
 email=$(ynh_user_get_info --username=$admin --key=mail)
 
 #=================================================
@@ -27,7 +30,7 @@ email=$(ynh_user_get_info --username=$admin --key=mail)
 #=================================================
 ynh_script_progression "Validating installation parameters..."
 
-mkdir -p "$install_dir/data" "$install_dir/static"
+mkdir -p "$data_dir/data" "$install_dir/static"
 
 #=================================================
 # SETUP LOG FILE
@@ -43,8 +46,8 @@ ynh_config_add_logrotate "$log_file"
 # PYTHON VIRTUALENV
 #=================================================
 ynh_script_progression "Setup Python virtualenv for $app ..."
-ynh_exec_as_app python3 -m venv $data_dir/.venv
-ynh_exec_as_app $data_dir/.venv/bin/pip install -r "../conf/requirements.txt"
+ynh_exec_as_app python3 -m venv $install_dir/.venv
+ynh_exec_as_app $install_dir/.venv/bin/pip install -r "../conf/requirements.txt"
 
 #=================================================
 # copy config files
@@ -58,45 +61,45 @@ ynh_app_setting_set_default --key=openrouteservice --value=""
 ynh_app_setting_set_default --key=allow_anonymous --value=0
 ynh_app_setting_set_default --key=realtime --value=1
 
-ynh_config_add --template="settings.py" --destination="$data_dir/settings.py"
-ynh_config_add --template="setup_user.py" --destination="$data_dir/setup_user.py"
-ynh_config_add --template="env" --destination="$data_dir/.env"
+ynh_config_add --template="settings.py" --destination="$install_dir/settings.py"
+ynh_config_add --template="setup_user.py" --destination="$install_dir/setup_user.py"
+ynh_config_add --template="env" --destination="$install_dir/.env"
 
-touch "$data_dir/local_settings.py"
+touch "$install_dir/local_settings.py"
 
 #=================================================
 # copy icon files
 # ================================================
 ynh_script_progression "copy icons..."
 
-cp -r ../conf/icons "$data_dir/icons"
+cp -r ../conf/icons "$install_dir/icons"
 
 #=================================================
 # MIGRATE / COLLECTSTATIC / CREATEADMIN
 #=================================================
 ynh_script_progression "migrate/collectstatic/createadmin..."
 
-pushd "$data_dir"
+pushd "$install_dir"
     set -a
-    . $data_dir/.env
+    . $install_dir/.env
     set +a
 
     # Just for debugging:
-    $data_dir/.venv/bin/umap diffsettings
+    $install_dir/.venv/bin/umap diffsettings
 
-    $data_dir/.venv/bin/umap collectstatic --no-input
+    $install_dir/.venv/bin/umap collectstatic --no-input
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
-    $data_dir/.venv/bin/umap migrate --no-input
+    $install_dir/.venv/bin/umap migrate --no-input
 
     # Create/update Django superuser (set unusable password, because auth done via SSOwat):
     # Call create_superuser from django_yunohost_integration instead of Django builtin.
-    $data_dir/.venv/bin/umap create_superuser --username="$admin" --email="$(ynh_user_get_info --username="$admin" --key=mail)"
+    $install_dir/.venv/bin/umap create_superuser --username="$admin" --email="$(ynh_user_get_info --username="$admin" --key=mail)"
 popd
 
 # Check the configuration
 # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
-$data_dir/.venv/bin/umap check --deploy || true
+$install_dir/.venv/bin/umap check --deploy || true
 
 #=================================================
 # SYSTEM CONFIGURATION

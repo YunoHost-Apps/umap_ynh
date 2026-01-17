@@ -1,1 +1,1 @@
-UMAP_SETTINGS=__DATA_DIR__/settings.py
+UMAP_SETTINGS=__INSTALL_DIR__/settings.py

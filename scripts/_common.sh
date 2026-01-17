@@ -42,7 +42,10 @@ myynh_fix_file_permissions() {
     # /var/www/$app/
     # static files served by nginx, so use www-data group:
     chown -c -R "$app:www-data" "$install_dir"
+    # TODO: forbid write access to $app for the install_dir
     chmod -c u+rwx,g+rx,o-rwx "$install_dir"
+    # TODO: give read/write access to local_settings.py only to root
+    # and give read-only access to $app (or www-data?) so they can read it.
 
     # /home/yunohost.app/$app/
     chown -c -R "$app:$app" "$data_dir"
