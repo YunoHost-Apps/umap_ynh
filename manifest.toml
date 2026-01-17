@@ -6,7 +6,7 @@ name = "uMap"
 description.en = "Create maps with OpenStreetMap layers in a minute and embed them in your site"
 description.fr = "Créer des cartes personnalisées sur des fonds OpenStreetMap en un instant et les afficher dans votre site"
 
-version = "3.4.2~ynh0"
+version = "3.5.0~ynh0"
 
 maintainers = ["Yohan Boniface", "David Larlet"]
 
