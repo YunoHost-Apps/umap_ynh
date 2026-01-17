@@ -7,6 +7,9 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
+# TODO: remove it when we store the admin email and the default email in the settings
+# so we don't overwrite their values accross upgrades and respect user's choice if
+# they customized it through the config panel.
 email=$(ynh_user_get_info --username=$admin --key=mail)
 
 #=================================================
@@ -20,10 +23,9 @@ ynh_systemctl --service=$app --action="stop" --log_path="$log_file"
 # PYTHON VIRTUALENV
 #=================================================
 ynh_script_progression "Setup Python virtualenv for $app ..."
-ynh_safe_rm "$data_dir/.venv" # FIXME: We should probably not install anything in $data_dir
-                              # $install_dir is meant for that
-ynh_exec_as_app python3 -m venv $data_dir/.venv
-ynh_exec_as_app $data_dir/.venv/bin/pip install -r "../conf/requirements.txt"
+ynh_safe_rm "$install_dir/.venv" # Remove all and recreate the virtualenv.
+ynh_exec_as_app python3 -m venv $install_dir/.venv
+ynh_exec_as_app $install_dir/.venv/bin/pip install -r "../conf/requirements.txt"
 
 #=================================================
 # copy config files
@@ -36,31 +38,40 @@ ynh_app_setting_set_default --key=default_zoom --value=6
 ynh_app_setting_set_default --key=openrouteservice --value=""
 ynh_app_setting_set_default --key=allow_anonymous --value=0
 ynh_app_setting_set_default --key=realtime --value=1
-ynh_config_add --template="settings.py" --destination="$data_dir/settings.py"
-ynh_config_add --template="setup_user.py" --destination="$data_dir/setup_user.py"
-ynh_config_add --template="env" --destination="$data_dir/env"
+ynh_config_add --template="settings.py" --destination="$install_dir/settings.py"
+ynh_config_add --template="setup_user.py" --destination="$install_dir/setup_user.py"
+ynh_config_add --template="env" --destination="$install_dir/.env"
+mkdir -p "$data_dir/data" "$install_dir/static"
+
+#=================================================
+# copy icon files
+# ================================================
+ynh_script_progression "copy icons..."
+
+cp -rT ../conf/icons/ "$install_dir/icons"
+
 
 #=================================================
 # MIGRATE APP
 #=================================================
 ynh_script_progression "migrate/collectstatic/createadmin..."
 
-pushd "$data_dir"
+pushd "$install_dir"
     set -a
-    . $data_dir/.env
+    . $install_dir/.env
     set +a
 
     # Just for debugging:
-    $data_dir/.venv/bin/umap diffsettings
+    $install_dir/.venv/bin/umap diffsettings
 
-    $data_dir/.venv/bin/umap collectstatic --no-input
+    $install_dir/.venv/bin/umap collectstatic --no-input
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
     ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
-    $data_dir/.venv/bin/umap migrate --no-input
+    $install_dir/.venv/bin/umap migrate --no-input
 
     # Check the configuration
     # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
-    $data_dir/.venv/bin/umap check --deploy || true
+    $install_dir/.venv/bin/umap check --deploy || true
 popd
 
 #=================================================
