@@ -54,15 +54,15 @@ ram.runtime = "1G" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, .
     type = "group"
     default = "visitors"
 
-    [install.realtime] # __REALTIME_ENABLED__ will be set to "0" or "1" string
+    [install.realtime]
     ask.en = "Enable realtime collaboration?"
     type = "boolean"
-    default = "1"
+    default = 1
 
-    [install.allow_anonymous] # __ALLOW_ANONYMOUS__ will be set to "0" or "1" string
+    [install.allow_anonymous]
     ask.en = "Allow non logged in users to create maps?"
     type = "boolean"
-    default = "0"
+    default = 0
 
 
 [resources]
