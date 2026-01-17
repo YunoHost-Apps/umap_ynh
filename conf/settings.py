@@ -4,7 +4,7 @@
 ################################################################################
 
 # Please do not modify this file, it will be reset at the next update.
-# You can edit the file __DATA_DIR__/local_settings.py and add/modify the settings you need.
+# You can edit the file __INSTALL_DIR__/local_settings.py and add/modify the settings you need.
 # The parameters you add in local_settings.py will overwrite these,
 # but you can use the options and documentation in this file to find out what can be done.
 
@@ -145,9 +145,9 @@ else:
     MEDIA_URL = "/media/"
 
 STATIC_ROOT = str(INSTALL_DIR_PATH / "static")
-MEDIA_ROOT = str(INSTALL_DIR_PATH / "media")
+MEDIA_ROOT = str(DATA_DIR_PATH / "data")
 UMAP_PICTOGRAMS_COLLECTIONS = {
-    "OSMIC": {"path": DATA_DIR_PATH / "icons", "attribution": "Osmic"},
+    "OSMIC": {"path": INSTALL_DIR_PATH / "icons", "attribution": "Osmic"},
 }
 
 # Do not allow to edit username, as it's managed by the Yunohost SSO
