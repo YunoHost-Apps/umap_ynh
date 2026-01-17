@@ -46,7 +46,7 @@ DEBUG = False
 LOG_LEVEL = "WARNING"
 ADMIN_EMAIL = "__EMAIL__"
 DEFAULT_FROM_EMAIL = "__EMAIL__"
-FORCE_SCRIPT_NAME = f"/{PATH_URL}"
+FORCE_SCRIPT_NAME = f"/{PATH_URL}" if PATH_URL else None
 
 # -----------------------------------------------------------------------------
 
