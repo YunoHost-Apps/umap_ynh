@@ -23,9 +23,8 @@ ynh_systemctl --service=$app --action="stop" --log_path="$log_file"
 # PYTHON VIRTUALENV
 #=================================================
 ynh_script_progression "Setup Python virtualenv for $app ..."
-ynh_safe_rm "$install_dir/.venv" # Remove all and recreate the virtualenv.
-ynh_exec_as_app python3 -m venv $install_dir/.venv
-ynh_exec_as_app $install_dir/.venv/bin/pip install -r "../conf/requirements.txt"
+ynh_exec_as_app python3 -m venv "$install_dir/.venv"
+ynh_exec_as_app "$install_dir/.venv/bin/pip" install "${umap_with_extra_deps}==$(ynh_app_upstream_version)" --upgrade
 
 #=================================================
 # copy config files

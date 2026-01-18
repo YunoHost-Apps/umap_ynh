@@ -66,6 +66,16 @@ ram.runtime = "150M" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G,
 
 
 [resources]
+
+    [resources.sources.main]
+    url = "https://github.com/umap-project/umap/archive/refs/tags/3.5.0.tar.gz"
+    sha256 = "26183d0f35ae2fafaaac35e9b52010554bf5516ea98bd4c0dd0c4fe77fc53c02"
+
+    # Only here to bump the package version
+    prefetch = false
+
+    autoupdate.strategy = "latest_github_release"
+
     [resources.system_user]
     # This will provision/deprovision a unix system user
 
