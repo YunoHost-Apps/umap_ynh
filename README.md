@@ -10,6 +10,8 @@ It shall NOT be edited by hand.
 
 Create maps with OpenStreetMap layers in a minute and embed them in your site
 
+[![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](https://umap-project.org/)
+[![App Demo](https://img.shields.io/badge/App_Demo-blue?style=for-the-badge)](https://umap.openstreetmap.fr/map/new/)
 [![Version: 3.5.0~ynh0](https://img.shields.io/badge/Version-3.5.0~ynh0-rgb(18,138,11)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/umap/)
 
 <div align="center">
