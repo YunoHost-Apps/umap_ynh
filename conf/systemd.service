@@ -3,40 +3,36 @@ Description=__APP__ server
 After=network.target redis.service postgresql.service
 
 [Service]
+Type=simple
 User=__APP__
+Group=__APP__
 WorkingDirectory=__INSTALL_DIR__/
 EnvironmentFile=__INSTALL_DIR__/.env
 ExecStart=__INSTALL_DIR__/.venv/bin/uvicorn --proxy-headers --no-access-log --port __PORT__ umap.asgi:application
-
-
-#____________________________________________________________________________________
-# Below copy&paste from:
-# https://github.com/YunoHost-Apps/homeassistant_ynh/blob/master/conf/systemd.service
-
-
-RestartForceExitStatus=100
-Restart=on-failure
-RestartSec=5s
-StandardOutput=append:__LOG_FILE__
+StandardOutput=append:/var/log/__APP__/__APP__.log
 StandardError=inherit
 
+### Depending on specificities of your service/app, you may need to tweak these
+### .. but this should be a good baseline
 # Sandboxing options to harden security
-# Depending on specificities of your service/app, you may need to tweak these
-# .. but this should be a good baseline
 # Details for these options: https://www.freedesktop.org/software/systemd/man/systemd.exec.html
 NoNewPrivileges=yes
 PrivateTmp=yes
-#CANT BE ACTIVATED FOR __APP__ #PrivateDevices=yes
-#CANT BE ACTIVATED FOR __APP__ #RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+PrivateDevices=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
 RestrictNamespaces=yes
 RestrictRealtime=yes
-#CANT BE ACTIVATED FOR __APP__ (see issue #40) #DevicePolicy=closed
+DevicePolicy=closed
+ProtectClock=yes
+ProtectHostname=yes
+ProtectProc=invisible
 ProtectSystem=full
 ProtectControlGroups=yes
 ProtectKernelModules=yes
-# ProtectKernelTunables=yes
+ProtectKernelTunables=yes
 LockPersonality=yes
-SystemCallFilter=~@clock @debug @module @mount @obsolete @reboot @setuid @swap
+SystemCallArchitectures=native
+SystemCallFilter=~@clock @debug @module @mount @obsolete @reboot @setuid @swap @cpu-emulation @privileged
 
 # Denying access to capabilities that should not be relevant for webapps
 # Doc: https://man7.org/linux/man-pages/man7/capabilities.7.html
