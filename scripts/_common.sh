@@ -6,7 +6,9 @@
 
 # Transfer the main SSO domain to the App:
 ynh_current_host=$(cat /etc/yunohost/current_host)
-__YNH_CURRENT_HOST__=${ynh_current_host} # Useful? Sounds like not, and there is a confusion.
+__YNH_CURRENT_HOST__=${ynh_current_host} # FIXME: Useful? Sounds like not, and there is a confusion.
+
+umap_with_extra_deps="umap-project[yunohost,sync]"
 
 #=================================================
 # SET CONSTANTS
