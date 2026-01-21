@@ -14,8 +14,11 @@ maintainers = ["Yohan Boniface", "David Larlet"]
 [upstream]
 # https://yunohost.org/en/packaging_manifest#upstream-section
 license = "AGPL-3.0-only"
+website = "https://umap-project.org/"
+demo = "https://umap.openstreetmap.fr/map/new/"
+admindoc = "https://docs.umap-project.org/en/stable/"
+userdoc = "https://discover.umap-project.org/"
 code = "https://github.com/umap-project/umap"
-
 
 [integration]
 # https://yunohost.org/en/packaging_manifest#integration-section
@@ -25,7 +28,7 @@ architectures = "all"
 multi_instance = true
 
 ldap = false
-sso = false
+sso = true
 
 disk = "500M" # **estimate** minimum disk requirement. e.g. 20M, 400M, 1G, ...
 ram.build = "250M" # **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
