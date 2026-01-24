@@ -1,15 +1,18 @@
-## Settings and upgrades
+# Settings
 
-Almost everything related to Django Example's configuration is handled in a `"../conf/settings.py"` file.
-You can edit the file `/home/yunohost.app/umap/local_settings.py` to enable or disable features.
+Almost everything related to Umap's configuration is handled in a `"__INSTALL_DIR__/conf/settings.py"` file. You should not edit this file manually, otherwise your changes will be overwritten.
+You can insteaad edit the file `__INSTALL_DIR__/local_settings.py` to enable or disable features.
 
-Test sending emails, e.g.:
+## Testing the emails are sent
+
+You may log in Yunohost using ssh and run the following command:
 
 ```bash
-ssh admin@yourdomain.tld
 root@yunohost:~# /home/yunohost.app/umap/manage.py sendtestemail --admins
 ```
 
-How to debug a django YunoHost app, take a look into:
+## Debugging Umap
+
+Take a look into:
 
 * https://github.com/YunoHost-Apps/umap_ynh#developer-info
