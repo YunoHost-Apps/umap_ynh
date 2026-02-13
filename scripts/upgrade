@@ -4,80 +4,68 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-source _common.sh
 source /usr/share/yunohost/helpers
-
-# TODO: remove it when we store the admin email and the default email in the settings
-# so we don't overwrite their values accross upgrades and respect user's choice if
-# they customized it through the config panel.
-email=$(ynh_user_get_info --username=$admin --key=mail)
 
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
 ynh_script_progression "Stopping systemd service '$app'..."
 
-ynh_systemctl --service=$app --action="stop" --log_path="$log_file"
-
-#=================================================
-# PYTHON VIRTUALENV
-#=================================================
-ynh_script_progression "Setup Python virtualenv for $app ..."
-ynh_safe_rm "$install_dir/.venv" # Remove all and recreate the virtualenv.
-ynh_exec_as_app python3 -m venv $install_dir/.venv
-ynh_exec_as_app $install_dir/.venv/bin/pip install -r "../conf/requirements.txt"
+ynh_systemctl --service=$app --action="stop"
 
 #=================================================
 # copy config files
 # ================================================
-ynh_script_progression "Create project configuration files..."
+ynh_script_progression "Getting installation settings..."
 
-ynh_app_setting_set_default --key=default_longitude --value="2.0"
-ynh_app_setting_set_default --key=default_latitude --value="51.0"
-ynh_app_setting_set_default --key=default_zoom --value=6
-ynh_app_setting_set_default --key=openrouteservice --value=""
-ynh_app_setting_set_default --key=allow_anonymous --value=0
-ynh_app_setting_set_default --key=realtime --value=1
-ynh_config_add --template="settings.py" --destination="$install_dir/settings.py"
-ynh_config_add --template="setup_user.py" --destination="$install_dir/setup_user.py"
-ynh_config_add --template="env" --destination="$install_dir/.env"
-mkdir -p "$data_dir/data" "$install_dir/static"
+# Get a new redis db
+redis_db=$(ynh_redis_get_free_db)
+ynh_app_setting_set --key=redis_db --value="$redis_db"
+
+admin_mail=$(ynh_app_setting_get --app=$app --key=admin_mail)
+timezone=$(ynh_app_setting_get --app=$app --key=timezone)
+secret_key=$(ynh_app_setting_get --app=$app --key=secret_key)
+mail_user="noreply"
+umap_readonly=$(ynh_app_setting_get --key=umap_readonly)
+umap_keep_versions=$(ynh_app_setting_get --key=umap_keep_versions)
+umap_default_edit_status=$(ynh_app_setting_get --key=umap_default_edit_status)
+umap_default_share_status=$(ynh_app_setting_get --key=umap_default_share_status)
+umap_home_feed=$(ynh_app_setting_get --key=umap_home_feed)
 
 #=================================================
-# copy icon files
-# ================================================
-ynh_script_progression "copy icons..."
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+ynh_script_progression "Upgrading source files..."
 
-cp -rT ../conf/icons/ "$install_dir/icons"
-
+ynh_setup_source --dest_dir="$install_dir" --full_replace --keep="venv"
 
 #=================================================
 # MIGRATE APP
 #=================================================
-ynh_script_progression "migrate/collectstatic/createadmin..."
+ynh_script_progression "Upgrading $app..."
 
-pushd "$install_dir"
-    set -a
-    . $install_dir/.env
-    set +a
+pushd $install_dir    
+    source venv/bin/activate
 
-    # Just for debugging:
-    $install_dir/.venv/bin/umap diffsettings
+    ynh_script_progression "Updating config files..."
+    ynh_config_add --template="local.py" --destination="$install_dir/umap/settings/local.py"
+    ynh_config_add --template="setup_user.py" --destination="$install_dir/setup_user.py"
 
-    $install_dir/.venv/bin/umap collectstatic --no-input
-    ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
-    ynh_psql_db_shell $db_name <<< "CREATE EXTENSION IF NOT EXISTS unaccent;"
-    $install_dir/.venv/bin/umap migrate --no-input
+    ynh_script_progression "Updating app files from corresponding release..."
+    pip install ".[sync,yunohost]"
 
-    # Check the configuration
-    # This may fail in some cases with errors, etc., but the app works and the user can fix issues later.
-    $install_dir/.venv/bin/umap check --deploy || true
+    ynh_script_progression "Collect app static files and migrate database..."
+    python manage.py collectstatic --noinput
+    python manage.py migrate
+    deactivate
 popd
+
+chown -R "$app:www-data" "$install_dir"
 
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
 #=================================================
-ynh_script_progression "Upgrading system configurations related to $app..."
+ynh_script_progression "Upgrading system configurations related to $app (nginx and systemd)..."
 
 ynh_config_add_nginx
 
@@ -88,18 +76,11 @@ yunohost service add "$app" --description="Create maps with OpenStreetMap layers
 ynh_config_add_logrotate
 
 #=================================================
-# SECURE FILES AND DIRECTORIES
-#=================================================
-ynh_script_progression "Set $app file permissions..."
-
-myynh_fix_file_permissions
-
-#=================================================
 # Start the app server via systemd
 #=================================================
 ynh_script_progression "Starting systemd service '$app'..."
 
-ynh_systemctl --service=$app --action=restart --log_path=systemd
+ynh_systemctl --service=$app --action="start"
 
 #=================================================
 # END OF SCRIPT
