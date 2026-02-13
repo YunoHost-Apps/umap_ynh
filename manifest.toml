@@ -163,7 +163,7 @@ ram.runtime = "1G"
     group = "www-data:r-x"
 
     [resources.data_dir]
-    suddirs = ["custom/static", "custom/templates", "data"]
+    subdirs = ["custom/static", "custom/templates", "data"]
 
     [resources.permissions]
     main.url = "/"
