@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -16,11 +15,9 @@ ynh_restore "$install_dir"
 ynh_script_progression "Restoring the data directory..."
 
 ynh_restore "$data_dir"
-
-
-ynh_script_progression "Set $app file permissions..."
-
-myynh_fix_file_permissions
+mkdir -p "/var/log/$app"
+touch "/var/log/$app/$app.log"
+chown -R "$app:www-data" "/var/log/$app"
 
 #=================================================
 # RESTORE THE PostgreSQL DATABASE
@@ -41,22 +38,14 @@ systemctl enable $app.service --quiet
 
 yunohost service add "$app" --description="Create maps with OpenStreetMap layers" --log="/var/log/$app/$app.log"
 
-myynh_setup_log_file
 ynh_restore "/etc/logrotate.d/$app"
-
-#=================================================
-# SECURE FILES AND DIRECTORIES
-#=================================================
-ynh_script_progression "Set $app file permissions..."
-
-myynh_fix_file_permissions
 
 #=================================================
 # RELOAD NGINX AND PHP-FPM OR THE APP SERVICE
 #=================================================
 ynh_script_progression "Reloading NGINX web server and $app's service..."
 
-ynh_systemctl --service=$app --action="start" --log_path="$log_file"
+ynh_systemctl --service=$app --action="start"
 
 ynh_systemctl --service="nginx" --action="reload"
 
