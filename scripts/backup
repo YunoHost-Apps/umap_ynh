@@ -8,14 +8,12 @@ ynh_print_info "Declaring files to be backed up..."
 # BACKUP THE APP MAIN DIR
 #=================================================
 
-# /var/www/$app/
 ynh_backup "$install_dir"
 
 #=================================================
 # BACKUP THE DATA DIR
 #=================================================
 
-# /home/yunohost.app/$app/
 ynh_backup "$data_dir"
 
 #=================================================
