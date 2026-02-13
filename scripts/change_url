@@ -2,6 +2,8 @@
 
 source /usr/share/yunohost/helpers
 
+email=$(ynh_user_get_info --username=$admin --key=mail)
+
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================

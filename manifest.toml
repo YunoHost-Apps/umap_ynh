@@ -3,13 +3,12 @@ packaging_format = 2
 
 id = "umap"
 name = "uMap"
-description.en = "Vreate maps with OpenStreetMap layers in a minute and embed them in your site"
+description.en = "Create maps with OpenStreetMap layers in a minute and embed them in your site"
 description.fr = "Créer des cartes personnalisées sur des fonds OpenStreetMap en un instant et les afficher dans votre site"
 
 version = "3.5.0~ynh1"
 
 maintainers = ["Yohan Boniface", "David Larlet"]
-
 
 [upstream]
 license = "AGPL-3.0-only"
@@ -20,7 +19,7 @@ code = "https://github.com/umap-project/umap"
 
 
 [integration]
-yunohost = ">=12.1.17"
+yunohost = ">=12.1.38"
 helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
@@ -38,7 +37,7 @@ ram.runtime = "1G"
 
     [install.path]
     type = "path"
-    default = "/umap" 
+    default = "/umap"
     
     [install.admin]
     type = "user"
@@ -165,7 +164,7 @@ ram.runtime = "1G"
     main.url = "/"
     admin.url = "/admin"
     admin.allowed = "admins"
-    admin.show_tile = true 
+    admin.show_tile = true
 
     [resources.ports]
 
