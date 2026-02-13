@@ -12,11 +12,11 @@ maintainers = ["Yohan Boniface", "David Larlet"]
 
 [upstream]
 license = "AGPL-3.0-only"
-website = "https://umap-project.org"
-admindoc = "https://docs.umap-project.org/en/stable/install/"
+website = "https://umap-project.org/"
+demo = "https://umap.openstreetmap.fr/map/new/"
+admindoc = "https://docs.umap-project.org/en/stable/"
 userdoc = "https://discover.umap-project.org/"
 code = "https://github.com/umap-project/umap"
-
 
 [integration]
 yunohost = ">=12.1.38"
@@ -26,6 +26,10 @@ multi_instance = true
 
 ldap = false
 sso = true
+
+disk = "500M"
+ram.build = "250M"
+ram.runtime = "150M"
 
 disk = "500M"
 ram.build = "500M"
