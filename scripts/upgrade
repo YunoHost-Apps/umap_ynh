@@ -17,7 +17,7 @@ email=$(ynh_user_get_info --username=$admin --key=mail)
 #=================================================
 ynh_script_progression "Stopping systemd service '$app'..."
 
-ynh_systemctl --service=$app --action="stop" --log_path="$log_file"
+ynh_systemctl --service=$app --action="stop"
 
 #=================================================
 # PYTHON VIRTUALENV
@@ -98,7 +98,7 @@ myynh_fix_file_permissions
 #=================================================
 ynh_script_progression "Starting systemd service '$app'..."
 
-ynh_systemctl --service=$app --action=restart --log_path=systemd
+ynh_systemctl --service="$app" --action="start"
 
 #=================================================
 # END OF SCRIPT

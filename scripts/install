@@ -12,10 +12,6 @@ source /usr/share/yunohost/helpers
 #=================================================
 ynh_script_progression "Storing installation settings..."
 
-# Logging:
-log_file="/var/log/$app/$app.log"
-ynh_app_setting_set --key=log_file --value="$log_file"
-
 # Redis:
 redis_db=$(ynh_redis_get_free_db)
 ynh_app_setting_set --key=redis_db --value="$redis_db"
@@ -37,10 +33,8 @@ mkdir -p "$data_dir/data" "$install_dir/static"
 #=================================================
 ynh_script_progression "Setup logging..."
 
-myynh_setup_log_file
-
 # Use logrotate to manage application logfile(s)
-ynh_config_add_logrotate "$log_file"
+ynh_config_add_logrotate
 
 #=================================================
 # PYTHON VIRTUALENV
@@ -124,7 +118,7 @@ myynh_fix_file_permissions
 #=================================================
 ynh_script_progression "Starting systemd service '$app'..."
 
-ynh_systemctl --service=$app --action="start" --log_path="$log_file"
+ynh_systemctl --service=$app --action="start"
 
 #=================================================
 # END OF SCRIPT
