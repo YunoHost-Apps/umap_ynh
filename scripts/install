@@ -30,7 +30,7 @@ email=$(ynh_user_get_info --username=$admin --key=mail)
 #=================================================
 ynh_script_progression "Validating installation parameters..."
 
-mkdir -p "$data_dir/data" "$install_dir/static"
+mkdir -p "$install_dir/static"
 
 #=================================================
 # SETUP LOG FILE
