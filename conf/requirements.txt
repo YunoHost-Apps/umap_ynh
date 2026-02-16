@@ -1,1 +1,0 @@
-umap-project[yunohost,sync]==3.5.0
