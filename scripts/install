@@ -25,6 +25,8 @@ ynh_app_setting_set --key=redis_db --value="$redis_db"
 # values through the config panel
 email=$(ynh_user_get_info --username=$admin --key=mail)
 
+topest_domain=$(get_topest_domain)
+
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================

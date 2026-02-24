@@ -53,3 +53,7 @@ myynh_fix_file_permissions() {
     chown -c -R "$app:$app" "$data_dir"
     chmod -c u+rwx,g+rwx,o-rwx "$data_dir"
 }
+
+get_topest_domain() {
+    yunohost --json domain info "$domain" | jq -r '.topest_parent // "'$domain'"'
+}

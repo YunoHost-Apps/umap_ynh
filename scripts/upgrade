@@ -12,6 +12,8 @@ source /usr/share/yunohost/helpers
 # they customized it through the config panel.
 email=$(ynh_user_get_info --username=$admin --key=mail)
 
+topest_domain=$(get_topest_domain)
+
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================

@@ -4,6 +4,7 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 email=$(ynh_user_get_info --username=$admin --key=mail)
+topest_domain=$(get_topest_domain)
 
 #=================================================
 # STOP SYSTEMD SERVICE
