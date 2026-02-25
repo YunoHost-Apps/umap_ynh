@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source /usr/share/yunohost/helpers
-
 #=================================================
 # RETRIEVE ARGUMENTS FROM THE MANIFEST
 #=================================================
