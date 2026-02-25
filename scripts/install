@@ -5,7 +5,6 @@
 #=================================================
 
 source _common.sh
-source /usr/share/yunohost/helpers
 
 #=================================================
 # SETTINGS
@@ -40,7 +39,8 @@ ynh_config_add_logrotate "$log_file"
 #=================================================
 ynh_script_progression "Setup Python virtualenv for $app ..."
 ynh_exec_as_app python3 -m venv "$install_dir/.venv"
-ynh_exec_as_app "$install_dir/.venv/bin/pip" install "${umap_with_extra_deps}==$(ynh_app_upstream_version)"
+ynh_config_add --template="requirements.txt" --destination="$install_dir/requirements.txt"
+ynh_exec_as_app "$install_dir/.venv/bin/pip" install -r "${install_dir}/requirements.txt"
 
 #=================================================
 # copy config files

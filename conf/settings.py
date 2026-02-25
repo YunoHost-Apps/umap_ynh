@@ -57,7 +57,6 @@ YNH_JWT_COOKIE_NAME = "yunohost.portal"
 YNH_BASIC_AUTH_HEADER_KEY = "HTTP_AUTHORIZATION"
 
 
-INSTALLED_APPS = list(INSTALLED_APPS)
 INSTALLED_APPS.append("django_yunohost_integration.apps.YunohostIntegrationConfig")
 
 
@@ -66,7 +65,6 @@ SECRET_KEY = __get_or_create_secret(
 )  # /home/yunohost.app/$app/secret.txt
 
 
-MIDDLEWARE = list(MIDDLEWARE)
 MIDDLEWARE.insert(
     MIDDLEWARE.index("django.contrib.auth.middleware.AuthenticationMiddleware") + 1,
     # login a user via HTTP_REMOTE_USER header from SSOwat:
@@ -93,6 +91,15 @@ if PATH_URL:
 else:
     # Installed to domain root, without a path prefix:
     LOGIN_REDIRECT_URL = "/"
+
+LOGOUT_REDIRECT_URL = "/yunohost/portalapi/logout?referer_redirect"
+EXTRA_URL_PATTERNS = [
+    (
+        "sso-login/",
+        "django_yunohost_integration.yunohost_utils.SSOwatLoginRedirectView",
+        "ssowat-login",
+    ),
+]
 
 # -----------------------------------------------------------------------------
 

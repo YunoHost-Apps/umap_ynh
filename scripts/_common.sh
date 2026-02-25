@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source /usr/share/yunohost/helpers
+
 #=================================================
 # RETRIEVE ARGUMENTS FROM THE MANIFEST
 #=================================================
@@ -7,7 +9,8 @@
 # Transfer the main SSO domain to the App:
 ynh_current_host=$(cat /etc/yunohost/current_host)
 
-umap_with_extra_deps="umap-project[yunohost,sync]"
+umap_upstream_version=$(ynh_app_upstream_version)
+
 
 #=================================================
 # SET CONSTANTS
