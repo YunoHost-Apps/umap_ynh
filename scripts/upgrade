@@ -5,7 +5,6 @@
 #=================================================
 
 source _common.sh
-source /usr/share/yunohost/helpers
 
 #=================================================
 # STOP SYSTEMD SERVICE
@@ -24,7 +23,8 @@ email="$(ynh_user_get_info --username=$admin --key=mail)"
 #=================================================
 ynh_script_progression "Setup Python virtualenv for $app ..."
 ynh_exec_as_app python3 -m venv "$install_dir/.venv"
-ynh_exec_as_app "$install_dir/.venv/bin/pip" install "${umap_with_extra_deps}==$(ynh_app_upstream_version)" --upgrade
+ynh_config_add --template="requirements.txt" --destination="$install_dir/requirements.txt"
+ynh_exec_as_app "$install_dir/.venv/bin/pip" install -r "${install_dir}/requirements.txt" --upgrade
 
 #=================================================
 # copy config files
