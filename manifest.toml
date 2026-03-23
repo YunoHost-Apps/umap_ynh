@@ -85,6 +85,7 @@ ram.runtime = "150M"
     # This will create/remove the install dir as /var/www/$app/
     # and store the corresponding setting $install_dir and template variable __INSTALL_DIR__
     group = "www-data:r-x" # static files served by nginx
+    subdirs = ["data"]
 
     [resources.data_dir]
     # https://yunohost.org/en/packaging_apps_resources#data-dir

@@ -28,8 +28,7 @@ assert DATA_DIR_PATH.is_dir(), f"Directory not exists: {DATA_DIR_PATH}"
 INSTALL_DIR_PATH = __Path("__INSTALL_DIR__")  # /var/www/$app/
 assert INSTALL_DIR_PATH.is_dir(), f"Directory not exists: {INSTALL_DIR_PATH}"
 
-LOG_FILE_PATH = __Path("__LOG_FILE__")  # /var/log/$app/umap_ynh.log
-assert LOG_FILE_PATH.is_file(), f"File not exists: {LOG_FILE_PATH}"
+LOG_FILE_PATH = __Path("/var/log/__APP__/__APP__.log")  # /var/log/$app/umap_ynh.log
 
 PATH_URL = "__PATH__"
 PATH_URL = PATH_URL.strip("/")
