@@ -12,18 +12,11 @@ source /usr/share/yunohost/helpers
 #=================================================
 ynh_script_progression "Storing installation settings..."
 
-# Logging:
-log_file="/var/log/$app/$app.log"
-ynh_app_setting_set --key=log_file --value="$log_file"
-
 # Redis:
 redis_db=$(ynh_redis_get_free_db)
 ynh_app_setting_set --key=redis_db --value="$redis_db"
 
-# TODO: this email should rather be set in 2 distinct variables
-# and then stored in yunohost settings, so the user can customize their
-# values through the config panel
-email=$(ynh_user_get_info --username=$admin --key=mail)
+email="$(ynh_user_get_info --username=$admin --key=mail)"
 
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
@@ -60,6 +53,8 @@ ynh_app_setting_set_default --key=default_zoom --value=6
 ynh_app_setting_set_default --key=openrouteservice --value=""
 ynh_app_setting_set_default --key=allow_anonymous --value=0
 ynh_app_setting_set_default --key=realtime --value=1
+ynh_app_setting_set_default --key=admin_email --value="$email"
+ynh_app_setting_set_default --key=default_from_email --value="$email"
 
 ynh_config_add --template="settings.py" --destination="$install_dir/settings.py"
 ynh_config_add --template="setup_user.py" --destination="$install_dir/setup_user.py"

@@ -23,6 +23,12 @@ ynh_script_progression "Set $app file permissions..."
 myynh_fix_file_permissions
 
 #=================================================
+# RESTORE VARIOUS FILES
+#=================================================
+
+ynh_restore "/var/log/$app/"
+
+#=================================================
 # RESTORE THE PostgreSQL DATABASE
 #=================================================
 ynh_script_progression "Restoring the PostgreSQL database..."

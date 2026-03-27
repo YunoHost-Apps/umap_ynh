@@ -44,8 +44,8 @@ YNH_CURRENT_HOST = (
 DEBUG = False
 
 LOG_LEVEL = "WARNING"
-ADMIN_EMAIL = "__EMAIL__"
-DEFAULT_FROM_EMAIL = "__EMAIL__"
+ADMIN_EMAIL = "__ADMIN_EMAIL__"
+DEFAULT_FROM_EMAIL = "__DEFAULT_FROM_EMAIL__"
 FORCE_SCRIPT_NAME = f"/{PATH_URL}" if PATH_URL else None
 
 # -----------------------------------------------------------------------------

@@ -7,17 +7,17 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
-# TODO: remove it when we store the admin email and the default email in the settings
-# so we don't overwrite their values accross upgrades and respect user's choice if
-# they customized it through the config panel.
-email=$(ynh_user_get_info --username=$admin --key=mail)
-
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
 ynh_script_progression "Stopping systemd service '$app'..."
 
 ynh_systemctl --service=$app --action="stop" --log_path="$log_file"
+
+#=================================================
+# SETTINGS
+#=================================================
+email="$(ynh_user_get_info --username=$admin --key=mail)"
 
 #=================================================
 # PYTHON VIRTUALENV
@@ -37,6 +37,9 @@ ynh_app_setting_set_default --key=default_zoom --value=6
 ynh_app_setting_set_default --key=openrouteservice --value=""
 ynh_app_setting_set_default --key=allow_anonymous --value=0
 ynh_app_setting_set_default --key=realtime --value=1
+ynh_app_setting_set_default --key=admin_email --value="$email"
+ynh_app_setting_set_default --key=default_from_email --value="$email"
+
 ynh_config_add --template="settings.py" --destination="$install_dir/settings.py"
 ynh_config_add --template="setup_user.py" --destination="$install_dir/setup_user.py"
 ynh_config_add --template="env" --destination="$install_dir/.env"
@@ -98,7 +101,7 @@ myynh_fix_file_permissions
 #=================================================
 ynh_script_progression "Starting systemd service '$app'..."
 
-ynh_systemctl --service=$app --action=restart --log_path=systemd
+ynh_systemctl --service=$app --action=start --log_path=$log_file
 
 #=================================================
 # END OF SCRIPT
