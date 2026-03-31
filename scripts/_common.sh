@@ -7,7 +7,6 @@
 # Transfer the main SSO domain to the App:
 ynh_current_host=$(cat /etc/yunohost/current_host)
 
-umap_upstream_version=$(ynh_app_upstream_version)
 
 
 #=================================================

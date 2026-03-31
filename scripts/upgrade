@@ -4,8 +4,11 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-source /usr/share/yunohost/helpers
 source _common.sh
+source /usr/share/yunohost/helpers
+
+# UMap version, to be used in requirements.txt
+umap_upstream_version=$(ynh_app_upstream_version)
 
 #=================================================
 # STOP SYSTEMD SERVICE
