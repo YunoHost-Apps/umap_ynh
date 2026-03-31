@@ -4,8 +4,8 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-source /usr/share/yunohost/helpers
 source _common.sh
+source /usr/share/yunohost/helpers
 
 #=================================================
 # SETTINGS
@@ -17,6 +17,9 @@ redis_db=$(ynh_redis_get_free_db)
 ynh_app_setting_set --key=redis_db --value="$redis_db"
 
 email="$(ynh_user_get_info --username=$admin --key=mail)"
+
+# UMap version, to be used in requirements.txt
+umap_upstream_version=$(ynh_app_upstream_version)
 
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
