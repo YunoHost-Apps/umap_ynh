@@ -6,7 +6,7 @@ name = "uMap"
 description.en = "Create maps with OpenStreetMap layers in a minute and embed them in your site"
 description.fr = "Créer des cartes personnalisées sur des fonds OpenStreetMap en un instant et les afficher dans votre site"
 
-version = "3.6.1~ynh1"
+version = "3.7.2~ynh1"
 
 maintainers = ["Yohan Boniface", "David Larlet"]
 
@@ -69,8 +69,8 @@ ram.runtime = "150M"
 [resources]
 
     [resources.sources.main]
-    url = "https://github.com/umap-project/umap/archive/refs/tags/3.6.1.tar.gz"
-    sha256 = "2f8b3c24dfc940a780943d14f901a2434e218d455577e37bf3039448533018f1"
+    url = "https://github.com/umap-project/umap/archive/refs/tags/3.7.2.tar.gz"
+    sha256 = "7d3c4d1300f91ec7084ea9bffc0c9d811a800779fcd3346e17ec93c73b04ee84"
 
     # Only here to bump the package version
     prefetch = false
