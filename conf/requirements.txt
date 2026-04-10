@@ -1,4 +1,4 @@
 umap-project[sync]==__UMAP_UPSTREAM_VERSION__
-uvicorn==0.40.0
+uvicorn==0.44.0
 Django==5.1.15
 django_yunohost_integration==0.10.9
